@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Dashboard</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static',filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<h1 class="title">
+
+Repository Analysis Dashboard
+
+</h1>
+
+
+<div class="cards">
+
+<div class="info-card">
+
+<h2>{{ repo.files }}</h2>
+
+<p>Total Files</p>
+
+</div>
+
+<div class="info-card">
+
+<h2>{{ repo.folders }}</h2>
+
+<p>Total Folders</p>
+
+</div>
+
+<div class="info-card">
+
+<h2>{{ repo.size }} KB</h2>
+
+<p>Repository Size</p>
+
+</div>
+
+</div>
+
+<h2 class="section-title">
+
+Programming Languages
+
+</h2>
+
+<div class="language-box">
+
+{% for language,count in languages.items() %}
+
+<div class="language-item">
+
+<strong>{{ language }}</strong>
+
+<span>{{ count }} files</span>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<h2 class="section-title">
+
+Detected Technologies
+
+</h2>
+
+<div class="tech-box">
+
+{% for item in tech %}
+
+<div class="tech-card">
+
+{{ item }}
+
+</div>
+
+{% endfor %}
+
+</div>
+<h2>Repository Overview</h2>
+
+<table border="1" cellpadding="10">
+
+<tr>
+<td>Repository Name</td>
+<td>{{ overview["Repository Name"] }}</td>
+</tr>
+
+<tr>
+<td>README</td>
+<td>{{ overview["README"] }}</td>
+</tr>
+
+<tr>
+<td>License</td>
+<td>{{ overview["License"] }}</td>
+</tr>
+
+<tr>
+<td>.gitignore</td>
+<td>{{ overview[".gitignore"] }}</td>
+</tr>
+
+</table>
+
+</body>
+
+</html>
