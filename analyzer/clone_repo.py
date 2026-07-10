@@ -1,5 +1,4 @@
 import os
-import shutil
 import uuid
 from git import Repo
 
@@ -8,21 +7,20 @@ CLONE_PATH = "repositories"
 
 def clone_repository(repo_url):
     try:
-
+        os.makedirs(CLONE_PATH, exist_ok=True)
         repo_name = repo_url.rstrip("/").split("/")[-1]
 
-        unique_id = str(uuid.uuid4())[:8]
         repo_path = os.path.join(
-             CLONE_PATH,
-             f"{repo_name}_{unique_id}"
-         ) 
+        CLONE_PATH,
+        repo_name
+         )
+        if not os.path.exists(repo_path):
 
-        Repo.clone_from(
-    repo_url,
-    repo_path,
-    depth=1
-)
-
+         Repo.clone_from(
+        repo_url,
+        repo_path,
+        depth=1
+    )
         return True, repo_path
 
     except Exception as e:
