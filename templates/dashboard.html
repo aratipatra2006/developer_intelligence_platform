@@ -169,28 +169,18 @@
         </div>
     </div>
  
-    <div class="stat-grid stat-grid-5" style="--stat-accent: var(--accent-green);">
-        <div class="stat-card stat-card-sm">
-            <span class="stat-value">{{ statistics.python }}</span>
-            <span class="stat-label">python</span>
-        </div>
-        <div class="stat-card stat-card-sm">
-            <span class="stat-value">{{ statistics.html }}</span>
-            <span class="stat-label">html</span>
-        </div>
-        <div class="stat-card stat-card-sm">
-            <span class="stat-value">{{ statistics.css }}</span>
-            <span class="stat-label">css</span>
-        </div>
-        <div class="stat-card stat-card-sm">
-            <span class="stat-value">{{ statistics.javascript }}</span>
-            <span class="stat-label">javascript</span>
-        </div>
-        <div class="stat-card stat-card-sm">
-            <span class="stat-value">{{ statistics.java }}</span>
-            <span class="stat-label">java</span>
-        </div>
+   <div class="stat-grid stat-grid-5" style="--stat-accent: var(--accent-green);">
+
+    {% for language, count in languages.items() %}
+
+    <div class="stat-card stat-card-sm">
+        <span class="stat-value">{{ count }}</span>
+        <span class="stat-label">{{ language }}</span>
     </div>
+
+    {% endfor %}
+
+</div>
  
     <div class="dash-head dash-head-inner">
         <p class="eyebrow">// code complexity</p>
