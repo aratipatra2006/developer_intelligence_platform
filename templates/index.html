@@ -1,171 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Developer Intelligence Platform</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-
 <body>
 
 <header>
-
-<nav>
-
-<div class="logo">
-
-Developer Intelligence Platform
-
-</div>
-
-<ul>
-
-<li><a href="/">Home</a></li>
-
-<li><a href="#">Features</a></li>
-
-<li><a href="#">About</a></li>
-
-</ul>
-
-</nav>
-
+    <nav>
+        <div class="logo">
+            <span class="logo-mark">&lt;/&gt;</span>
+            <span class="logo-text">Developer Intelligence Platform</span>
+        </div>
+        <ul>
+            <li><a href="/">home</a></li>
+            <li><a href="#features">features</a></li>
+            <li><a href="#">about</a></li>
+        </ul>
+    </nav>
 </header>
 
 <section class="hero">
+    <div class="hero-copy">
+        <p class="eyebrow">// static analysis, live insight</p>
+        <h1>Point it at a repo.<br>Get the whole story.</h1>
+        <p class="lede">
+            Developer Intelligence Platform reads a codebase the way a senior engineer would &mdash;
+            architecture, health, security, and stack &mdash; then lets you ask it anything.
+        </p>
 
-<h1>
+        <form action="/analyze" method="POST" class="terminal-form" id="analyze-form">
+            <div class="terminal-form-bar">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-amber"></span>
+                <span class="dot dot-green"></span>
+                <span class="terminal-form-title">analyze.sh</span>
+            </div>
+            <label for="repo_url" class="sr-only">GitHub repository URL</label>
+            <div class="terminal-input-row">
+                <span class="prompt-sign" aria-hidden="true">$</span>
+                <input
+                    type="text"
+                    id="repo_url"
+                    name="repo_url"
+                    placeholder="github.com/owner/repository"
+                    autocomplete="off"
+                    spellcheck="false"
+                    required>
+                <button type="submit">
+                    run analysis <span aria-hidden="true">&rarr;</span>
+                </button>
+            </div>
+        </form>
 
-AI-Powered GitHub Repository Intelligence
+        {% if error %}
+        <div class="error-message" role="alert">
+            <span class="error-tag">error</span> {{ error }}
+        </div>
+        {% endif %}
+    </div>
 
-</h1>
-
-<p>
-
-Analyze GitHub repositories using Artificial Intelligence,
-Machine Learning, Static Code Analysis, and Repository Intelligence.
-
-</p>
-
-<form action="/analyze" method="POST">
-
-<input
-type="text"
-name="repo_url"
-placeholder="Paste GitHub Repository URL here..."
-required>
-
-<button type="submit">
-
-Analyze Repository
-
-</button>
-
-</form>
-{% if error %}
-<div class="error-message">
-    {{ error }}
-</div>
-{% endif %}
-
+    <div class="hero-terminal" aria-hidden="true">
+        <div class="terminal-form-bar">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-amber"></span>
+            <span class="dot dot-green"></span>
+            <span class="terminal-form-title">output &mdash; analyzing repository</span>
+        </div>
+        <pre class="terminal-body" id="terminal-output"></pre>
+    </div>
 </section>
 
-<section class="features">
+<section class="features" id="features">
+    <p class="eyebrow eyebrow-center">// what the scan surfaces</p>
+    <div class="card-grid">
 
-<div class="card">
+        <div class="card" style="--card-accent: var(--accent-violet);">
+            <div class="card-head">
+                <span class="card-dot"></span>
+                <span class="card-file">summary.md</span>
+            </div>
+            <h2>AI Summary</h2>
+            <p>A plain-language readout of what the project does, how it's organized, and where to start reading.</p>
+        </div>
 
-<h2>🧠 AI Summary</h2>
+        <div class="card" style="--card-accent: var(--accent-green);">
+            <div class="card-head">
+                <span class="card-dot"></span>
+                <span class="card-file">health.report</span>
+            </div>
+            <h2>Repository Health</h2>
+            <p>Maintainability, test coverage signals, and code quality scored against real engineering benchmarks.</p>
+        </div>
 
-<p>
+        <div class="card" style="--card-accent: var(--accent-violet);">
+            <div class="card-head">
+                <span class="card-dot"></span>
+                <span class="card-file">architecture.svg</span>
+            </div>
+            <h2>Architecture</h2>
+            <p>An automatically generated map of modules, services, and how data actually moves between them.</p>
+        </div>
 
-Generate an intelligent summary of any repository.
+        <div class="card" style="--card-accent: var(--accent-amber);">
+            <div class="card-head">
+                <span class="card-dot"></span>
+                <span class="card-file">security.scan</span>
+            </div>
+            <h2>Security Scan</h2>
+            <p>Common vulnerability patterns, exposed secrets, and dependency risk flagged before they ship.</p>
+        </div>
 
-</p>
+        <div class="card" style="--card-accent: var(--accent-green);">
+            <div class="card-head">
+                <span class="card-dot"></span>
+                <span class="card-file">stack.json</span>
+            </div>
+            <h2>Tech Stack</h2>
+            <p>Every framework, language, and database in play, detected straight from the source &mdash; no guessing.</p>
+        </div>
 
-</div>
+        <div class="card" style="--card-accent: var(--accent-violet);">
+            <div class="card-head">
+                <span class="card-dot"></span>
+                <span class="card-file">chat.session</span>
+            </div>
+            <h2>AI Chat</h2>
+            <p>Ask the repository direct questions and get answers grounded in the actual code, not documentation guesses.</p>
+        </div>
 
-<div class="card">
-
-<h2>📊 Repository Health</h2>
-
-<p>
-
-Evaluate maintainability and software quality.
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>🏗 Architecture</h2>
-
-<p>
-
-Automatically visualize the project architecture.
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>🔐 Security Scan</h2>
-
-<p>
-
-Detect common security vulnerabilities.
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>💻 Tech Stack</h2>
-
-<p>
-
-Identify frameworks, languages, and databases.
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>🤖 AI Chat</h2>
-
-<p>
-
-Ask questions about the repository using AI.
-
-</p>
-
-</div>
-
+    </div>
 </section>
 
 <footer>
-
-<p>
-
-© 2026 Developer Intelligence Platform
-
-</p>
-
+    <p>&copy; 2026 Developer Intelligence Platform</p>
 </footer>
 
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-
 </body>
-
 </html>

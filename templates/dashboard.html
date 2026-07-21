@@ -1,219 +1,217 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
-<title>Dashboard</title>
-
-<link rel="stylesheet"
-href="{{ url_for('static',filename='css/style.css') }}">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard &mdash; Developer Intelligence Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style1.css') }}">
 </head>
+<body class="dashboard">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<header>
+    <nav>
+        <a href="/" class="logo">
+            <span class="logo-mark">&lt;/&gt;</span>
+            <span class="logo-text">Developer Intelligence Platform</span>
+        </a>
+        <ul>
+            <li><a href="/">&larr; new scan</a></li>
+        </ul>
+    </nav>
+</header>
 
-<body>
-
-<h1 class="title">
-
-Repository Analysis Dashboard
-
-</h1>
-
-
-<div class="cards">
-
-<div class="info-card">
-
-<h2>{{ repo.files }}</h2>
-
-<p>Total Files</p>
-
-</div>
-
-<div class="info-card">
-
-<h2>{{ repo.folders }}</h2>
-
-<p>Total Folders</p>
-
-</div>
-
-<div class="info-card">
-
-<h2>{{ repo.size }} KB</h2>
-
-<p>Repository Size</p>
-
-</div>
-
-</div>
-
-<h2 class="section-title">
-
-Programming Languages
-
-</h2>
-
-<div class="language-box">
-
-{% for language,count in languages.items() %}
-
-<div class="language-item">
-
-<strong>{{ language }}</strong>
-
-<span>{{ count }} files</span>
-
-</div>
-
-{% endfor %}
-
-</div>
-
-<h2 class="section-title">
-
-Detected Technologies
-
-</h2>
-
-<div class="tech-box">
-
-{% for item in tech %}
-
-<div class="tech-card">
-
-{{ item }}
-
-</div>
-
-{% endfor %}
-
-</div>
-<h2>Repository Overview</h2>
-
-<table border="1" cellpadding="10">
-
-<tr>
-<td>Repository Name</td>
-<td>{{ overview["Repository Name"] }}</td>
-</tr>
-
-<tr>
-<td>README</td>
-<td>{{ overview["README"] }}</td>
-</tr>
-
-<tr>
-<td>License</td>
-<td>{{ overview["License"] }}</td>
-</tr>
-
-<tr>
-<td>.gitignore</td>
-<td>{{ overview[".gitignore"] }}</td>
-</tr>
-
-</table>
-<h2>README Analysis</h2>
-
-<div class="info-card">
-    <p><strong>README Found:</strong> {{ readme.exists }}</p>
-    <p><strong>Words:</strong> {{ readme.word_count }}</p>
-    <p><strong>Installation:</strong> {{ readme.installation }}</p>
-    <p><strong>Usage:</strong> {{ readme.usage }}</p>
-    <p><strong>License:</strong> {{ readme.license }}</p>
-    <p><strong>Contributing:</strong> {{ readme.contributing }}</p>
-
-    <h3>Documentation Score</h3>
-
-    <h2>{{ readme.score }}/100</h2>
-</div>
-<h2 class="section-title">Dependencies</h2>
-
-<div class="tech-box">
-
-{% if dependencies %}
-
-    {% for dep in dependencies %}
-
-        <div class="tech-card">
-
-            {{ dep }}
-
+<main class="dash-main">
+ 
+    <div class="dash-head">
+        <p class="eyebrow">// scan report</p>
+        <h1 class="title">{{ overview["Repository Name"] }}</h1>
+    </div>
+ 
+    <div class="stat-grid" style="--stat-accent: var(--accent-violet);">
+        <div class="stat-card">
+            <span class="stat-value">{{ repo.files }}</span>
+            <span class="stat-label">total files</span>
         </div>
-
-    {% endfor %}
-
-{% else %}
-
-<p>No dependencies found.</p>
-
-{% endif %}
-
-</div>
-<h2 class="section-title">Repository Statistics</h2>
-
-<div class="cards">
-
-<div class="info-card">
-<h3>Total Files</h3>
-<h2>{{ statistics.total_files }}</h2>
-</div>
-
-<div class="info-card">
-<h3>Total Folders</h3>
-<h2>{{ statistics.total_folders }}</h2>
-</div>
-
-<div class="info-card">
-<h3>Lines of Code</h3>
-<h2>{{ statistics.lines }}</h2>
-</div>
-
-</div>
-
-<div class="cards">
-
-<div class="info-card">
-<h3>Python</h3>
-<h2>{{ statistics.python }}</h2>
-</div>
-
-<div class="info-card">
-<h3>HTML</h3>
-<h2>{{ statistics.html }}</h2>
-</div>
-
-<div class="info-card">
-<h3>CSS</h3>
-<h2>{{ statistics.css }}</h2>
-</div>
-
-<div class="info-card">
-<h3>JavaScript</h3>
-<h2>{{ statistics.javascript }}</h2>
-</div>
-
-<div class="info-card">
-<h3>Java</h3>
-<h2>{{ statistics.java }}</h2>
-</div>
-
-</div>
-<h2 class="section-title">Code Complexity</h2>
-
-<div class="cards">
-
-    <div class="info-card">
-        <h3>Total Functions</h3>
-        <h2>{{ complexity.functions }}</h2>
+        <div class="stat-card">
+            <span class="stat-value">{{ repo.folders }}</span>
+            <span class="stat-label">total folders</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">{{ repo.size }} <small>kb</small></span>
+            <span class="stat-label">repository size</span>
+        </div>
     </div>
-
-    <div class="info-card">
-        <h3>Average Complexity</h3>
-        <h2>{{ complexity.complexity }}</h2>
+ 
+    <div class="dash-grid">
+ 
+        <section class="dash-panel" style="--panel-accent: var(--accent-violet);">
+            <p class="eyebrow">// overview</p>
+            <dl class="meta-list">
+                <div class="meta-row">
+                    <dt>repository name</dt>
+                    <dd>{{ overview["Repository Name"] }}</dd>
+                </div>
+                <div class="meta-row">
+                    <dt>readme</dt>
+                    <dd>{{ overview["README"] }}</dd>
+                </div>
+                <div class="meta-row">
+                    <dt>license</dt>
+                    <dd>{{ overview["License"] }}</dd>
+                </div>
+                <div class="meta-row">
+                    <dt>.gitignore</dt>
+                    <dd>{{ overview[".gitignore"] }}</dd>
+                </div>
+            </dl>
+        </section>
+ 
+        <section class="dash-panel" style="--panel-accent: var(--accent-green);">
+            <p class="eyebrow">// programming languages</p>
+            <div class="lang-list">
+                {% for language, count in languages.items() %}
+                <div class="lang-row">
+                    <span class="lang-name">{{ language }}</span>
+                    <span class="lang-count">{{ count }} files</span>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+ 
     </div>
-
-</div>
+ 
+    <section class="dash-panel" style="--panel-accent: var(--accent-violet);">
+        <p class="eyebrow">// detected technologies</p>
+        <div class="pill-grid">
+            {% for item in tech %}
+            <span class="pill pill-violet">{{ item }}</span>
+            {% endfor %}
+        </div>
+    </section>
+ 
+    <section class="dash-panel" style="--panel-accent: var(--accent-green);">
+        <p class="eyebrow">// dependencies</p>
+        {% if dependencies %}
+        <div class="pill-grid">
+            {% for dep in dependencies %}
+            <span class="pill pill-green">{{ dep }}</span>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty-note">no dependencies found.</p>
+        {% endif %}
+    </section>
+ 
+    <section class="dash-panel" style="--panel-accent: var(--accent-amber);">
+        <p class="eyebrow">// readme analysis</p>
+ 
+        <div class="readme-layout">
+            <dl class="meta-list">
+                <div class="meta-row">
+                    <dt>readme found</dt>
+                    <dd>{{ readme.exists }}</dd>
+                </div>
+                <div class="meta-row">
+                    <dt>words</dt>
+                    <dd>{{ readme.word_count }}</dd>
+                </div>
+                <div class="meta-row">
+                    <dt>installation</dt>
+                    <dd>{{ readme.installation }}</dd>
+                </div>
+                <div class="meta-row">
+                    <dt>usage</dt>
+                    <dd>{{ readme.usage }}</dd>
+                </div>
+                <div class="meta-row">
+                    <dt>license</dt>
+                    <dd>{{ readme.license }}</dd>
+                </div>
+                <div class="meta-row">
+                    <dt>contributing</dt>
+                    <dd>{{ readme.contributing }}</dd>
+                </div>
+            </dl>
+ 
+            <div class="score-card">
+                {% set score = (readme.score or 0) | int %}
+                <span class="score-label">documentation score</span>
+                <span class="score-value">{{ score }}<small>/100</small></span>
+                <div class="score-bar">
+                    <div class="score-bar-fill
+                        {% if score >= 80 %}score-good{% elif score >= 50 %}score-mid{% else %}score-low{% endif %}"
+                        style="width: {{ score }}%;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+ 
+    <div class="dash-head dash-head-inner">
+        <p class="eyebrow">// repository statistics</p>
+    </div>
+ 
+    <div class="stat-grid stat-grid-3" style="--stat-accent: var(--accent-violet);">
+        <div class="stat-card">
+            <span class="stat-value">{{ statistics.total_files }}</span>
+            <span class="stat-label">total files</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">{{ statistics.total_folders }}</span>
+            <span class="stat-label">total folders</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">{{ statistics.lines }}</span>
+            <span class="stat-label">lines of code</span>
+        </div>
+    </div>
+ 
+    <div class="stat-grid stat-grid-5" style="--stat-accent: var(--accent-green);">
+        <div class="stat-card stat-card-sm">
+            <span class="stat-value">{{ statistics.python }}</span>
+            <span class="stat-label">python</span>
+        </div>
+        <div class="stat-card stat-card-sm">
+            <span class="stat-value">{{ statistics.html }}</span>
+            <span class="stat-label">html</span>
+        </div>
+        <div class="stat-card stat-card-sm">
+            <span class="stat-value">{{ statistics.css }}</span>
+            <span class="stat-label">css</span>
+        </div>
+        <div class="stat-card stat-card-sm">
+            <span class="stat-value">{{ statistics.javascript }}</span>
+            <span class="stat-label">javascript</span>
+        </div>
+        <div class="stat-card stat-card-sm">
+            <span class="stat-value">{{ statistics.java }}</span>
+            <span class="stat-label">java</span>
+        </div>
+    </div>
+ 
+    <div class="dash-head dash-head-inner">
+        <p class="eyebrow">// code complexity</p>
+    </div>
+ 
+    <div class="stat-grid stat-grid-2" style="--stat-accent: var(--accent-amber);">
+        <div class="stat-card">
+            <span class="stat-value">{{ complexity.functions }}</span>
+            <span class="stat-label">total functions</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">{{ complexity.complexity }}</span>
+            <span class="stat-label">average complexity</span>
+        </div>
+    </div>
+ 
+</main>
+ 
+<footer>
+    <p>&copy; 2026 Developer Intelligence Platform</p>
+</footer>
+ 
 </body>
-
 </html>
