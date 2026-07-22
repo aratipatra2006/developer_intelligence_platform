@@ -10,8 +10,11 @@ from analyzer.repository_statistics import repository_statistics
 from analyzer.readme_analyzer import analyze_readme
 from analyzer.dependency_analyzer import analyze_dependencies
 from analyzer.complexity_analyzer import analyze_complexity
+from ai.summary_generator import generate_ai_summary
+
 import time
 app = Flask(__name__)
+app.secret_key = "developer_intelligence"
 
 @app.route("/")
 def home():
@@ -37,6 +40,7 @@ def analyze():
     repo_path = result
     repo_info = repository_information(repo_path)
     overview = get_repository_overview(repo_path)
+    print("OVERVIEW:", overview)
 
     languages = detect_languages(repo_path)
 
@@ -45,27 +49,35 @@ def analyze():
     statistics = repository_statistics(repo_path)
     complexity = analyze_complexity(repo_path)
     readme = analyze_readme(repo_path)
+
+    ai_summary = generate_ai_summary(
+    overview,
+    languages,
+    tech,
+    statistics,
+    readme,
+    complexity,
+    dependencies
+)
+    print(ai_summary)
   
     end_time = time.time()
 
     print(f"Analysis completed in {end_time - start_time:.2f} seconds")
     return render_template(
-
     "dashboard.html",
 
     repo=repo_info,
-
     overview=overview,
-
     languages=languages,
-
     tech=tech,
     readme=readme,
     dependencies=dependencies,
     statistics=statistics,
     complexity=complexity,
-    repo_path=repo_path
 
+    ai_summary=ai_summary,   
+    repo_path=repo_path
 )
 
 if __name__=="__main__":

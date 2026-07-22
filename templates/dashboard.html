@@ -1,207 +1,826 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard &mdash; Developer Intelligence Platform</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style1.css') }}">
 </head>
-<body class="dashboard">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<header>
-    <nav>
-        <a href="/" class="logo">
-            <span class="logo-mark">&lt;/&gt;</span>
-            <span class="logo-text">Developer Intelligence Platform</span>
-        </a>
-        <ul>
-            <li><a href="/">&larr; new scan</a></li>
-        </ul>
-    </nav>
-</header>
 
-<main class="dash-main">
- 
-    <div class="dash-head">
-        <p class="eyebrow">// scan report</p>
-        <h1 class="title">{{ overview["Repository Name"] }}</h1>
-    </div>
- 
-    <div class="stat-grid" style="--stat-accent: var(--accent-violet);">
-        <div class="stat-card">
-            <span class="stat-value">{{ repo.files }}</span>
-            <span class="stat-label">total files</span>
+<body class="dashboard">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <header>
+        <nav>
+            <a href="/" class="logo">
+                <span class="logo-mark">&lt;/&gt;</span>
+                <span class="logo-text">Developer Intelligence Platform</span>
+            </a>
+            <ul>
+                <li><a href="/">&larr; new scan</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dash-main">
+
+        <div class="dash-head">
+            <p class="eyebrow">// scan report</p>
+            <h1 class="title">{{ overview["Repository Name"] }}</h1>
         </div>
-        <div class="stat-card">
-            <span class="stat-value">{{ repo.folders }}</span>
-            <span class="stat-label">total folders</span>
+
+        <div class="stat-grid" style="--stat-accent: var(--accent-violet);">
+            <div class="stat-card">
+                <span class="stat-value">{{ repo.files }}</span>
+                <span class="stat-label">total files</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">{{ repo.folders }}</span>
+                <span class="stat-label">total folders</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">{{ repo.size }} <small>kb</small></span>
+                <span class="stat-label">repository size</span>
+            </div>
         </div>
-        <div class="stat-card">
-            <span class="stat-value">{{ repo.size }} <small>kb</small></span>
-            <span class="stat-label">repository size</span>
+
+        <div class="dash-grid">
+
+            <section class="dash-panel" style="--panel-accent: var(--accent-violet);">
+                <p class="eyebrow">// overview</p>
+                <dl class="meta-list">
+                    <div class="meta-row">
+                        <dt>repository name</dt>
+                        <dd>{{ overview["Repository Name"] }}</dd>
+                    </div>
+                    <div class="meta-row">
+                        <dt>readme</dt>
+                        <dd>{{ overview["README"] }}</dd>
+                    </div>
+                    <div class="meta-row">
+                        <dt>license</dt>
+                        <dd>{{ overview["License"] }}</dd>
+                    </div>
+                    <div class="meta-row">
+                        <dt>.gitignore</dt>
+                        <dd>{{ overview[".gitignore"] }}</dd>
+                    </div>
+                </dl>
+            </section>
+
+            <section class="dash-panel" style="--panel-accent: var(--accent-green);">
+                <p class="eyebrow">// programming languages</p>
+                <div class="lang-list">
+                    {% for language, count in languages.items() %}
+                    <div class="lang-row">
+                        <span class="lang-name">{{ language }}</span>
+                        <span class="lang-count">{{ count }} files</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
         </div>
-    </div>
- 
-    <div class="dash-grid">
- 
+
         <section class="dash-panel" style="--panel-accent: var(--accent-violet);">
-            <p class="eyebrow">// overview</p>
-            <dl class="meta-list">
-                <div class="meta-row">
-                    <dt>repository name</dt>
-                    <dd>{{ overview["Repository Name"] }}</dd>
-                </div>
-                <div class="meta-row">
-                    <dt>readme</dt>
-                    <dd>{{ overview["README"] }}</dd>
-                </div>
-                <div class="meta-row">
-                    <dt>license</dt>
-                    <dd>{{ overview["License"] }}</dd>
-                </div>
-                <div class="meta-row">
-                    <dt>.gitignore</dt>
-                    <dd>{{ overview[".gitignore"] }}</dd>
-                </div>
-            </dl>
-        </section>
- 
-        <section class="dash-panel" style="--panel-accent: var(--accent-green);">
-            <p class="eyebrow">// programming languages</p>
-            <div class="lang-list">
-                {% for language, count in languages.items() %}
-                <div class="lang-row">
-                    <span class="lang-name">{{ language }}</span>
-                    <span class="lang-count">{{ count }} files</span>
-                </div>
+            <p class="eyebrow">// detected technologies</p>
+            <div class="pill-grid">
+                {% for item in tech %}
+                <span class="pill pill-violet">{{ item }}</span>
                 {% endfor %}
             </div>
         </section>
- 
-    </div>
- 
-    <section class="dash-panel" style="--panel-accent: var(--accent-violet);">
-        <p class="eyebrow">// detected technologies</p>
-        <div class="pill-grid">
-            {% for item in tech %}
-            <span class="pill pill-violet">{{ item }}</span>
-            {% endfor %}
-        </div>
-    </section>
- 
-    <section class="dash-panel" style="--panel-accent: var(--accent-green);">
-        <p class="eyebrow">// dependencies</p>
-        {% if dependencies %}
-        <div class="pill-grid">
-            {% for dep in dependencies %}
-            <span class="pill pill-green">{{ dep }}</span>
-            {% endfor %}
-        </div>
-        {% else %}
-        <p class="empty-note">no dependencies found.</p>
-        {% endif %}
-    </section>
- 
-    <section class="dash-panel" style="--panel-accent: var(--accent-amber);">
-        <p class="eyebrow">// readme analysis</p>
- 
-        <div class="readme-layout">
-            <dl class="meta-list">
-                <div class="meta-row">
-                    <dt>readme found</dt>
-                    <dd>{{ readme.exists }}</dd>
-                </div>
-                <div class="meta-row">
-                    <dt>words</dt>
-                    <dd>{{ readme.word_count }}</dd>
-                </div>
-                <div class="meta-row">
-                    <dt>installation</dt>
-                    <dd>{{ readme.installation }}</dd>
-                </div>
-                <div class="meta-row">
-                    <dt>usage</dt>
-                    <dd>{{ readme.usage }}</dd>
-                </div>
-                <div class="meta-row">
-                    <dt>license</dt>
-                    <dd>{{ readme.license }}</dd>
-                </div>
-                <div class="meta-row">
-                    <dt>contributing</dt>
-                    <dd>{{ readme.contributing }}</dd>
-                </div>
-            </dl>
- 
-            <div class="score-card">
-                {% set score = (readme.score or 0) | int %}
-                <span class="score-label">documentation score</span>
-                <span class="score-value">{{ score }}<small>/100</small></span>
-                <div class="score-bar">
-                    <div class="score-bar-fill
+
+        <section class="dash-panel" style="--panel-accent: var(--accent-green);">
+            <p class="eyebrow">// dependencies</p>
+            {% if dependencies %}
+            <div class="pill-grid">
+                {% for dep in dependencies %}
+                <span class="pill pill-green">{{ dep }}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-note">no dependencies found.</p>
+            {% endif %}
+        </section>
+
+        <section class="dash-panel" style="--panel-accent: var(--accent-amber);">
+            <p class="eyebrow">// readme analysis</p>
+
+            <div class="readme-layout">
+                <dl class="meta-list">
+                    <div class="meta-row">
+                        <dt>readme found</dt>
+                        <dd>{{ readme.exists }}</dd>
+                    </div>
+                    <div class="meta-row">
+                        <dt>words</dt>
+                        <dd>{{ readme.word_count }}</dd>
+                    </div>
+                    <div class="meta-row">
+                        <dt>installation</dt>
+                        <dd>{{ readme.installation }}</dd>
+                    </div>
+                    <div class="meta-row">
+                        <dt>usage</dt>
+                        <dd>{{ readme.usage }}</dd>
+                    </div>
+                    <div class="meta-row">
+                        <dt>license</dt>
+                        <dd>{{ readme.license }}</dd>
+                    </div>
+                    <div class="meta-row">
+                        <dt>contributing</dt>
+                        <dd>{{ readme.contributing }}</dd>
+                    </div>
+                </dl>
+
+                <div class="score-card">
+                    {% set score = (readme.score or 0) | int %}
+                    <span class="score-label">documentation score</span>
+                    <span class="score-value">{{ score }}<small>/100</small></span>
+                    <div class="score-bar">
+                        <div class="score-bar-fill
                         {% if score >= 80 %}score-good{% elif score >= 50 %}score-mid{% else %}score-low{% endif %}"
-                        style="width: {{ score }}%;"></div>
+                            style="width: {{ score }}%;"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
- 
-    <div class="dash-head dash-head-inner">
-        <p class="eyebrow">// repository statistics</p>
-    </div>
- 
-    <div class="stat-grid stat-grid-3" style="--stat-accent: var(--accent-violet);">
-        <div class="stat-card">
-            <span class="stat-value">{{ statistics.total_files }}</span>
-            <span class="stat-label">total files</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-value">{{ statistics.total_folders }}</span>
-            <span class="stat-label">total folders</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-value">{{ statistics.lines }}</span>
-            <span class="stat-label">lines of code</span>
-        </div>
-    </div>
- 
-   <div class="stat-grid stat-grid-5" style="--stat-accent: var(--accent-green);">
+        </section>
 
-    {% for language, count in languages.items() %}
+        <div class="dash-head dash-head-inner">
+            <p class="eyebrow">// repository statistics</p>
+        </div>
 
-    <div class="stat-card stat-card-sm">
-        <span class="stat-value">{{ count }}</span>
-        <span class="stat-label">{{ language }}</span>
+        <div class="stat-grid stat-grid-3" style="--stat-accent: var(--accent-violet);">
+            <div class="stat-card">
+                <span class="stat-value">{{ statistics.total_files }}</span>
+                <span class="stat-label">total files</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">{{ statistics.total_folders }}</span>
+                <span class="stat-label">total folders</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">{{ statistics.lines }}</span>
+                <span class="stat-label">lines of code</span>
+            </div>
+        </div>
+
+        <div class="stat-grid stat-grid-5" style="--stat-accent: var(--accent-green);">
+
+            {% for language, count in languages.items() %}
+
+            <div class="stat-card stat-card-sm">
+                <span class="stat-value">{{ count }}</span>
+                <span class="stat-label">{{ language }}</span>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <div class="dash-head dash-head-inner">
+            <p class="eyebrow">// code complexity</p>
+        </div>
+
+        <div class="stat-grid stat-grid-2" style="--stat-accent: var(--accent-amber);">
+            <div class="stat-card">
+                <span class="stat-value">{{ complexity.functions }}</span>
+                <span class="stat-label">total functions</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">{{ complexity.complexity }}</span>
+                <span class="stat-label">average complexity</span>
+            </div>
+        </div>
+
+        <section class="features-dashboard">
+
+            <p class="eyebrow">// intelligence center</p>
+
+            <div class="card-grid">
+
+                <!-- AI Summary -->
+                <div class="card feature-card" id="ai-summary-card" style="--card-accent: var(--accent-violet);">
+                    <div class="card-head">
+                        <span class="card-dot"></span>
+                        <span class="card-file">summary.md</span>
+                    </div>
+
+                    <h2>AI Summary</h2>
+
+                    <p>
+                        View a concise summary of the repository generated from the analyzed project.
+                    </p>
+                </div>
+
+                <!-- Repository Health -->
+                <div class="card feature-card" id="health-card" style="--card-accent: var(--accent-green);">
+                    <div class="card-head">
+                        <span class="card-dot"></span>
+                        <span class="card-file">health.report</span>
+                    </div>
+
+                    <h2>Repository Health</h2>
+
+                    <p>
+                        Review maintainability, documentation quality and overall project health.
+                    </p>
+                </div>
+
+                <!-- Architecture -->
+                <div class="card feature-card" id="architecture-card" style="--card-accent: var(--accent-violet);">
+                    <div class="card-head">
+                        <span class="card-dot"></span>
+                        <span class="card-file">architecture.svg</span>
+                    </div>
+
+                    <h2>Architecture</h2>
+
+                    <p>
+                        Explore the repository structure, folders and module organization.
+                    </p>
+                </div>
+
+                <!-- Security -->
+                <div class="card feature-card" id="security-card" style="--card-accent: var(--accent-amber);">
+                    <div class="card-head">
+                        <span class="card-dot"></span>
+                        <span class="card-file">security.scan</span>
+                    </div>
+
+                    <h2>Security Scan</h2>
+
+                    <p>
+                        Detect potential security risks, exposed files and dependency issues.
+                    </p>
+                </div>
+
+                <!-- Tech Stack -->
+                <div class="card feature-card" id="tech-card" style="--card-accent: var(--accent-green);">
+                    <div class="card-head">
+                        <span class="card-dot"></span>
+                        <span class="card-file">stack.json</span>
+                    </div>
+
+                    <h2>Tech Stack</h2>
+
+                    <p>
+                        View all detected programming languages, frameworks and technologies.
+                    </p>
+                </div>
+
+                <!-- AI Chat -->
+                <div class="card feature-card" id="chat-card" style="--card-accent: var(--accent-violet);">
+                    <div class="card-head">
+                        <span class="card-dot"></span>
+                        <span class="card-file">chat.session</span>
+                    </div>
+
+                    <h2>AI Chat</h2>
+
+                    <p>
+                        Ask questions about the analyzed repository and receive AI-powered answers.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Developer Intelligence Platform</p>
+
+        <!-- AI Summary Modal -->
+
+        <div id="summaryModal" class="modal">
+
+            <div class="modal-content">
+
+                <span class="close">&times;</span>
+
+                <h2>AI Summary</h2>
+
+                <div class="modal-body">
+
+                    <div class="summary-section">
+
+                        <h3>📌 Project Overview</h3>
+                        <p>{{ ai_summary.project_overview }}</p>
+
+                        <h3>📄 Documentation</h3>
+                        <p>{{ ai_summary.documentation }}</p>
+
+                        <h3>💻 Programming Languages</h3>
+                        <p>{{ ai_summary.languages }}</p>
+
+                        <h3>🛠 Technology Stack</h3>
+                        <p>{{ ai_summary.technology }}</p>
+
+                        <h3>📦 Dependencies</h3>
+                        <p>{{ ai_summary.dependencies }}</p>
+
+                        <h3>📊 Code Quality</h3>
+                        <p>{{ ai_summary.quality }}</p>
+
+                        <h3>❤️ Repository Health Score</h3>
+                        <p>{{ ai_summary.health_score }}/100</p>
+
+                        <h3>💡 Suggestions</h3>
+
+                        <ul>
+                            {% for suggestion in ai_summary.suggestions %}
+                            <li>{{ suggestion }}</li>
+                            {% endfor %}
+                        </ul>
+
+                        
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+<!-- Repository Health Modal -->
+
+<div id="healthModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close health-close">&times;</span>
+
+        <h2>Repository Health</h2>
+
+        <div class="modal-body">
+
+            <div class="health-section">
+
+                <h3>❤️ Overall Health Score</h3>
+
+                <p><strong>{{ ai_summary.health_score }}/100</strong></p>
+
+                <hr>
+
+                <h3>📄 Documentation</h3>
+
+                <div class="meta-list">
+
+                    <div class="meta-row">
+                        <dt>README</dt>
+                        <dd>
+                            {% if overview["README"] %}
+                                ✅ Available
+                            {% else %}
+                                ❌ Missing
+                            {% endif %}
+                        </dd>
+                    </div>
+
+                    <div class="meta-row">
+                        <dt>LICENSE</dt>
+                        <dd>
+                            {% if overview["License"] %}
+                                ✅ Available
+                            {% else %}
+                                ❌ Missing
+                            {% endif %}
+                        </dd>
+                    </div>
+
+                    <div class="meta-row">
+                        <dt>.gitignore</dt>
+                        <dd>
+                            {% if overview[".gitignore"] %}
+                                ✅ Available
+                            {% else %}
+                                ❌ Missing
+                            {% endif %}
+                        </dd>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <h3>📊 Code Quality</h3>
+
+                <div class="meta-list">
+
+                    <div class="meta-row">
+                        <dt>Total Functions</dt>
+                        <dd>{{ complexity.functions }}</dd>
+                    </div>
+
+                    <div class="meta-row">
+                        <dt>Average Complexity</dt>
+                        <dd>{{ complexity.complexity }}</dd>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <h3>📦 Dependencies</h3>
+
+                {% if dependencies %}
+
+                    <div class="pill-grid">
+
+                        {% for dep in dependencies %}
+
+                            <span class="pill pill-green">
+                                {{ dep }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p>No dependencies detected.</p>
+
+                {% endif %}
+
+                <hr>
+
+                <h3>🤖 AI Insights</h3>
+
+                <div class="ai-placeholder">
+
+                    <p>
+                        AI-powered repository health analysis will appear here
+                        after Gemini integration.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-
-    {% endfor %}
 
 </div>
- 
-    <div class="dash-head dash-head-inner">
-        <p class="eyebrow">// code complexity</p>
-    </div>
- 
-    <div class="stat-grid stat-grid-2" style="--stat-accent: var(--accent-amber);">
-        <div class="stat-card">
-            <span class="stat-value">{{ complexity.functions }}</span>
-            <span class="stat-label">total functions</span>
+
+<!-- Architecture Modal -->
+
+<div id="architectureModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close architecture-close">&times;</span>
+
+        <h2>Architecture</h2>
+
+        <div class="modal-body">
+
+            <div class="health-section">
+
+                <h3>🏗 Repository Overview</h3>
+
+                <div class="meta-list">
+
+                    <div class="meta-row">
+                        <dt>Repository</dt>
+                        <dd>{{ overview["Repository Name"] }}</dd>
+                    </div>
+
+                    <div class="meta-row">
+                        <dt>Main Language</dt>
+                        <dd>
+                            {% if languages %}
+                                {{ languages.keys()|list|first }}
+                            {% else %}
+                                Unknown
+                            {% endif %}
+                        </dd>
+                    </div>
+
+                    <div class="meta-row">
+                        <dt>Total Files</dt>
+                        <dd>{{ statistics.total_files }}</dd>
+                    </div>
+
+                    <div class="meta-row">
+                        <dt>Total Folders</dt>
+                        <dd>{{ statistics.total_folders }}</dd>
+                    </div>
+
+                    <div class="meta-row">
+                        <dt>Repository Size</dt>
+                        <dd>{{ repo.size }} KB</dd>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <h3>🛠 Detected Technologies</h3>
+
+                {% if tech %}
+
+                    <div class="pill-grid">
+
+                        {% for item in tech %}
+
+                            <span class="pill pill-violet">
+                                {{ item }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p>No technologies detected.</p>
+
+                {% endif %}
+
+                <hr>
+
+                <h3>🤖 AI Insights</h3>
+
+                <div class="ai-placeholder">
+
+                    <p>
+                        AI will analyze the repository architecture,
+                        project structure and module relationships after
+                        Gemini integration.
+                    </p>
+
+                </div>
+
+            </div>
+
         </div>
-        <div class="stat-card">
-            <span class="stat-value">{{ complexity.complexity }}</span>
-            <span class="stat-label">average complexity</span>
-        </div>
+
     </div>
- 
-</main>
- 
-<footer>
-    <p>&copy; 2026 Developer Intelligence Platform</p>
-</footer>
- 
+
+</div>
+<!-- Security Modal -->
+
+<div id="securityModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close security-close">&times;</span>
+
+        <h2>Security Scan</h2>
+
+        <div class="modal-body">
+
+            <div class="health-section">
+
+                <h3>🔒 Security Overview</h3>
+
+                <div class="meta-list">
+
+                    <div class="meta-row">
+                        <dt>Repository</dt>
+                        <dd>{{ overview["Repository Name"] }}</dd>
+                    </div>
+
+                    <div class="meta-row">
+                        <dt>Total Files Scanned</dt>
+                        <dd>{{ statistics.total_files }}</dd>
+                    </div>
+
+                    <div class="meta-row">
+                        <dt>Dependencies</dt>
+                        <dd>{{ dependencies|length }}</dd>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <h3>⚠ Security Status</h3>
+
+                <p>
+                    Detailed security vulnerability analysis will be available
+                    after integrating the security analyzer.
+                </p>
+
+                <hr>
+
+                <h3>🤖 AI Insights</h3>
+
+                <div class="ai-placeholder">
+
+                    <p>
+                        AI will explain detected vulnerabilities, severity,
+                        and recommended fixes after Gemini integration.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- Tech Stack Modal -->
+
+<!-- Tech Stack Modal -->
+
+<div id="techModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close tech-close">&times;</span>
+
+        <h2>Technology Stack</h2>
+
+        <div class="modal-body">
+
+            <div class="health-section">
+
+                <h3>💻 Programming Languages</h3>
+
+                {% if languages %}
+
+                    <div class="pill-grid">
+
+                        {% for language, count in languages.items() %}
+
+                            <span class="pill pill-violet">
+                                {{ language }} ({{ count }})
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p>No programming languages detected.</p>
+
+                {% endif %}
+
+                <hr>
+
+                <h3>🛠 Frameworks & Technologies</h3>
+
+                {% if tech %}
+
+                    <div class="pill-grid">
+
+                        {% for item in tech %}
+
+                            <span class="pill pill-green">
+                                {{ item }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p>No technologies detected.</p>
+
+                {% endif %}
+
+                <hr>
+
+                <h3>📦 Dependencies</h3>
+
+                {% if dependencies %}
+
+                    <div class="pill-grid">
+
+                        {% for dep in dependencies %}
+
+                            <span class="pill pill-amber">
+                                {{ dep }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p>No dependencies detected.</p>
+
+                {% endif %}
+
+                <hr>
+
+                <h3>🤖 AI Insights</h3>
+
+                <div class="ai-placeholder">
+
+                    <p>
+                        AI will explain the technology stack,
+                        frameworks, libraries, and suggest improvements
+                        after Gemini integration.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- AI Chat Modal -->
+
+<div id="chatModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close chat-close">&times;</span>
+
+        <h2>AI Repository Assistant</h2>
+
+        <div class="modal-body">
+
+            <div class="chat-container">
+
+                <div class="chat-box">
+
+                    <div class="bot-message">
+
+                        👋 Hello! I'm your AI Repository Assistant.
+
+                        <br><br>
+
+                        Once Gemini is integrated, you'll be able to ask questions like:
+
+                        <ul>
+
+                            <li>Explain this repository.</li>
+
+                            <li>Describe the project architecture.</li>
+
+                            <li>What technologies are used?</li>
+
+                            <li>Are there any security issues?</li>
+
+                            <li>Suggest improvements.</li>
+
+                            <li>Generate documentation.</li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="chat-input-area">
+
+                    <input
+                        type="text"
+                        placeholder="Ask something about the repository..."
+                        disabled
+                    >
+
+                    <button disabled>
+                        Send
+                    </button>
+
+                </div>
+
+                <hr>
+
+                <h3>🤖 AI Status</h3>
+
+                <p>
+                    Gemini integration is pending. Chat functionality
+                    will become available after AI integration.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+    </footer>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 </body>
+
 </html>

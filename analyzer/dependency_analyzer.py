@@ -59,6 +59,34 @@ def analyze_dependencies(repo_path):
 
             dependencies.append(dependency.text)
 
+    # -------------------------------
+    # Python Import Detection
+    # -------------------------------
+
+    for root, dirs, files in os.walk(repo_path):
+
+        for file in files:
+
+            if file.endswith(".py"):
+
+                path = os.path.join(root, file)
+
+                with open(path, "r", encoding="utf-8", errors="ignore") as python_file:
+
+                    content = python_file.read()
+
+                    if "import tkinter" in content:
+                        dependencies.append("tkinter")
+
+                    if "import matplotlib" in content:
+                        dependencies.append("matplotlib")
+
+                    if "import numpy" in content:
+                        dependencies.append("numpy")
+
+                    if "import pandas" in content:
+                        dependencies.append("pandas")    
+
     # Remove duplicates
 
     dependencies = sorted(set(dependencies))

@@ -635,9 +635,7 @@ footer p {
 .score-mid { background: var(--accent-amber); }
 .score-low { background: var(--accent-red); }
  
-/* ============================================================
-   Responsive
-   ============================================================ */
+/* Responsive*/
 @media (max-width: 900px) {
     .hero {
         grid-template-columns: 1fr;
@@ -672,4 +670,110 @@ footer p {
         gap: 2px;
     }
     .meta-row dd { text-align: left; }
+}
+
+.features-dashboard{
+    margin-top: 60px;
+}
+
+.features-dashboard .card-grid{
+    margin-top: 25px;
+}
+
+footer{
+    margin-top: 70px;
+}
+
+.dash-panel{
+    margin-bottom: 30px;
+}
+
+.stat-grid{
+    margin-bottom: 35px;
+}
+
+/*AI Summary Modal*/
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background: #111827;
+    margin: 5% auto;
+    padding: 25px;
+    width: 70%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 15px;
+}
+
+.modal-content h2{
+
+    margin-bottom: 20px;
+    color: #9b87f5;
+
+}
+
+.modal-body p{
+
+    margin: 15px 0;
+    font-size: 16px;
+    line-height: 1.6;
+
+}
+
+.close{
+
+    position: absolute;
+
+    right: 22px;
+    top: 18px;
+
+    font-size: 30px;
+
+    cursor: pointer;
+
+    color: #ffffff;
+
+}
+
+.close:hover{
+
+    color: #9b87f5;
+
+}
+
+.summary-section{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.summary-section h3{
+    color:#8b5cf6;
+    margin-bottom:8px;
+    font-size:18px;
+}
+
+.summary-section p{
+    color:#d6d6d6;
+    line-height:1.7;
+}
+
+.summary-section ul{
+    padding-left:20px;
+}
+
+.summary-section li{
+    color:#d6d6d6;
+    margin-bottom:8px;
 }

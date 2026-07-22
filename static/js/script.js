@@ -58,3 +58,16 @@
 
     setTimeout(typeNext, 400);
 })();
+
+// Home Page Feature Cards
+
+const featureCards = document.querySelectorAll(".card.feature-card");
+
+featureCards.forEach((card) => {
+    card.addEventListener("click", function () {
+        alert("⚠️ Please analyze a repository first.");
+    });
+});
+
+console.log(featureCards.length);
+console.log("JS Loaded");
