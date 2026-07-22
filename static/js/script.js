@@ -60,14 +60,47 @@
 })();
 
 // Home Page Feature Cards
+document.addEventListener("DOMContentLoaded", () => {
+  const featureCards = document.querySelectorAll(".card.feature-card");
 
-const featureCards = document.querySelectorAll(".card.feature-card");
+  const showWarning = () => {
+    // Replace with a toast/snackbar if you have one — alert() blocks the UI thread
+    showToast("⚠️ Please analyze a repository first.");
+  };
 
-featureCards.forEach((card) => {
-    card.addEventListener("click", function () {
-        alert("⚠️ Please analyze a repository first.");
+  featureCards.forEach((card) => {
+    // Make it accessible: focusable + keyboard-activatable if it's not already a <button>
+    if (!card.hasAttribute("tabindex")) card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+
+    card.addEventListener("click", showWarning);
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        showWarning();
+      }
     });
+  });
+
+  console.log(`${featureCards.length} feature card(s) initialized`);
 });
 
-console.log(featureCards.length);
-console.log("JS Loaded");
+// Minimal toast helper (swap for your UI library's toast if you have one)
+function showToast(message, duration = 2500) {
+  let toast = document.getElementById("app-toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "app-toast";
+    toast.style.cssText = `
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: #1f2937; color: #fff; padding: 10px 16px; border-radius: 8px;
+      font-size: 14px; z-index: 9999; opacity: 0; transition: opacity 0.2s;
+      pointer-events: none;
+    `;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.style.opacity = "1";
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => (toast.style.opacity = "0"), duration);
+}

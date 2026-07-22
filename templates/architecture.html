@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Architecture{% endblock %}
+
+{% block content %}
+<div class="page-header" style="--card-accent: var(--accent-violet);">
+    <div class="card-head">
+        <span class="card-dot"></span>
+        <span class="card-file">architecture.svg</span>
+    </div>
+    <h1 class="title">Architecture</h1>
+</div>
+
+<section class="dash-panel page-panel" style="--panel-accent: var(--accent-violet);">
+    <h3>🏗 Repository Overview</h3>
+    <div class="meta-list">
+        <div class="meta-row">
+            <dt>Repository</dt>
+            <dd>{{ overview["Repository Name"] }}</dd>
+        </div>
+        <div class="meta-row">
+            <dt>Main Language</dt>
+            <dd>{% if languages %}{{ languages.keys()|list|first }}{% else %}Unknown{% endif %}</dd>
+        </div>
+        <div class="meta-row">
+            <dt>Total Files</dt>
+            <dd>{{ statistics.total_files }}</dd>
+        </div>
+        <div class="meta-row">
+            <dt>Total Folders</dt>
+            <dd>{{ statistics.total_folders }}</dd>
+        </div>
+        <div class="meta-row">
+            <dt>Repository Size</dt>
+            <dd>{{ repo.size }} KB</dd>
+        </div>
+    </div>
+    <hr>
+
+    <h3>🛠 Detected Technologies</h3>
+    {% if tech %}
+    <div class="pill-grid">
+        {% for item in tech %}
+        <span class="pill pill-violet">{{ item }}</span>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No technologies detected.</p>
+    {% endif %}
+    <hr>
+
+    <h3>🤖 AI Insights</h3>
+    <div class="ai-placeholder">
+        <p>AI will analyze the repository architecture, project structure and module relationships after Gemini integration.</p>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}AI Repository Assistant{% endblock %}
+
+{% block content %}
+<div class="page-header" style="--card-accent: var(--accent-violet);">
+    <div class="card-head">
+        <span class="card-dot"></span>
+        <span class="card-file">chat.session</span>
+    </div>
+    <h1 class="title">AI Repository Assistant</h1>
+</div>
+
+<section class="dash-panel page-panel" style="--panel-accent: var(--accent-violet);">
+    <div class="chat-container">
+        <div class="chat-box">
+            <div class="bot-message">
+                👋 Hello! I'm your AI Repository Assistant.
+                <br><br>
+                Once Gemini is integrated, you'll be able to ask questions like:
+                <ul>
+                    <li>Explain this repository.</li>
+                    <li>Describe the project architecture.</li>
+                    <li>What technologies are used?</li>
+                    <li>Are there any security issues?</li>
+                    <li>Suggest improvements.</li>
+                    <li>Generate documentation.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" placeholder="Ask something about the repository..." disabled>
+            <button disabled>Send</button>
+        </div>
+        <hr>
+        <h3>🤖 AI Status</h3>
+        <p>Gemini integration is pending. Chat functionality will become available after AI integration.</p>
+    </div>
+</section>
+{% endblock %}

@@ -1,71 +1,23 @@
-// Reusable function for opening and closing modals
+// Developer Intelligence Platform — shared front-end behavior.
+// Feature cards are now plain links to their own pages (see summary.html,
+// health.html, architecture.html, security.html, tech.html, chat.html),
+// so no modal wiring is needed here anymore.
 
-function setupModal(cardId, modalId, closeClass) {
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Developer Intelligence Platform — page ready");
+});
 
-    const card = document.getElementById(cardId);
-    const modal = document.getElementById(modalId);
-    const closeBtn = document.querySelector(closeClass);
-
-    if (!card || !modal || !closeBtn) return;
-
-    // Open Modal
-    card.addEventListener("click", () => {
-        modal.style.display = "flex";
-    });
-
-    // Close using X
-    closeBtn.addEventListener("click", () => {
-        modal.style.display = "none";
-    });
-
-    // Close when clicking outside
-    window.addEventListener("click", (event) => {
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
-    });
-
+// Lightweight toast helper, kept in case any page needs a transient notice
+// (e.g. "copied to clipboard"). Not used by the current pages.
+function showToast(message, duration = 2500) {
+  let toast = document.getElementById("app-toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "app-toast";
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.classList.add("is-visible");
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => toast.classList.remove("is-visible"), duration);
 }
-
-
-// AI Summary
-setupModal(
-    "ai-summary-card",
-    "summaryModal",
-    ".close"
-);
-
-// Repository Health
-setupModal(
-    "health-card",
-    "healthModal",
-    ".health-close"
-);
-
-// Architecture
-setupModal(
-    "architecture-card",
-    "architectureModal",
-    ".architecture-close"
-);
-
-// Security
-setupModal(
-    "security-card",
-    "securityModal",
-    ".security-close"
-);
-
-// Tech Stack
-setupModal(
-    "tech-card",
-    "techModal",
-    ".tech-close"
-);
-
-// AI Chat
-setupModal(
-    "chat-card",
-    "chatModal",
-    ".chat-close"
-);

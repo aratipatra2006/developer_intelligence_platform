@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Technology Stack{% endblock %}
+
+{% block content %}
+<div class="page-header" style="--card-accent: var(--accent-green);">
+    <div class="card-head">
+        <span class="card-dot"></span>
+        <span class="card-file">stack.json</span>
+    </div>
+    <h1 class="title">Technology Stack</h1>
+</div>
+
+<section class="dash-panel page-panel" style="--panel-accent: var(--accent-green);">
+    <h3>💻 Programming Languages</h3>
+    {% if languages %}
+    <div class="pill-grid">
+        {% for language, count in languages.items() %}
+        <span class="pill pill-violet">{{ language }} ({{ count }})</span>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No programming languages detected.</p>
+    {% endif %}
+    <hr>
+
+    <h3>🛠 Frameworks & Technologies</h3>
+    {% if tech %}
+    <div class="pill-grid">
+        {% for item in tech %}
+        <span class="pill pill-green">{{ item }}</span>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No technologies detected.</p>
+    {% endif %}
+    <hr>
+
+    <h3>📦 Dependencies</h3>
+    {% if dependencies %}
+    <div class="pill-grid">
+        {% for dep in dependencies %}
+        <span class="pill pill-amber">{{ dep }}</span>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No dependencies detected.</p>
+    {% endif %}
+    <hr>
+
+    <h3>🤖 AI Insights</h3>
+    <div class="ai-placeholder">
+        <p>AI will explain the technology stack, frameworks, libraries, and suggest improvements after Gemini integration.</p>
+    </div>
+</section>
+{% endblock %}

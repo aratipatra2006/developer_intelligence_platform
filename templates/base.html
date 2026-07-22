@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard{% endblock %} &mdash; Developer Intelligence Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}">
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="dashboard">
+    <header>
+        <nav>
+            <a href="/" class="logo">
+                <span class="logo-mark">&lt;/&gt;</span>
+                <span class="logo-text">Developer Intelligence Platform</span>
+            </a>
+            <ul>
+                {% block nav_links %}
+                <li><a href="{{ url_for('dashboard') }}">&larr; dashboard</a></li>
+                {% endblock %}
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dash-main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Developer Intelligence Platform</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+
+</html>

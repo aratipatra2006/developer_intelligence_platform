@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Repository Health{% endblock %}
+
+{% block content %}
+<div class="page-header" style="--card-accent: var(--accent-green);">
+    <div class="card-head">
+        <span class="card-dot"></span>
+        <span class="card-file">health.report</span>
+    </div>
+    <h1 class="title">Repository Health</h1>
+</div>
+
+<section class="dash-panel page-panel" style="--panel-accent: var(--accent-green);">
+    <h3>❤️ Overall Health Score</h3>
+    <p><strong>{{ ai_summary.health_score }}/100</strong></p>
+    <hr>
+
+    <h3>📄 Documentation</h3>
+    <div class="meta-list">
+        <div class="meta-row">
+            <dt>README</dt>
+            <dd>{% if overview["README"] %}✅ Available{% else %}❌ Missing{% endif %}</dd>
+        </div>
+        <div class="meta-row">
+            <dt>LICENSE</dt>
+            <dd>{% if overview["License"] %}✅ Available{% else %}❌ Missing{% endif %}</dd>
+        </div>
+        <div class="meta-row">
+            <dt>.gitignore</dt>
+            <dd>{% if overview[".gitignore"] %}✅ Available{% else %}❌ Missing{% endif %}</dd>
+        </div>
+    </div>
+    <hr>
+
+    <h3>📊 Code Quality</h3>
+    <div class="meta-list">
+        <div class="meta-row">
+            <dt>Total Functions</dt>
+            <dd>{{ complexity.functions }}</dd>
+        </div>
+        <div class="meta-row">
+            <dt>Average Complexity</dt>
+            <dd>{{ complexity.complexity }}</dd>
+        </div>
+    </div>
+    <hr>
+
+    <h3>📦 Dependencies</h3>
+    {% if dependencies %}
+    <div class="pill-grid">
+        {% for dep in dependencies %}
+        <span class="pill pill-green">{{ dep }}</span>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No dependencies detected.</p>
+    {% endif %}
+    <hr>
+
+    <h3>🤖 AI Insights</h3>
+    <div class="ai-placeholder">
+        <p>AI-powered repository health analysis will appear here after Gemini integration.</p>
+    </div>
+</section>
+{% endblock %}
