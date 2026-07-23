@@ -31,17 +31,31 @@ def analyze_dependencies(repo_path):
     # JavaScript (package.json)
     # -------------------------------
 
-    package = os.path.join(repo_path, "package.json")
+    # -------------------------------
+# JavaScript (package.json)
+# -------------------------------
 
-    if os.path.exists(package):
+    for root, dirs, files in os.walk(repo_path):
 
-        with open(package, "r", encoding="utf-8") as file:
+     if "package.json" in files:
 
-            data = json.load(file)
+        package = os.path.join(root, "package.json")
 
-            if "dependencies" in data:
+        try:
+            with open(package, "r", encoding="utf-8") as file:
 
-                dependencies.extend(data["dependencies"].keys())
+                data = json.load(file)
+
+                # Regular dependencies
+                if "dependencies" in data:
+                    dependencies.extend(data["dependencies"].keys())
+
+                # Development dependencies
+                if "devDependencies" in data:
+                    dependencies.extend(data["devDependencies"].keys())
+
+        except Exception as e:
+            print(f"Error reading {package}: {e}")
 
     # -------------------------------
     # Java (pom.xml)

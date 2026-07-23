@@ -205,13 +205,37 @@ Detected Technologies
 
     <div class="info-card">
         <h3>Total Functions</h3>
-        <h2>{{ complexity.functions }}</h2>
+
+        {% if complexity.supported %}
+            <h2>{{ complexity.functions }}</h2>
+        {% else %}
+            <h2>—</h2>
+            <p>Not Supported</p>
+        {% endif %}
+
     </div>
 
     <div class="info-card">
         <h3>Average Complexity</h3>
-        <h2>{{ complexity.complexity }}</h2>
+
+        {% if complexity.supported %}
+            <h2>{{ complexity.complexity }}</h2>
+        {% else %}
+            <h2>—</h2>
+            <p>Not Supported</p>
+        {% endif %}
+
     </div>
+
+</div>
+
+<div class="info-card">
+
+    <h3>Detected Language</h3>
+
+    <h2>{{ complexity.language }}</h2>
+
+</div>
 
 </div>
 </body>
