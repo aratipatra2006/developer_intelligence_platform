@@ -22,17 +22,19 @@ def clone_repository(repo_url):
         repo = parts[-1]
 
         # Unique folder name
-        folder_name = f"{owner}_{repo}_{uuid.uuid4().hex[:8]}"
+        folder_name = f"{owner}_{repo}".lower()
 
         repo_path = os.path.join(CLONE_PATH, folder_name)
 
+        if os.path.exists(repo_path):
+            print("Repository already exists.")
+            return True, repo_path
+
         Repo.clone_from(
-            repo_url + ".git",
+            repo_url,
             repo_path,
             depth=1
         )
-
         return True, repo_path
-
     except Exception as e:
         return False, str(e)

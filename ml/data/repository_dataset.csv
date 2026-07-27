@@ -1,0 +1,12 @@
+repository,total_files,total_folders,lines,python,html,css,javascript,java,cpp,dependency_count,readme_score,functions,complexity,language_count,tech_stack_count,has_readme,has_license,has_gitignore,stars,forks,watchers,open_issues,language,size,created_days,updated_days
+pallets/flask,236,51,39547,83,20,2,0,0,0,0,30,925,2.94,11,2,True,False,True,72013,16917,72013,10,Python,12008,5953,0
+django/django,7077,3273,1156940,2927,373,48,111,0,0,6,30,38927,2.02,13,5,True,True,True,88202,33969,88202,449,Python,281647,5201,0
+fastapi/fastapi,3130,431,470705,1130,4,3,4,0,0,0,70,5184,2.32,8,3,True,True,True,100851,9683,100851,86,Python,53113,2785,0
+numpy/numpy,2332,202,962778,495,1,1,0,0,29,3,70,13205,2.45,15,3,True,True,True,32424,12593,32424,2320,Python,180880,5793,0
+pandas-dev/pandas,2640,273,1071681,1510,116,4,0,0,5,3,100,32646,2.65,14,3,True,True,True,49313,20170,49313,2881,Python,402734,5814,0
+scikit-learn/scikit-learn,1804,236,596363,1016,3,8,7,0,5,3,80,11900,3.28,14,4,True,True,True,66781,27208,66781,2117,Python,186866,5820,0
+keras-team/keras,1022,210,329168,975,0,0,2,0,0,14,60,15002,2.4,8,4,True,True,True,64178,19743,64178,214,Python,54271,4137,0
+psf/requests,130,23,41741,37,1,1,0,0,0,0,20,716,2.84,9,1,True,True,True,54163,10033,54163,233,Python,13567,5640,0
+encode/httpx,125,16,49565,60,1,1,0,0,0,16,100,1145,3.07,8,1,True,False,True,15370,1215,15370,144,Python,8594,2668,0
+fastapi/full-stack-fastapi-template,237,50,22781,47,1,1,0,0,0,47,50,575,2.05,12,3,True,True,True,44422,8830,44422,18,TypeScript,6298,2708,0
+sqlalchemy/sqlalchemy,703,82,632476,668,0,0,0,0,0,0,60,30797,2.08,7,1,True,True,True,12021,1721,12021,203,Python,101845,2797,0

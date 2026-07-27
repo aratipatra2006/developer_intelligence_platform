@@ -1,16 +1,56 @@
+# -----------------------------
 # Python
+# -----------------------------
 __pycache__/
 *.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
 
+# -----------------------------
 # Virtual Environment
+# -----------------------------
 .venv/
+venv/
+env/
 
-# Cloned repositories
+# -----------------------------
+# Environment Variables
+# -----------------------------
+.env
+
+# -----------------------------
+# Cloned Repositories
+# -----------------------------
 repositories/
 
+# -----------------------------
+# Generated Datasets
+# -----------------------------
+dataset/repository_dataset.csv
+dataset/repositories_metadata.csv
+dataset/repositories_filtered.csv
+
+# (Keep repositories.txt because it contains the repository URLs)
+# dataset/repositories.txt
+
+# -----------------------------
+# Logs
+# -----------------------------
+*.log
+
+# -----------------------------
+# Jupyter Notebook
+# -----------------------------
+.ipynb_checkpoints/
+
+# -----------------------------
 # VS Code
+# -----------------------------
 .vscode/
 
-# OS files
+# -----------------------------
+# OS Files
+# -----------------------------
 .DS_Store
 Thumbs.db
