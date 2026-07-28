@@ -1,0 +1,320 @@
+/* ===============================
+   ABOUT PAGE STYLING
+   Developer Intelligence Platform
+================================ */
+
+/* Global */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #0b1120;
+    color: #e5e7eb;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Header */
+
+header {
+    width: 100%;
+    padding: 25px 8%;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    color: #38bdf8;
+}
+
+.logo-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+nav ul {
+    display: flex;
+    gap: 35px;
+    list-style: none;
+}
+
+nav ul li a {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    color: #38bdf8;
+}
+
+/* Main */
+
+main {
+    padding: 50px 8%;
+}
+
+/* Hero Section */
+
+.about-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+    min-height: 500px;
+}
+
+.about-content {
+    flex: 1;
+}
+
+.about-content h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 55px;
+    line-height: 1.1;
+    margin-bottom: 25px;
+}
+
+.about-content h1 span {
+    color: #38bdf8;
+}
+
+.about-content p {
+    color: #94a3b8;
+    font-size: 17px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+/* Image Placeholder */
+
+.about-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.image-placeholder {
+    width: 380px;
+    height: 280px;
+    border-radius: 20px;
+    background: #111827;
+    border: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* Common Sections */
+
+section {
+    margin-top: 100px;
+}
+
+section h2 {
+    text-align: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 38px;
+    margin-bottom: 35px;
+}
+
+/* Introduction */
+
+.intro {
+    text-align: center;
+}
+
+.intro p {
+    max-width: 850px;
+    margin: 20px auto 0;
+    color: #94a3b8;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+/* Features */
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.feature-card {
+    background: #111827;
+    padding: 28px;
+    border-radius: 16px;
+    border: 1px solid #1e293b;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    border-color: #38bdf8;
+    box-shadow: 0 10px 25px rgba(56, 189, 248, 0.15);
+}
+
+.feature-card h3 {
+    color: #38bdf8;
+    margin-bottom: 12px;
+    font-size: 20px;
+}
+
+.feature-card p {
+    color: #94a3b8;
+    line-height: 1.7;
+}
+
+/* Mission */
+
+.mission p {
+    max-width: 850px;
+    margin: auto;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+/* Workflow */
+
+.workflow-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.step {
+    background: #111827;
+    padding: 30px;
+    border-radius: 18px;
+    border: 1px solid #1e293b;
+    transition: 0.3s;
+}
+
+.step:hover {
+    transform: translateY(-8px);
+    border-color: #38bdf8;
+}
+
+.step h3 {
+    color: #38bdf8;
+    font-size: 30px;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.step h4 {
+    margin: 15px 0;
+    font-size: 20px;
+}
+
+.step p {
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+/* Technology */
+
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.tech-card {
+    background: #111827;
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #1e293b;
+    text-align: center;
+}
+
+.tech-card h3 {
+    color: #38bdf8;
+    margin-bottom: 12px;
+}
+
+.tech-card p {
+    color: #94a3b8;
+}
+
+/* Footer */
+
+footer {
+    margin-top: 80px;
+    padding: 25px;
+    text-align: center;
+    border-top: 1px solid #1e293b;
+    color: #64748b;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+
+    .about-hero {
+        flex-direction: column;
+    }
+
+    .feature-grid,
+    .workflow-container,
+    .tech-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-content h1 {
+        font-size: 40px;
+    }
+}
+
+nav ul li a.active {
+    color: #38bdf8;
+    font-weight: 600;
+}
+
+.image-placeholder {
+    flex-direction: column;
+    gap: 15px;
+}
+
+.image-placeholder h2 {
+    font-size: 70px;
+    color: #38bdf8;
+}
+
+.image-placeholder p {
+    color: #94a3b8;
+    font-size: 18px;
+}
+
+.feature-card,
+.tech-card,
+.step {
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.feature-card:hover,
+.tech-card:hover,
+.step:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(56, 189, 248, 0.15);
+}
