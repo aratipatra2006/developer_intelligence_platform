@@ -2,7 +2,7 @@ import os
 import uuid
 from git import Repo
 
-CLONE_PATH = "repositories"
+CLONE_PATH = os.path.abspath("repositories")
 
 
 def clone_repository(repo_url):

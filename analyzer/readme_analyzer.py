@@ -1,5 +1,6 @@
 import os
 
+
 def analyze_readme(repo_path):
 
     result = {
@@ -14,36 +15,45 @@ def analyze_readme(repo_path):
 
     readme_path = None
 
+    # Search for README files only
     for file in os.listdir(repo_path):
 
-        if file.lower().startswith("readme"):
-            readme_path = os.path.join(repo_path, file)
+        full_path = os.path.join(repo_path, file)
+
+        if (
+            file.lower().startswith("readme")
+            and os.path.isfile(full_path)
+        ):
+            readme_path = full_path
             break
 
-    if not readme_path:
+    if readme_path is None:
         return result
 
     result["exists"] = True
 
-    with open(readme_path, "r", encoding="utf-8", errors="ignore") as f:
+    try:
 
-        text = f.read()
+        with open(
+            readme_path,
+            "r",
+            encoding="utf-8",
+            errors="ignore"
+        ) as f:
+
+            text = f.read()
+
+    except Exception:
+        return result
 
     result["word_count"] = len(text.split())
 
     lower = text.lower()
 
-    if "installation" in lower:
-        result["installation"] = True
-
-    if "usage" in lower:
-        result["usage"] = True
-
-    if "license" in lower:
-        result["license"] = True
-
-    if "contributing" in lower:
-        result["contributing"] = True
+    result["installation"] = "installation" in lower
+    result["usage"] = "usage" in lower
+    result["license"] = "license" in lower
+    result["contributing"] = "contributing" in lower
 
     score = 0
 

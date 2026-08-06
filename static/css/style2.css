@@ -1,8 +1,8 @@
-/* ==========================================================================
+/*
    Developer Intelligence Platform — Dashboard
    Design concept: the report reads like a repository opened in an editor.
    Every panel is a "file tab" (colored status dot + monospace filename).
-   ========================================================================== */
+   */
 
 :root {
   /* --- palette --- */
@@ -67,9 +67,7 @@ a { color: inherit; text-decoration: none; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
-/* ---------------------------------------------------------------------- */
 /* Header                                                                  */
-/* ---------------------------------------------------------------------- */
 
 header {
   position: sticky;
@@ -128,9 +126,7 @@ nav ul a:hover {
   border-color: var(--accent-violet);
 }
 
-/* ---------------------------------------------------------------------- */
 /* Layout shell                                                            */
-/* ---------------------------------------------------------------------- */
 
 .dash-main {
   max-width: 1180px;
@@ -161,9 +157,7 @@ nav ul a:hover {
   letter-spacing: -0.01em;
 }
 
-/* ---------------------------------------------------------------------- */
 /* Stat grid                                                               */
-/* ---------------------------------------------------------------------- */
 
 .stat-grid {
   display: grid;
@@ -211,9 +205,7 @@ nav ul a:hover {
   text-transform: lowercase;
 }
 
-/* ---------------------------------------------------------------------- */
 /* Panels — the "file tab" motif                                          */
-/* ---------------------------------------------------------------------- */
 
 .dash-grid {
   display: grid;
@@ -384,9 +376,7 @@ nav ul a:hover {
 .score-mid { background: var(--accent-amber); }
 .score-low { background: var(--accent-red); }
 
-/* ---------------------------------------------------------------------- */
 /* Intelligence center — feature cards                                     */
-/* ---------------------------------------------------------------------- */
 
 .features-dashboard { margin-top: 56px; }
 
@@ -452,9 +442,7 @@ nav ul a:hover {
   margin: 0;
 }
 
-/* ---------------------------------------------------------------------- */
 /* Standalone feature pages (Summary, Health, Architecture, Security, ...) */
-/* ---------------------------------------------------------------------- */
 
 .page-header {
   margin-bottom: 28px;
@@ -491,9 +479,7 @@ nav ul a:hover {
   margin: 22px 0;
 }
 
-/* ---------------------------------------------------------------------- */
 /* AI Summary page — score gauge, charts, insight cards                    */
-/* ---------------------------------------------------------------------- */
 
 .summary-top-grid {
   display: grid;
@@ -691,9 +677,7 @@ nav ul a:hover {
   color: var(--text-muted);
 }
 
-/* ---------------------------------------------------------------------- */
 /* Toast (used by dashboard.js for lightweight notices)                    */
-/* ---------------------------------------------------------------------- */
 
 #app-toast {
   position: fixed;
@@ -715,9 +699,7 @@ nav ul a:hover {
 
 #app-toast.is-visible { opacity: 1; transform: translateX(-50%) translateY(-4px); }
 
-/* ---------------------------------------------------------------------- */
 /* Footer                                                                  */
-/* ---------------------------------------------------------------------- */
 
 footer {
   border-top: 1px solid var(--line);
@@ -732,9 +714,7 @@ footer > p {
   margin: 0;
 }
 
-/* ---------------------------------------------------------------------- */
 /* Responsive                                                             */
-/* ---------------------------------------------------------------------- */
 
 @media (max-width: 860px) {
   .dash-grid { grid-template-columns: 1fr; }

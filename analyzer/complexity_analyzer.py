@@ -40,9 +40,7 @@ def analyze_complexity(repo_path):
 
             filepath = os.path.join(root, file)
 
-            # -----------------------
             # Python
-            # -----------------------
             if file.endswith(".py"):
 
                 detected_languages.add("Python")
@@ -60,9 +58,7 @@ def analyze_complexity(repo_path):
                 except Exception:
                     pass
 
-            # -----------------------
             # Java
-            # -----------------------
             elif file.endswith(".java"):
 
                 detected_languages.add("Java")
@@ -93,9 +89,7 @@ def analyze_complexity(repo_path):
                 except Exception:
                     pass
 
-            # -----------------------
             # JavaScript / React / TypeScript
-            # -----------------------
             elif file.endswith((".js", ".jsx", ".ts", ".tsx")):
 
                 detected_languages.add("JavaScript")
@@ -126,9 +120,7 @@ def analyze_complexity(repo_path):
                 except Exception:
                     pass
 
-            # -----------------------
             # Other Languages
-            # -----------------------
             elif file.endswith(".cpp"):
                 detected_languages.add("C++")
 
@@ -149,10 +141,7 @@ def analyze_complexity(repo_path):
 
             elif file.endswith(".swift"):
                 detected_languages.add("Swift")
-
-    # -----------------------
-    # Final Result
-    # -----------------------
+    # Final Resu
 
     if total_functions > 0:
 
