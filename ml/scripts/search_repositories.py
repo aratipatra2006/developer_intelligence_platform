@@ -3,9 +3,7 @@ import time
 import requests
 from dotenv import load_dotenv
 
-# ----------------------------
 # Load GitHub Token
-# ----------------------------
 load_dotenv()
 
 TOKEN = os.getenv("GITHUB_TOKEN")
@@ -15,9 +13,7 @@ headers = {
     "Accept": "application/vnd.github+json"
 }
 
-# ----------------------------
 # Languages
-# ----------------------------
 languages = [
     "Python",
     "Java",
@@ -36,9 +32,7 @@ languages = [
     "C#"
 ]
 
-# ----------------------------
 # Star Ranges
-# ----------------------------
 star_ranges = [
     "10..50",
     "51..100",
@@ -50,9 +44,7 @@ star_ranges = [
 
 repositories = set()
 
-# ----------------------------
 # Search Repositories
-# ----------------------------
 for language in languages:
 
     print(f"\n========== {language} ==========")
@@ -99,9 +91,7 @@ for language in languages:
 
             time.sleep(1)
 
-# ----------------------------
 # Save Dataset
-# ----------------------------
 output_dir = "ml/dataset"
 os.makedirs(output_dir, exist_ok=True)
 

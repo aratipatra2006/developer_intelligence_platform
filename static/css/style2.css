@@ -732,3 +732,21 @@ footer > p {
   nav { padding: 14px 18px; }
   .logo-text { display: none; }
 }
+.health-score-card {
+    text-align: center;
+    padding: 30px;
+    margin-bottom: 25px;
+    border-radius: 15px;
+    background: #f5f5f5;
+}
+
+.health-score {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.health-score span {
+    font-size: 20px;
+    font-weight: normal;
+}

@@ -11,7 +11,8 @@ from analyzer.readme_analyzer import analyze_readme
 from analyzer.dependency_analyzer import analyze_dependencies
 from analyzer.complexity_analyzer import analyze_complexity
 from ai.summary_generator import generate_ai_summary
-
+from ml.scripts.github_api import get_github_data
+from ml.predict import predict_health_score
 import time
 
 app = Flask(__name__)
@@ -41,12 +42,24 @@ def analyze():
     global LAST_CONTEXT
 
     start_time = time.time()
+
     repo_url = request.form["repo_url"]
+
     if not validate_github_url(repo_url):
         return render_template(
-            "index.html",
-            error="Please enter a valid GitHub repository URL."
-        )
+        "index.html",
+        error="Please enter a valid GitHub repository URL."
+    )
+
+    github_data = get_github_data(repo_url)
+
+    if github_data is None:
+        return render_template(
+        "index.html",
+        error="Unable to retrieve repository information from GitHub."
+    )
+
+    print("✓ GitHub API")
 
     success, result = clone_repository(repo_url)
     if not success:
@@ -77,21 +90,69 @@ def analyze():
         dependencies
     )
     print(ai_summary)
+    # ============================================================
+    # ML HEALTH SCORE
+    # ============================================================
 
+    ml_features = {
+    "total_files": statistics["total_files"],
+    "total_folders": statistics["total_folders"],
+    "lines": statistics["lines"],
+
+    "python": statistics["python"],
+    "html": statistics["html"],
+    "css": statistics["css"],
+    "javascript": statistics["javascript"],
+    "java": statistics["java"],
+    "cpp": statistics["cpp"],
+
+    "dependency_count": len(dependencies),
+
+    "readme_score": readme["score"],
+
+    "functions": complexity["functions"],
+    "complexity": complexity["complexity"],
+
+    "language_count": len(languages),
+    "tech_stack_count": len(tech),
+
+    "has_readme": int(overview["README"]),
+    "has_license": int(overview["License"]),
+    "has_gitignore": int(overview[".gitignore"]),
+
+    "stars": github_data["stars"],
+    "forks": github_data["forks"],
+    "watchers": github_data["watchers"],
+    "open_issues": github_data["open_issues"],
+
+    "language": github_data["language"],
+
+    "size": github_data["size"],
+
+    "created_days": github_data["created_days"],
+    "updated_days": github_data["updated_days"]
+    }
+
+    health_score = predict_health_score(
+    ml_features
+    )
+    print(f"✓ ML Health Score: {health_score:.2f}")
     end_time = time.time()
     print(f"Analysis completed in {end_time - start_time:.2f} seconds")
 
     LAST_CONTEXT = dict(
-        repo=repo_info,
-        overview=overview,
-        languages=languages,
-        tech=tech,
-        readme=readme,
-        dependencies=dependencies,
-        statistics=statistics,
-        complexity=complexity,
-        ai_summary=ai_summary,
-        repo_path=repo_path,
+    repo=repo_info,
+    overview=overview,
+    languages=languages,
+    tech=tech,
+    readme=readme,
+    dependencies=dependencies,
+    statistics=statistics,
+    complexity=complexity,
+    ai_summary=ai_summary,
+    health_score=health_score,
+    ml_features=ml_features,
+    repo_path=repo_path,
     )
 
     # Redirect (not render) so a page refresh doesn't resubmit the form,
