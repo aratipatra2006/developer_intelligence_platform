@@ -750,3 +750,6 @@ footer > p {
     font-size: 20px;
     font-weight: normal;
 }
+.score-bar-fill {
+    width: var(--score-width);
+}

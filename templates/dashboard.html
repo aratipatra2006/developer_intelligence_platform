@@ -1,235 +1,380 @@
 {% extends "base.html" %}
+
 {% block title %}{{ overview["Repository Name"] }}{% endblock %}
 
 {% block content %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<div class="dash-head">
-    <p class="eyebrow">// scan report</p>
-    <h1 class="title">{{ overview["Repository Name"] }}</h1>
-</div>
+<!--REPOSITORY OVERVIEW -->
 
-<div class="stat-grid" style="--stat-accent: var(--accent-violet);">
-    <div class="stat-card">
-        <span class="stat-value">{{ repo.files }}</span>
-        <span class="stat-label">total files</span>
-    </div>
-    <div class="stat-card">
-        <span class="stat-value">{{ repo.folders }}</span>
-        <span class="stat-label">total folders</span>
-    </div>
-    <div class="stat-card">
-        <span class="stat-value">{{ repo.size }} <small>kb</small></span>
-        <span class="stat-label">repository size</span>
-    </div>
-</div>
-
-<div class="dash-grid">
-
-    <section class="dash-panel" style="--panel-accent: var(--accent-violet);">
-        <p class="eyebrow">// overview</p>
-        <dl class="meta-list">
-            <div class="meta-row">
-                <dt>repository name</dt>
-                <dd>{{ overview["Repository Name"] }}</dd>
-            </div>
-            <div class="meta-row">
-                <dt>readme</dt>
-                <dd>{{ overview["README"] }}</dd>
-            </div>
-            <div class="meta-row">
-                <dt>license</dt>
-                <dd>{{ overview["License"] }}</dd>
-            </div>
-            <div class="meta-row">
-                <dt>.gitignore</dt>
-                <dd>{{ overview[".gitignore"] }}</dd>
-            </div>
-        </dl>
-    </section>
-
-    <section class="dash-panel" style="--panel-accent: var(--accent-green);">
-        <p class="eyebrow">// programming languages</p>
-        <div class="lang-list">
-            {% for language, count in languages.items() %}
-            <div class="lang-row">
-                <span class="lang-name">{{ language }}</span>
-                <span class="lang-count">{{ count }} files</span>
-            </div>
-            {% endfor %}
-        </div>
-    </section>
-
-</div>
 
 <section class="dash-panel" style="--panel-accent: var(--accent-violet);">
-    <p class="eyebrow">// detected technologies</p>
-    <div class="pill-grid">
-        {% for item in tech %}
-        <span class="pill pill-violet">{{ item }}</span>
-        {% endfor %}
-    </div>
+
+    <p class="eyebrow">// overview</p>
+
+    <dl class="meta-list">
+
+        <div class="meta-row">
+            <dt>repository name</dt>
+            <dd>{{ overview["Repository Name"] }}</dd>
+        </div>
+
+        <div class="meta-row">
+            <dt>readme</dt>
+            <dd>
+                {% if overview["README"] %}
+                    True
+                {% else %}
+                    False
+                {% endif %}
+            </dd>
+        </div>
+
+        <div class="meta-row">
+            <dt>license</dt>
+            <dd>
+                {% if overview["License"] %}
+                    True
+                {% else %}
+                    False
+                {% endif %}
+            </dd>
+        </div>
+
+        <div class="meta-row">
+            <dt>.gitignore</dt>
+            <dd>
+                {% if overview[".gitignore"] %}
+                    True
+                {% else %}
+                    False
+                {% endif %}
+            </dd>
+        </div>
+
+    </dl>
+
 </section>
+
+<!--PROGRAMMING LANGUAGEW -->
+
 
 <section class="dash-panel" style="--panel-accent: var(--accent-green);">
-    <p class="eyebrow">// dependencies</p>
-    {% if dependencies %}
-    <div class="pill-grid">
-        {% for dep in dependencies %}
-        <span class="pill pill-green">{{ dep }}</span>
+
+    <p class="eyebrow">// programming languages</p>
+
+    <div class="lang-list">
+
+        {% for language, count in languages.items() %}
+
+        <div class="lang-row">
+
+            <span class="lang-name">
+                {{ language }}
+            </span>
+
+            <span class="lang-count">
+                {{ count }} files
+            </span>
+
+        </div>
+
         {% endfor %}
+
     </div>
-    {% else %}
-    <p class="empty-note">no dependencies found.</p>
-    {% endif %}
+
 </section>
+
+
+
+ <!--SCOREW -->    
+
 
 <section class="dash-panel" style="--panel-accent: var(--accent-amber);">
-    <p class="eyebrow">// readme analysis</p>
-    <div class="readme-layout">
-        <dl class="meta-list">
-            <div class="meta-row">
-                <dt>readme found</dt>
-                <dd>{{ readme.exists }}</dd>
-            </div>
-            <div class="meta-row">
-                <dt>words</dt>
-                <dd>{{ readme.word_count }}</dd>
-            </div>
-            <div class="meta-row">
-                <dt>installation</dt>
-                <dd>{{ readme.installation }}</dd>
-            </div>
-            <div class="meta-row">
-                <dt>usage</dt>
-                <dd>{{ readme.usage }}</dd>
-            </div>
-            <div class="meta-row">
-                <dt>license</dt>
-                <dd>{{ readme.license }}</dd>
-            </div>
-            <div class="meta-row">
-                <dt>contributing</dt>
-                <dd>{{ readme.contributing }}</dd>
-            </div>
-        </dl>
 
-        <div class="score-card">
-            {% set score = (readme.score or 0) | int %}
-            <span class="score-label">documentation score</span>
-            <span class="score-value">{{ score }}<small>/100</small></span>
-            <div class="score-bar">
-             <div class="score-bar-fill
-              {% if score >= 80 %}score-good{% elif score >= 50 %}
-               style="width: {{ score }}%;"></div>
+    <p class="eyebrow">// repository scores</p>
+
+
+    <!--DOCUMENTATION SCOREEW -->
+
+    <div class="score-card">
+
+        {% set documentation_score = (readme.score or 0) | float %}
+
+        <span class="score-label">
+            📚 Documentation Score
+        </span>
+
+        <span class="score-value">
+            {{ "%.0f"|format(documentation_score) }}
+            <small>/100</small>
+        </span>
+        {% set documentation_score = (readme.score or 0) | float %}
+        {% set health_width = health_score | float %}
+        <div class="score-bar">
+
+            <div
+                class="score-bar-fill
+                {% if documentation_score >= 80 %}
+                    score-good
+                {% elif documentation_score >= 50 %}
+                    score-medium
+                {% else %}
+                    score-low
+                {% endif %}"
+                 style="--score-width: {{ documentation_score }}%;">
             </div>
+
         </div>
+
+        <small>
+            README and documentation quality
+        </small>
+
     </div>
+
+
+    <!--         ML HEALTH SCOREEW -->
+
+    <div class="score-card">
+
+        <span class="score-label">
+            🤖 ML-Predicted Repository Health
+        </span>
+
+        <span class="score-value">
+            {{ "%.2f"|format(health_score) }}
+            <small>/100</small>
+        </span>
+        <div class="score-bar">
+
+            <div
+                class="score-bar-fill 
+                {% if health_score >= 80 %}
+                    score-good
+                {% elif health_score >= 50 %}
+                    score-medium
+                {% else %}
+                    score-low
+                {% endif %}"
+                style="--score-width: {{ health_score }}%;"
+                >
+            </div>
+
+        </div>
+
+
+        <!-- Health classificatioEW -->
+
+        {% if health_score >= 80 %}
+
+            <small>🟢 Excellent</small>
+
+        {% elif health_score >= 60 %}
+
+            <small>🟡 Good</small>
+
+        {% elif health_score >= 40 %}
+
+            <small>🟠 Needs Improvement</small>
+
+        {% else %}
+
+            <small>🔴 Poor</small>
+
+        {% endif %}
+
+    </div>
+
 </section>
 
-<div class="dash-head dash-head-inner">
-    <p class="eyebrow">// repository statistics</p>
+
+
+     FEATURE CARDS
+
+
+<div class="card-grid">
+
+
+    <!-- AI SUMMAREW -->
+
+    <a
+        class="card feature-card"
+        href="{{ url_for('summary') }}"
+        style="--card-accent: var(--accent-violet);"
+    >
+
+        <div class="card-head">
+
+            <span class="card-dot"></span>
+
+            <span class="card-file">
+                summary.md
+            </span>
+
+        </div>
+
+        <h2>
+            AI Summary
+        </h2>
+
+        <p>
+            View a concise summary of the repository generated
+            from the analyzed project.
+        </p>
+
+    </a>
+
+
+    <!-- REPOSITORY HEALTEW -->
+
+    <a
+        class="card feature-card"
+        href="{{ url_for('health') }}"
+        style="--card-accent: var(--accent-green);"
+    >
+
+        <div class="card-head">
+
+            <span class="card-dot"></span>
+
+            <span class="card-file">
+                health.report
+            </span>
+
+        </div>
+
+        <h2>
+            Repository Health
+        </h2>
+
+        <p>
+            Review maintainability, documentation quality,
+            and the ML-predicted overall repository health.
+        </p>
+
+    </a>
+
+
+    <!-- ARCHITECTUREW -->
+
+    <a
+        class="card feature-card"
+        href="{{ url_for('architecture') }}"
+        style="--card-accent: var(--accent-violet);"
+    >
+
+        <div class="card-head">
+
+            <span class="card-dot"></span>
+
+            <span class="card-file">
+                architecture.svg
+            </span>
+
+        </div>
+
+        <h2>
+            Architecture
+        </h2>
+
+        <p>
+            Explore the repository structure, folders,
+            and module organization.
+        </p>
+
+    </a>
+
+
+    <!-- SECURITEW -->
+
+    <a
+        class="card feature-card"
+        href="{{ url_for('security') }}"
+        style="--card-accent: var(--accent-amber);"
+    >
+
+        <div class="card-head">
+
+            <span class="card-dot"></span>
+
+            <span class="card-file">
+                security.scan
+            </span>
+
+        </div>
+
+        <h2>
+            Security Scan
+        </h2>
+
+        <p>
+            Detect potential security risks, exposed files,
+            and dependency issues.
+        </p>
+
+    </a>
+
+
+    <!-- TECH STACEW -->
+
+    <a
+        class="card feature-card"
+        href="{{ url_for('tech') }}"
+        style="--card-accent: var(--accent-green);"
+    >
+
+        <div class="card-head">
+
+            <span class="card-dot"></span>
+
+            <span class="card-file">
+                stack.json
+            </span>
+
+        </div>
+
+        <h2>
+            Tech Stack
+        </h2>
+
+        <p>
+            View all detected programming languages,
+            frameworks, and technologies.
+        </p>
+
+    </a>
+
+
+    <!-- AI CHAEW -->
+
+    <a
+        class="card feature-card"
+        href="{{ url_for('chat') }}"
+        style="--card-accent: var(--accent-violet);"
+    >
+
+        <div class="card-head">
+
+            <span class="card-dot"></span>
+
+            <span class="card-file">
+                chat.session
+            </span>
+
+        </div>
+
+        <h2>
+            AI Chat
+        </h2>
+
+        <p>
+            Ask questions about the analyzed repository
+            and receive AI-powered answers.
+        </p>
+
+    </a>
+
+
 </div>
 
-<div class="stat-grid stat-grid-3" style="--stat-accent: var(--accent-violet);">
-    <div class="stat-card">
-        <span class="stat-value">{{ statistics.total_files }}</span>
-        <span class="stat-label">total files</span>
-    </div>
-    <div class="stat-card">
-        <span class="stat-value">{{ statistics.total_folders }}</span>
-        <span class="stat-label">total folders</span>
-    </div>
-    <div class="stat-card">
-        <span class="stat-value">{{ statistics.lines }}</span>
-        <span class="stat-label">lines of code</span>
-    </div>
-</div>
-
-<div class="stat-grid stat-grid-5" style="--stat-accent: var(--accent-green);">
-    {% for language, count in languages.items() %}
-    <div class="stat-card stat-card-sm">
-        <span class="stat-value">{{ count }}</span>
-        <span class="stat-label">{{ language }}</span>
-    </div>
-    {% endfor %}
-</div>
-
-<div class="dash-head dash-head-inner">
-    <p class="eyebrow">// code complexity</p>
-</div>
-
-<div class="stat-grid stat-grid-2" style="--stat-accent: var(--accent-amber);">
-    <div class="stat-card">
-        <span class="stat-value">{{ complexity.functions }}</span>
-        <span class="stat-label">total functions</span>
-    </div>
-    <div class="stat-card">
-        <span class="stat-value">{{ complexity.complexity }}</span>
-        <span class="stat-label">average complexity</span>
-    </div>
-</div>
-
-<section class="features-dashboard">
-    <p class="eyebrow">// intelligence center</p>
-
-    <div class="card-grid">
-
-        <a class="card feature-card" href="{{ url_for('summary') }}" style="--card-accent: var(--accent-violet);">
-            <div class="card-head">
-                <span class="card-dot"></span>
-                <span class="card-file">summary.md</span>
-            </div>
-            <h2>AI Summary</h2>
-            <p>View a concise summary of the repository generated from the analyzed project.</p>
-        </a>
-
-        <a class="card feature-card" href="{{ url_for('health') }}" style="--card-accent: var(--accent-green);">
-            <div class="card-head">
-                <span class="card-dot"></span>
-                <span class="card-file">health.report</span>
-            </div>
-            <h2>Repository Health</h2>
-            <p>Review maintainability, documentation quality and overall project health.</p>
-        </a>
-
-        <a class="card feature-card" href="{{ url_for('architecture') }}" style="--card-accent: var(--accent-violet);">
-            <div class="card-head">
-                <span class="card-dot"></span>
-                <span class="card-file">architecture.svg</span>
-            </div>
-            <h2>Architecture</h2>
-            <p>Explore the repository structure, folders and module organization.</p>
-        </a>
-
-        <a class="card feature-card" href="{{ url_for('security') }}" style="--card-accent: var(--accent-amber);">
-            <div class="card-head">
-                <span class="card-dot"></span>
-                <span class="card-file">security.scan</span>
-            </div>
-            <h2>Security Scan</h2>
-            <p>Detect potential security risks, exposed files and dependency issues.</p>
-        </a>
-
-        <a class="card feature-card" href="{{ url_for('tech') }}" style="--card-accent: var(--accent-green);">
-            <div class="card-head">
-                <span class="card-dot"></span>
-                <span class="card-file">stack.json</span>
-            </div>
-            <h2>Tech Stack</h2>
-            <p>View all detected programming languages, frameworks and technologies.</p>
-        </a>
-
-        <a class="card feature-card" href="{{ url_for('chat') }}" style="--card-accent: var(--accent-violet);">
-            <div class="card-head">
-                <span class="card-dot"></span>
-                <span class="card-file">chat.session</span>
-            </div>
-            <h2>AI Chat</h2>
-            <p>Ask questions about the analyzed repository and receive AI-powered answers.</p>
-        </a>
-
-    </div>
-</section>
-{% endif %}
 {% endblock %}
