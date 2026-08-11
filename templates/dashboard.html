@@ -167,23 +167,35 @@
 
         {% if health_score >= 80 %}
 
-            <small>🟢 Excellent</small>
+            <small> Excellent</small>
 
         {% elif health_score >= 60 %}
 
-            <small>🟡 Good</small>
+            <small> Good</small>
 
         {% elif health_score >= 40 %}
 
-            <small>🟠 Needs Improvement</small>
+            <small> Needs Improvement</small>
 
         {% else %}
 
-            <small>🔴 Poor</small>
+            <small> Poor</small>
 
         {% endif %}
 
     </div>
+
+
+        <div class="score-card">
+            {% set score = (readme.score or 0) | int %}
+             <span class="score-label">documentation score</span>
+             <span class="score-value">{{ score }}<small>/100</small></span>
+             <div class="score-bar">
+                 <div class="score-bar-fill {{ 'score-good' if score >= 50 else '' }}" style="width: {{ score }}%;">
+                  </div>
+              </div>
+       </div>
+   </div>   
 
 </section>
 
@@ -377,4 +389,105 @@
 
 </div>
 
+
+<div class="stat-grid stat-grid-3" style="--stat-accent: var(--accent-violet);">
+    <div class="stat-card">
+        <span class="stat-value">{{ statistics.total_files }}</span>
+        <span class="stat-label">total files</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-value">{{ statistics.total_folders }}</span>
+        <span class="stat-label">total folders</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-value">{{ statistics.lines }}</span>
+        <span class="stat-label">lines of code</span>
+    </div>
+</div>
+
+<div class="stat-grid stat-grid-5" style="--stat-accent: var(--accent-green);">
+    {% for language, count in languages.items() %}
+    <div class="stat-card stat-card-sm">
+        <span class="stat-value">{{ count }}</span>
+        <span class="stat-label">{{ language }}</span>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="dash-head dash-head-inner">
+    <p class="eyebrow">// code complexity</p>
+</div>
+
+<div class="stat-grid stat-grid-2" style="--stat-accent: var(--accent-amber);">
+    <div class="stat-card">
+        <span class="stat-value">{{ complexity.functions }}</span>
+        <span class="stat-label">total functions</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-value">{{ complexity.complexity }}</span>
+        <span class="stat-label">average complexity</span>
+    </div>
+</div>
+
+<section class="features-dashboard">
+    <p class="eyebrow">// intelligence center</p>
+
+    <div class="card-grid">
+
+        <a class="card feature-card" href="{{ url_for('summary') }}" style="--card-accent: var(--accent-violet);">
+            <div class="card-head">
+                <span class="card-dot"></span>
+                <span class="card-file">summary.md</span>
+            </div>
+            <h2>AI Summary</h2>
+            <p>View a concise summary of the repository generated from the analyzed project.</p>
+        </a>
+
+        <a class="card feature-card" href="{{ url_for('health') }}" style="--card-accent: var(--accent-green);">
+            <div class="card-head">
+                <span class="card-dot"></span>
+                <span class="card-file">health.report</span>
+            </div>
+            <h2>Repository Health</h2>
+            <p>Review maintainability, documentation quality and overall project health.</p>
+        </a>
+
+        <a class="card feature-card" href="{{ url_for('architecture') }}" style="--card-accent: var(--accent-violet);">
+            <div class="card-head">
+                <span class="card-dot"></span>
+                <span class="card-file">architecture.svg</span>
+            </div>
+            <h2>Architecture</h2>
+            <p>Explore the repository structure, folders and module organization.</p>
+        </a>
+
+        <a class="card feature-card" href="{{ url_for('security') }}" style="--card-accent: var(--accent-amber);">
+            <div class="card-head">
+                <span class="card-dot"></span>
+                <span class="card-file">security.scan</span>
+            </div>
+            <h2>Security Scan</h2>
+            <p>Detect potential security risks, exposed files and dependency issues.</p>
+        </a>
+
+        <a class="card feature-card" href="{{ url_for('tech') }}" style="--card-accent: var(--accent-green);">
+            <div class="card-head">
+                <span class="card-dot"></span>
+                <span class="card-file">stack.json</span>
+            </div>
+            <h2>Tech Stack</h2>
+            <p>View all detected programming languages, frameworks and technologies.</p>
+        </a>
+
+        <a class="card feature-card" href="{{ url_for('chat') }}" style="--card-accent: var(--accent-violet);">
+            <div class="card-head">
+                <span class="card-dot"></span>
+                <span class="card-file">chat.session</span>
+            </div>
+            <h2>AI Chat</h2>
+            <p>Ask questions about the analyzed repository and receive AI-powered answers.</p>
+        </a>
+
+    </div>
+</section>
 {% endblock %}

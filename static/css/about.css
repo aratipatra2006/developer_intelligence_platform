@@ -1,6 +1,7 @@
 /*
    ABOUT PAGE STYLING
    Developer Intelligence Platform
+   — terminal / console aesthetic, matched to the homepage hero
 */
 
 /* Global */
@@ -11,17 +12,75 @@
     box-sizing: border-box;
 }
 
-body {
-    background: #0b1120;
-    color: #e5e7eb;
-    font-family: 'Inter', sans-serif;
+:root {
+    --bg: #0a0e14;
+    --bg-panel: #10161f;
+    --bg-panel-header: #0d1420;
+    --border: #1e2733;
+    --text: #e6edf3;
+    --text-muted: #8b98a5;
+    --accent: #7ee787;
+    --accent-dim: #3fb950;
+    --accent-glow: rgba(126, 231, 135, 0.18);
+    --warn: #f0b72f;
+    --danger: #f85149;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
 }
 
-/* Header */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+}
+
+/* Focus states — visible and consistent everywhere */
+
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* Scroll progress bar */
+
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+    z-index: 100;
+    transition: width 0.1s linear;
+}
+
+/* Header — sticky, gains a blurred backdrop once the page scrolls */
 
 header {
     width: 100%;
     padding: 25px 8%;
+    border-bottom: 1px solid transparent;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: transparent;
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+}
+
+header.scrolled {
+    background: linear-gradient(120deg, rgba(12, 12, 12, 0.16) 0%, rgba(16, 22, 31, 0.92) 45%, rgba(10, 14, 20, 0.95) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom-color: var(--accent);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 1px 0 var(--accent-glow);
+    padding: 14px 8%;
 }
 
 nav {
@@ -31,20 +90,24 @@ nav {
 }
 
 .logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.01em;
 }
 
 .logo-mark {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 28px;
-    color: #38bdf8;
+    font-family: var(--font-mono);
+    font-size: 35px;
+    color: var(--accent);
 }
 
 .logo-text {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 20px;
+    font-family: var(--font-display);
+    font-size: 30px;
     font-weight: 700;
 }
 
@@ -55,20 +118,57 @@ nav ul {
 }
 
 nav ul li a {
-    color: #cbd5e1;
+    position: relative;
+    color: var(--text-muted);
     text-decoration: none;
     font-size: 15px;
-    transition: 0.3s;
+    font-family: var(--font-mono);
+    transition: color 0.3s ease;
+    padding-bottom: 4px;
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 0.25s ease;
 }
 
 nav ul li a:hover {
-    color: #38bdf8;
+    color: var(--accent);
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+}
+
+nav ul li a.active {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+nav ul li a.active::after {
+    width: 100%;
 }
 
 /* Main */
 
 main {
-    padding: 50px 8%;
+    padding: 50px 8% 0;
+}
+
+/* Eyebrow — the "// comment" label used throughout */
+
+.eyebrow {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--accent);
+    margin-bottom: 18px;
+    display: block;
 }
 
 /* Hero Section */
@@ -77,8 +177,8 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 50px;
-    min-height: 500px;
+    gap: 20px;
+    min-height: 150px;
 }
 
 .about-content {
@@ -86,55 +186,200 @@ main {
 }
 
 .about-content h1 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 55px;
-    line-height: 1.1;
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1.15;
     margin-bottom: 25px;
+    color: var(--text);
 }
 
 .about-content h1 span {
-    color: #38bdf8;
+    color: var(--accent);
 }
 
 .about-content p {
-    color: #94a3b8;
+    color: var(--text-muted);
     font-size: 17px;
     line-height: 1.8;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
-/* Image Placeholder */
+/* Terminal window — reused for hero panel and tech stack */
 
-.about-image {
+.terminal-window {
     flex: 1;
-    display: flex;
-    justify-content: center;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 480px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.image-placeholder {
-    width: 380px;
-    height: 280px;
-    border-radius: 20px;
-    background: #111827;
-    border: 1px solid #1e293b;
+.terminal-window:hover {
+    border-color: #2a3a4a;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+.terminal-header {
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: #64748b;
-    font-family: 'JetBrains Mono', monospace;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--bg-panel-header);
+    border-bottom: 1px solid var(--border);
 }
+
+.terminal-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.terminal-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+}
+
+.terminal-dot.red { background: var(--danger); }
+.terminal-dot.yellow { background: var(--warn); }
+.terminal-dot.green { background: var(--accent-dim); }
+
+.terminal-label {
+    margin-left: 6px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.copy-btn {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.copy-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-glow);
+}
+
+.copy-btn.copied {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.terminal-body {
+    padding: 22px 24px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 2;
+}
+
+.terminal-body .prompt {
+    color: var(--accent);
+}
+
+.terminal-body .key {
+    color: var(--text-muted);
+}
+
+.terminal-body .val {
+    color: var(--text);
+}
+
+.terminal-body .accent-line {
+    color: var(--accent);
+}
+
+.terminal-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background: var(--accent);
+    margin-top: 4px;
+    animation: blink 1.1s steps(1) infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* JS-driven states: only apply hidden/typing states once JS has confirmed it can run.
+   Without JS, everything below renders in its final, fully visible state. */
+
+html.js .term-line {
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+html.js .term-line.show {
+    opacity: 1;
+    transform: none;
+}
+
+html.js .terminal-cursor {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+html.js .terminal-cursor.visible {
+    opacity: 1;
+}
+
+html.js .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+html.js .reveal.in-view {
+    opacity: 1;
+    transform: none;
+}
+
+/* Stagger the reveal of grouped items */
+
+.feature-grid .feature-card:nth-child(1) { transition-delay: 0s; }
+.feature-grid .feature-card:nth-child(2) { transition-delay: 0.08s; }
+.feature-grid .feature-card:nth-child(3) { transition-delay: 0.16s; }
+.feature-grid .feature-card:nth-child(4) { transition-delay: 0.24s; }
+.feature-grid .feature-card:nth-child(5) { transition-delay: 0.32s; }
+.feature-grid .feature-card:nth-child(6) { transition-delay: 0.4s; }
+
+.workflow-container .step:nth-child(1) { transition-delay: 0s; }
+.workflow-container .step:nth-child(2) { transition-delay: 0.1s; }
+.workflow-container .step:nth-child(3) { transition-delay: 0.2s; }
 
 /* Common Sections */
 
 section {
-    margin-top: 100px;
+    margin-top: 110px;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-heading .eyebrow {
+    text-align: center;
 }
 
 section h2 {
     text-align: center;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 38px;
-    margin-bottom: 35px;
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 700;
 }
 
 /* Introduction */
@@ -146,7 +391,7 @@ section h2 {
 .intro p {
     max-width: 850px;
     margin: 20px auto 0;
-    color: #94a3b8;
+    color: var(--text-muted);
     font-size: 17px;
     line-height: 1.8;
 }
@@ -160,28 +405,55 @@ section h2 {
 }
 
 .feature-card {
-    background: #111827;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-panel);
     padding: 28px;
-    border-radius: 16px;
-    border: 1px solid #1e293b;
-    transition: all 0.3s ease;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .35s ease;
 }
 
 .feature-card:hover {
     transform: translateY(-8px);
-    border-color: #38bdf8;
-    box-shadow: 0 10px 25px rgba(56, 189, 248, 0.15);
+    border-color: var(--accent);
+    box-shadow: 0 12px 30px rgba(126, 231, 135, 0.12);
+}
+
+.feature-card:hover::before {
+    transform: scaleX(1);
 }
 
 .feature-card h3 {
-    color: #38bdf8;
+    color: var(--accent);
     margin-bottom: 12px;
-    font-size: 20px;
+    font-size: 19px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover h3 {
+    transform: translateX(4px);
 }
 
 .feature-card p {
-    color: #94a3b8;
+    color: var(--text-muted);
     line-height: 1.7;
+    font-size: 15px;
 }
 
 /* Mission */
@@ -190,81 +462,135 @@ section h2 {
     max-width: 850px;
     margin: auto;
     text-align: center;
-    color: #94a3b8;
+    color: var(--text-muted);
     font-size: 17px;
     line-height: 1.8;
 }
 
-/* Workflow */
+/* Workflow — kept numbered, since it's a real sequence, with a connector between steps */
 
 .workflow-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
+    position: relative;
 }
 
 .step {
-    background: #111827;
+    position: relative;
+    background: var(--bg-panel);
     padding: 30px;
-    border-radius: 18px;
-    border: 1px solid #1e293b;
-    transition: 0.3s;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    transition: transform .3s ease, border-color .3s ease;
 }
 
 .step:hover {
     transform: translateY(-8px);
-    border-color: #38bdf8;
+    border-color: var(--accent);
+}
+
+.step:not(:last-child)::after {
+    content: '➜';
+    position: absolute;
+    top: 50%;
+    right: -28px;
+    transform: translateY(-50%);
+    color: var(--accent-green);
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 300;
 }
 
 .step h3 {
-    color: #38bdf8;
-    font-size: 30px;
-    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-size: 28px;
+    font-family: var(--font-mono);
+    font-weight: 500;
 }
 
 .step h4 {
     margin: 15px 0;
-    font-size: 20px;
+    font-size: 19px;
+    font-family: var(--font-display);
 }
 
 .step p {
-    color: #94a3b8;
+    color: var(--text-muted);
     line-height: 1.6;
+    font-size: 15px;
 }
 
-/* Technology */
+/* Technology stack — rendered as a terminal listing */
 
-.tech-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
+.tech-terminal {
+    max-width: 640px;
+    margin: 0 auto;
 }
 
-.tech-card {
-    background: #111827;
-    padding: 25px;
-    border-radius: 15px;
-    border: 1px solid #1e293b;
-    text-align: center;
+.tech-terminal .terminal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
-.tech-card h3 {
-    color: #38bdf8;
-    margin-bottom: 12px;
+.tech-row {
+    display: flex;
+    gap: 16px;
+    padding: 4px 8px;
+    margin: 0 -8px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
 }
 
-.tech-card p {
-    color: #94a3b8;
+.tech-row:hover {
+    background: var(--accent-glow);
+}
+
+.tech-row .key {
+    flex: 0 0 140px;
 }
 
 /* Footer */
 
 footer {
-    margin-top: 80px;
+    margin-top: 100px;
     padding: 25px;
     text-align: center;
-    border-top: 1px solid #1e293b;
-    color: #64748b;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 13px;
+}
+
+/* Reduced motion — disable movement, keep the end state */
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    html.js .reveal,
+    html.js .term-line,
+    .feature-card,
+    .step,
+    .terminal-window,
+    header,
+    .scroll-progress,
+    .copy-btn {
+        transition: none !important;
+        animation: none !important;
+    }
+
+    html.js .reveal,
+    html.js .term-line {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    html.js .terminal-cursor {
+        opacity: 1 !important;
+    }
 }
 
 /* Responsive */
@@ -275,46 +601,29 @@ footer {
         flex-direction: column;
     }
 
+    .terminal-window {
+        max-width: 100%;
+        width: 100%;
+    }
+
     .feature-grid,
-    .workflow-container,
-    .tech-grid {
+    .workflow-container {
         grid-template-columns: 1fr;
     }
 
     .about-content h1 {
-        font-size: 40px;
+        font-size: 38px;
     }
-}
 
-nav ul li a.active {
-    color: #38bdf8;
-    font-weight: 600;
-}
+    .tech-row .key {
+        flex: 0 0 110px;
+    }
 
-.image-placeholder {
-    flex-direction: column;
-    gap: 15px;
-}
-
-.image-placeholder h2 {
-    font-size: 70px;
-    color: #38bdf8;
-}
-
-.image-placeholder p {
-    color: #94a3b8;
-    font-size: 18px;
-}
-
-.feature-card,
-.tech-card,
-.step {
-    transition: transform .3s ease, box-shadow .3s ease;
-}
-
-.feature-card:hover,
-.tech-card:hover,
-.step:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 30px rgba(56, 189, 248, 0.15);
+    .step:not(:last-child)::after {
+        content: '↓';
+        top: auto;
+        right: 50%;
+        bottom: -24px;
+        transform: translateX(50%);
+    }
 }
