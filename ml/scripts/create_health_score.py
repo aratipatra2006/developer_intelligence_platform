@@ -1,14 +1,10 @@
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
-# -----------------------
 # Load Dataset
-# -----------------------
 df = pd.read_csv("ml/data/repository_dataset.csv")
 
-# -----------------------
 # Normalize numeric columns
-# -----------------------
 columns = [
     "stars",
     "forks",
@@ -23,16 +19,12 @@ scaler = MinMaxScaler()
 
 df[columns] = scaler.fit_transform(df[columns])
 
-# -----------------------
 # Binary features
-# -----------------------
 df["has_license"] = df["has_license"].astype(int)
 df["has_gitignore"] = df["has_gitignore"].astype(int)
 df["has_readme"] = df["has_readme"].astype(int)
 
-# -----------------------
 # Health Score Formula
-# -----------------------
 df["health_score"] = (
 
       0.30 * df["stars"]
@@ -48,9 +40,7 @@ df["health_score"] = (
 
 ) * 100
 
-# -----------------------
 # Save
-# -----------------------
 df.to_csv(
     "ml/data/repository_dataset_scored.csv",
     index=False

@@ -90,9 +90,9 @@ def analyze():
         dependencies
     )
     print(ai_summary)
-    # ============================================================
+
     # ML HEALTH SCORE
-    # ============================================================
+
 
     ml_features = {
     "total_files": statistics["total_files"],

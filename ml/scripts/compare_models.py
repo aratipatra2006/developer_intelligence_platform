@@ -11,12 +11,15 @@ from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.metrics import (
+    mean_absolute_error,
+    mean_squared_error,
+    r2_score,
+    mean_absolute_percentage_error
+)
 
 
-# ============================================================
 # 1. LOAD DATASET
-# ============================================================
 
 DATASET = "ml/data/repository_dataset_scored.csv"
 
@@ -25,9 +28,7 @@ df = pd.read_csv(DATASET)
 print("Dataset shape:", df.shape)
 
 
-# ============================================================
-# 2. TARGET
-# ============================================================
+# 2. TARGET AND FEATURES
 
 y = pd.to_numeric(
     df["health_score"],
@@ -39,9 +40,7 @@ X = df.drop(
 ).copy()
 
 
-# ============================================================
 # 3. CLEAN COMPLEXITY
-# ============================================================
 
 X["complexity_supported"] = (
     X["complexity"]
@@ -52,13 +51,9 @@ X["complexity_supported"] = (
 )
 
 
-# ============================================================
-# 4. CONVERT ALL NON-CATEGORICAL FEATURES TO NUMERIC
-# ============================================================
+# 4. FEATURES
 
-categorical_features = [
-    "language"
-]
+categorical_features = ["language"]
 
 for column in X.columns:
 
@@ -70,10 +65,6 @@ for column in X.columns:
         )
 
 
-# ============================================================
-# 5. FEATURES
-# ============================================================
-
 numeric_features = [
     column
     for column in X.columns
@@ -81,9 +72,7 @@ numeric_features = [
 ]
 
 
-# ============================================================
-# 6. PREPROCESSING
-# ============================================================
+# 5. PREPROCESSING
 
 numeric_pipeline = Pipeline([
     (
@@ -92,6 +81,7 @@ numeric_pipeline = Pipeline([
     )
 ])
 
+
 categorical_pipeline = Pipeline([
     (
         "imputer",
@@ -99,11 +89,10 @@ categorical_pipeline = Pipeline([
     ),
     (
         "encoder",
-        OneHotEncoder(
-            handle_unknown="ignore"
-        )
+        OneHotEncoder(handle_unknown="ignore")
     )
 ])
+
 
 preprocessor = ColumnTransformer([
     (
@@ -119,9 +108,7 @@ preprocessor = ColumnTransformer([
 ])
 
 
-# ============================================================
-# 7. TRAIN / TEST SPLIT
-# ============================================================
+# 6. TRAIN / TEST SPLIT
 
 X_train, X_test, y_train, y_test = train_test_split(
     X,
@@ -134,9 +121,7 @@ print("Training samples:", len(X_train))
 print("Testing samples:", len(X_test))
 
 
-# ============================================================
-# 8. MODELS
-# ============================================================
+# 7. MODELS
 
 models = {
 
@@ -158,16 +143,12 @@ models = {
 }
 
 
-# ============================================================
-# 9. TRAIN AND EVALUATE
-# ============================================================
+# 8. TRAIN AND EVALUATE
 
 results = []
 
-for name, model in models.items():
 
-    print("\n" + "=" * 60)
-    print("Training:", name)
+for name, model in models.items():
 
     pipeline = Pipeline([
         (
@@ -180,78 +161,173 @@ for name, model in models.items():
         )
     ])
 
+    # Train
     pipeline.fit(
         X_train,
         y_train
     )
 
-    predictions = pipeline.predict(
-        X_test
+    # Predictions
+    train_predictions = pipeline.predict(X_train)
+    test_predictions = pipeline.predict(X_test)
+
+    # Training metrics
+
+    train_mae = mean_absolute_error(
+        y_train,
+        train_predictions
     )
 
-    mae = mean_absolute_error(
-        y_test,
-        predictions
-    )
-
-    rmse = mean_squared_error(
-        y_test,
-        predictions
+    train_rmse = mean_squared_error(
+        y_train,
+        train_predictions
     ) ** 0.5
 
-    r2 = r2_score(
-        y_test,
-        predictions
+    train_r2 = r2_score(
+        y_train,
+        train_predictions
     )
 
+    # Testing metrics
+
+    test_mae = mean_absolute_error(
+        y_test,
+        test_predictions
+    )
+
+    test_rmse = mean_squared_error(
+        y_test,
+        test_predictions
+    ) ** 0.5
+
+    test_r2 = r2_score(
+        y_test,
+        test_predictions
+    )
+
+    # R² gap
+
+    r2_gap = train_r2 - test_r2
+
+    # MAPE
+
+    non_zero_mask = y_test != 0
+
+    y_test_non_zero = y_test[non_zero_mask]
+
+    predictions_non_zero = test_predictions[
+        non_zero_mask
+    ]
+
+    mape = mean_absolute_percentage_error(
+        y_test_non_zero,
+        predictions_non_zero
+    ) * 100
+
+    prediction_accuracy = 100 - mape
+
+    # Store results
+
     results.append({
+
         "Model": name,
-        "MAE": mae,
-        "RMSE": rmse,
-        "R2": r2
+
+        "Train R²": train_r2,
+
+        "Test R²": test_r2,
+
+        "R² Gap": r2_gap,
+
+        "Test MAE": test_mae,
+
+        "Test RMSE": test_rmse,
+
+        "R² %": test_r2 * 100,
+
+        "MAPE %": mape,
+
+        "Accuracy %": prediction_accuracy
+
     })
 
-    print("MAE :", round(mae, 4))
-    print("RMSE:", round(rmse, 4))
-    print("R²  :", round(r2, 4))
 
-
-# ============================================================
-# 10. RESULTS
-# ============================================================
+# 9. RESULTS TABLE
 
 results_df = pd.DataFrame(results)
 
+
+# Sort by testing R²
 results_df = results_df.sort_values(
-    by="R2",
+    by="Test R²",
     ascending=False
 )
 
-print("\n")
-print("=" * 60)
-print("MODEL COMPARISON")
-print("=" * 60)
 
-print(
-    results_df.to_string(
-        index=False
-    )
+# 10. ROUND VALUES
+
+display_df = results_df.copy()
+
+numeric_columns = [
+    "Train R²",
+    "Test R²",
+    "R² Gap",
+    "Test MAE",
+    "Test RMSE",
+    "R² %",
+    "MAPE %",
+    "Accuracy %"
+]
+
+display_df[numeric_columns] = (
+    display_df[numeric_columns].round(4)
 )
 
 
-# ============================================================
-# 11. SAVE RESULTS
-# ============================================================
+# 11. DISPLAY ONLY ONE TABLE
+
+print("\n")
+print("=" * 110)
+print("MODEL COMPARISON")
+print("=" * 110)
+
+print(
+    display_df.to_string(index=False)
+)
+
+print("=" * 110)
+
+
+# 12. BEST MODEL
+
+best_model = results_df.iloc[0]
+
+print("\nBest Model:")
+print(best_model["Model"])
+
+print(
+    f"Testing R²: "
+    f"{best_model['Test R²']:.4f}"
+)
+
+print(
+    f"Testing R² Percentage: "
+    f"{best_model['R² %']:.2f}%"
+)
+
+
+# 13. SAVE RESULTS
 
 os.makedirs(
     "ml/data",
     exist_ok=True
 )
 
+RESULT_PATH = "ml/data/model_comparison.csv"
+
 results_df.to_csv(
-    "ml/data/model_comparison.csv",
+    RESULT_PATH,
     index=False
 )
 
 print("\nResults saved to:")
-print("ml/data/model_comparison.csv")
+print(RESULT_PATH)

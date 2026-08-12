@@ -28,9 +28,8 @@ importance_df = importance_df.sort_values(
     ascending=False
 )
 
-print("\n==============================")
+print("\n")
 print("FEATURE IMPORTANCE")
-print("==============================")
 
 print(
     importance_df.head(20).to_string(index=False)
