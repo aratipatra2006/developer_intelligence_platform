@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Read metadata
-df = pd.read_csv("ml/dataset/repositories_metadata.csv")
+df = pd.read_csv("dataset/repositories_metadata.csv")
 
 print("Repositories before filtering:", len(df))
 
@@ -17,13 +17,13 @@ print("Repositories after filtering:", len(filtered))
 
 # Save filtered metadata
 filtered.to_csv(
-    "ml/dataset/repositories_filtered.csv",
+    "dataset/repositories_filtered.csv",
     index=False
 )
 
 # Save only URLs for build_dataset.py
 filtered["url"].to_csv(
-    "ml/dataset/repositories.txt",
+    "dataset/repositories.txt",
     index=False,
     header=False
 )

@@ -4,117 +4,463 @@
 
 {% block content %}
 
-<h2>🏥 Repository Health</h2>
+<div class="page-header" style="--card-accent: var(--accent-green);">
 
-<!-- ML Health Score -->
-<div class="health-score-card">
-
-    <h3>🤖 ML Health Score</h3>
-
-    <div class="health-score">
-        {{ "%.2f"|format(health_score) }}
-        <span>/ 100</span>
+    <div class="card-head">
+        <span class="card-dot"></span>
+        <span class="card-file">health.report</span>
     </div>
 
-    {% if health_score >= 80 %}
-        <p>🟢 Excellent</p>
-    {% elif health_score >= 60 %}
-        <p>🟡 Good</p>
-    {% elif health_score >= 40 %}
-        <p>🟠 Needs Improvement</p>
+    <h1 class="title">
+        Repository Health
+    </h1>
+
+</div>
+
+
+<!-- ============================================================
+     TOP SUMMARY
+============================================================ -->
+
+<div style="
+        display: grid;
+        grid-template-columns: 1.35fr 1fr;
+        gap: 18px;
+        margin-bottom: 18px;
+    ">
+
+    <!-- ML Prediction -->
+    <section class="dash-panel" style="
+            --panel-accent: var(--accent-green);
+            padding: 24px;
+        ">
+
+        <p class="eyebrow">
+            // machine learning assessment
+        </p>
+
+        <div style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 20px;
+            ">
+
+            <div>
+
+                <div style="
+                        font-size: 0.85rem;
+                        text-transform: uppercase;
+                        letter-spacing: 0.08em;
+                        opacity: 0.65;
+                        margin-bottom: 8px;
+                    ">
+                    Predicted Health Grade
+                </div>
+
+                <div style="
+                        font-size: 2.8rem;
+                        font-weight: 700;
+                        line-height: 1;
+                    ">
+                    {{ health_prediction.grade }}
+                </div>
+
+            </div>
+
+            <div style="
+                    text-align: right;
+                    opacity: 0.65;
+                    font-size: 0.8rem;
+                    max-width: 220px;
+                ">
+                Random Forest classification
+                using extracted repository features.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Baseline -->
+    <section class="dash-panel" style="
+            --panel-accent: var(--accent-violet);
+            padding: 24px;
+        ">
+
+        <p class="eyebrow">
+            // baseline scoring
+        </p>
+
+        <div style="
+                display: flex;
+                align-items: baseline;
+                gap: 8px;
+                margin-top: 10px;
+            ">
+
+            {% if baseline_health_score is not none %}
+
+            <span style="
+                        font-size: 2.8rem;
+                        font-weight: 700;
+                        line-height: 1;
+                    ">
+                {{ baseline_health_score }}
+            </span>
+
+            <span style="
+                        font-size: 1rem;
+                        opacity: 0.55;
+                    ">
+                / 100
+            </span>
+
+            {% else %}
+
+            <span style="
+                        font-size: 1.4rem;
+                        opacity: 0.6;
+                    ">
+                Unavailable
+            </span>
+
+            {% endif %}
+
+        </div>
+
+        <p class="empty-note" style="
+                margin-top: 10px;
+                font-size: 0.8rem;
+            ">
+            Deterministic score used to generate
+            the training health categories.
+        </p>
+
+    </section>
+
+</div>
+
+
+<!-- ============================================================
+     DOCUMENTATION + CODE QUALITY
+============================================================ -->
+
+<div style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin-bottom: 18px;
+    ">
+
+    <!-- Documentation -->
+    <section class="dash-panel" style="
+            --panel-accent: var(--accent-violet);
+            padding: 22px;
+        ">
+
+        <p class="eyebrow">
+            // documentation
+        </p>
+
+        <div class="meta-list">
+
+            <div class="meta-row">
+                <dt>README</dt>
+                <dd>
+                    {% if overview["README"] %}
+                    ✅ Available
+                    {% else %}
+                    ❌ Missing
+                    {% endif %}
+                </dd>
+            </div>
+
+            <div class="meta-row">
+                <dt>README score</dt>
+                <dd>
+                    {{ readme.score }}/100
+                </dd>
+            </div>
+
+            <div class="meta-row">
+                <dt>LICENSE</dt>
+                <dd>
+                    {% if overview["License"] %}
+                    ✅ Available
+                    {% else %}
+                    ❌ Missing
+                    {% endif %}
+                </dd>
+            </div>
+
+            <div class="meta-row">
+                <dt>.gitignore</dt>
+                <dd>
+                    {% if overview[".gitignore"] %}
+                    ✅ Available
+                    {% else %}
+                    ❌ Missing
+                    {% endif %}
+                </dd>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Code Quality -->
+    <section class="dash-panel" style="
+            --panel-accent: var(--accent-amber);
+            padding: 22px;
+        ">
+
+        <p class="eyebrow">
+            // code quality
+        </p>
+
+        <div class="meta-list">
+
+            <div class="meta-row">
+
+                <dt>Total Functions</dt>
+
+                <dd>
+                    {% if ml_features.functions_supported %}
+                    {{ complexity.functions }}
+                    {% else %}
+                    —
+                    {% endif %}
+                </dd>
+
+            </div>
+
+            <div class="meta-row">
+
+                <dt>Average Complexity</dt>
+
+                <dd>
+                    {% if ml_features.complexity_supported %}
+                    {{ complexity.complexity }}
+                    {% else %}
+                    —
+                    {% endif %}
+                </dd>
+
+            </div>
+
+            <div class="meta-row">
+
+                <dt>Complexity Analysis</dt>
+
+                <dd>
+                    {% if ml_features.complexity_supported %}
+                    ✅ Supported
+                    {% else %}
+                    ⚠️ Not supported
+                    {% endif %}
+                </dd>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- ============================================================
+     MODEL INPUTS + CLASSIFICATION
+============================================================ -->
+
+<div style="
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 18px;
+        margin-bottom: 18px;
+    ">
+
+    <!-- Model Inputs -->
+    <section class="dash-panel" style="
+            --panel-accent: var(--accent-green);
+            padding: 22px;
+        ">
+
+        <p class="eyebrow">
+            // model inputs
+        </p>
+
+        <div style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                column-gap: 28px;
+            ">
+
+            <div class="meta-list">
+
+                <div class="meta-row">
+                    <dt>Files</dt>
+                    <dd>{{ ml_features.total_files }}</dd>
+                </div>
+
+                <div class="meta-row">
+                    <dt>Folders</dt>
+                    <dd>{{ ml_features.total_folders }}</dd>
+                </div>
+
+                <div class="meta-row">
+                    <dt>Lines of Code</dt>
+                    <dd>{{ ml_features.lines }}</dd>
+                </div>
+
+                <div class="meta-row">
+                    <dt>Dependencies</dt>
+                    <dd>{{ ml_features.dependency_count }}</dd>
+                </div>
+
+            </div>
+
+
+            <div class="meta-list">
+
+                <div class="meta-row">
+                    <dt>Languages</dt>
+                    <dd>{{ ml_features.language_count }}</dd>
+                </div>
+
+                <div class="meta-row">
+                    <dt>Tech Stack</dt>
+                    <dd>{{ ml_features.tech_stack_count }}</dd>
+                </div>
+
+                <div class="meta-row">
+                    <dt>Repository Age</dt>
+                    <dd>
+                        {{ ml_features.created_days | round(0) | int }}
+                        days
+                    </dd>
+                </div>
+
+                <div class="meta-row">
+                    <dt>Last Update</dt>
+                    <dd>
+                        {{ ml_features.updated_days | round(0) | int }}
+                        days ago
+                    </dd>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Classification -->
+    <section class="dash-panel" style="
+            --panel-accent: var(--accent-green);
+            padding: 22px;
+        ">
+
+        <p class="eyebrow">
+            // classification
+        </p>
+
+        <div class="meta-list">
+
+            <div class="meta-row">
+                <dt>Model</dt>
+                <dd>Random Forest</dd>
+            </div>
+
+            <div class="meta-row">
+                <dt>Task</dt>
+                <dd>Multi-class</dd>
+            </div>
+
+            <div class="meta-row">
+                <dt>Classes</dt>
+                <dd>5</dd>
+            </div>
+
+            <div class="meta-row">
+                <dt>Prediction</dt>
+                <dd>{{ health_prediction.grade }}</dd>
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- ============================================================
+     DEPENDENCIES
+============================================================ -->
+
+<section class="dash-panel" style="
+        --panel-accent: var(--accent-violet);
+        padding: 22px;
+    ">
+
+    <p class="eyebrow">
+        // dependencies
+    </p>
+
+    {% if dependencies %}
+
+    <div class="pill-grid" style="
+                max-height: 180px;
+                overflow-y: auto;
+            ">
+
+        {% for dep in dependencies %}
+
+        <span class="pill pill-green">
+            {{ dep }}
+        </span>
+
+        {% endfor %}
+
+    </div>
+
     {% else %}
-        <p>🔴 Poor</p>
+
+    <p class="empty-note">
+        No dependencies detected.
+    </p>
+
     {% endif %}
 
-</div>
+</section>
 
-<hr>
 
-<h3>📄 Documentation</h3>
+<!-- ============================================================
+     RESPONSIVE
+============================================================ -->
 
-<div class="meta-list">
+<style>
+    @media (max-width: 900px) {
 
-    <div class="meta-row">
-        <dt>README</dt>
-        <dd>
-            {% if overview["README"] %}
-                ✅ Available
-            {% else %}
-                ❌ Missing
-            {% endif %}
-        </dd>
-    </div>
+        div[style*="grid-template-columns: 1.35fr 1fr"],
+        div[style*="grid-template-columns: 1fr 1fr"],
+        div[style*="grid-template-columns: 1.2fr 0.8fr"] {
+            grid-template-columns: 1fr !important;
+        }
 
-    <div class="meta-row">
-        <dt>LICENSE</dt>
-        <dd>
-            {% if overview["License"] %}
-                ✅ Available
-            {% else %}
-                ❌ Missing
-            {% endif %}
-        </dd>
-    </div>
+    }
 
-    <div class="meta-row">
-        <dt>.gitignore</dt>
-        <dd>
-            {% if overview[".gitignore"] %}
-                ✅ Available
-            {% else %}
-                ❌ Missing
-            {% endif %}
-        </dd>
-    </div>
+    @media (max-width: 600px) {
 
-</div>
+        div[style*="grid-template-columns: 1fr 1fr"] {
+            grid-template-columns: 1fr !important;
+        }
 
-<hr>
-
-<h3>📊 Code Quality</h3>
-
-<div class="meta-list">
-
-    <div class="meta-row">
-        <dt>Total Functions</dt>
-        <dd>{{ complexity.functions }}</dd>
-    </div>
-
-    <div class="meta-row">
-        <dt>Average Complexity</dt>
-        <dd>{{ complexity.complexity }}</dd>
-    </div>
-
-</div>
-
-<hr>
-
-<h3>📦 Dependencies</h3>
-
-{% if dependencies %}
-
-<div class="pill-grid">
-
-    {% for dep in dependencies %}
-        <span class="pill pill-green">{{ dep }}</span>
-    {% endfor %}
-
-</div>
-
-{% else %}
-
-<p>No dependencies detected.</p>
-
-{% endif %}
-
-<hr>
-
-<h3>🤖 AI Insights</h3>
-
-<div class="ai-placeholder">
-    <p>
-        AI-powered repository health analysis will appear here.
-    </p>
-</div>
+    }
+</style>
 
 {% endblock %}

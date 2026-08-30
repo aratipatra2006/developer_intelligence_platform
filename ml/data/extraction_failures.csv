@@ -1,0 +1,244 @@
+repository,stage,error
+https://github.com/ApolloAuto/apollo,clone,Repository clone failed
+https://github.com/ClickHouse/ClickHouse,clone,Repository clone failed
+https://github.com/EnterpriseQualityCoding/FizzBuzzEnterpriseEdition,clone,Repository clone failed
+https://github.com/JetBrains/intellij-community,clone,Repository clone failed
+https://github.com/OpenAPITools/openapi-generator,clone,Repository clone failed
+https://github.com/OpenHands/OpenHands,github_api,GitHub API returned no data
+https://github.com/OtterMind/Chat2DB,github_api,GitHub API returned no data
+https://github.com/PaddlePaddle/Paddle,github_api,GitHub API returned no data
+https://github.com/PaddlePaddle/PaddleOCR,github_api,GitHub API returned no data
+https://github.com/Panniantong/Agent-Reach,github_api,GitHub API returned no data
+https://github.com/PatrickJS/awesome-cursorrules,github_api,GitHub API returned no data
+https://github.com/PhilJay/MPAndroidChart,github_api,GitHub API returned no data
+https://github.com/RPCS3/rpcs3,github_api,GitHub API returned no data
+https://github.com/RVC-Boss/GPT-SoVITS,github_api,GitHub API returned no data
+https://github.com/ReactiveX/RxAndroid,github_api,GitHub API returned no data
+https://github.com/ReactiveX/RxJava,github_api,GitHub API returned no data
+https://github.com/SagerNet/sing-box,github_api,GitHub API returned no data
+https://github.com/SeleniumHQ/selenium,github_api,GitHub API returned no data
+https://github.com/Semantic-Org/Semantic-UI,github_api,GitHub API returned no data
+https://github.com/SerenityOS/serenity,github_api,GitHub API returned no data
+https://github.com/Shubhamsaboo/awesome-llm-apps,github_api,GitHub API returned no data
+https://github.com/Significant-Gravitas/AutoGPT,github_api,GitHub API returned no data
+https://github.com/Snailclimb/JavaGuide,github_api,GitHub API returned no data
+https://github.com/Stirling-Tools/Stirling-PDF,github_api,GitHub API returned no data
+https://github.com/TauricResearch/TradingAgents,github_api,GitHub API returned no data
+https://github.com/TeamNewPipe/NewPipe,github_api,GitHub API returned no data
+https://github.com/Tencent/ncnn,github_api,GitHub API returned no data
+https://github.com/Textualize/rich,github_api,GitHub API returned no data
+https://github.com/TheAlgorithms/C-Plus-Plus,github_api,GitHub API returned no data
+https://github.com/TheAlgorithms/Java,github_api,GitHub API returned no data
+https://github.com/TheAlgorithms/JavaScript,github_api,GitHub API returned no data
+https://github.com/TheAlgorithms/Python,github_api,GitHub API returned no data
+https://github.com/ToolJet/ToolJet,github_api,GitHub API returned no data
+https://github.com/TranslucentTB/TranslucentTB,github_api,GitHub API returned no data
+https://github.com/TryGhost/Ghost,github_api,GitHub API returned no data
+https://github.com/Unitech/pm2,github_api,GitHub API returned no data
+https://github.com/ValveSoftware/Proton,github_api,GitHub API returned no data
+https://github.com/Wei-Shaw/sub2api,github_api,GitHub API returned no data
+https://github.com/WerWolv/ImHex,github_api,GitHub API returned no data
+https://github.com/XIU2/CloudflareSpeedTest,github_api,GitHub API returned no data
+https://github.com/XTLS/Xray-core,github_api,GitHub API returned no data
+https://github.com/YunaiV/ruoyi-vue-pro,github_api,GitHub API returned no data
+https://github.com/YunaiV/yudao-cloud,github_api,GitHub API returned no data
+https://github.com/Z4nzu/hackingtool,github_api,GitHub API returned no data
+https://github.com/ZhuLinsen/daily_stock_analysis,github_api,GitHub API returned no data
+https://github.com/Zie619/n8n-workflows,github_api,GitHub API returned no data
+https://github.com/alibaba/Sentinel,clone,Repository clone failed.
+https://github.com/alibaba/nacos,clone,Repository clone failed.
+https://github.com/alibaba/spring-cloud-alibaba,clone,Repository clone failed.
+https://github.com/apache/dubbo,clone,Repository clone failed.
+https://github.com/apache/flink,clone,Repository clone failed.
+https://github.com/apache/incubator-seata,clone,Repository clone failed.
+https://github.com/apache/shardingsphere,clone,Repository clone failed.
+https://github.com/apache/skywalking,clone,Repository clone failed.
+https://github.com/binarywang/WxJava,clone,Repository clone failed.
+https://github.com/blender/blender,clone,Repository clone failed.
+https://github.com/bumptech/glide,clone,Repository clone failed.
+https://github.com/chromium/chromium,clone,Repository clone failed.
+https://github.com/cockroachdb/cockroach,clone,Repository clone failed.
+https://github.com/elastic/elasticsearch,clone,Repository clone failed.
+https://github.com/eugenp/tutorials,clone,Repository clone failed.
+https://github.com/gatsbyjs/gatsby,clone,Repository clone failed.
+https://github.com/hashicorp/terraform,clone,Repository clone failed.
+https://github.com/iBotPeaches/Apktool,clone,Repository clone failed.
+https://github.com/jeecgboot/JeecgBoot,clone,Repository clone failed.
+https://github.com/juanfont/headscale,clone,Repository clone failed.
+https://github.com/keycloak/keycloak,clone,Repository clone failed.
+https://github.com/libgdx/libgdx,clone,Repository clone failed.
+https://github.com/moby/moby,clone,Repository clone failed.
+https://github.com/pytorch/pytorch,clone,Repository clone failed.
+https://github.com/react/react,clone,Repository clone failed.
+https://github.com/react/react-native,clone,Repository clone failed.
+https://github.com/spring-projects/spring-boot,clone,Repository clone failed.
+https://github.com/spring-projects/spring-framework,clone,Repository clone failed.
+https://github.com/vercel/next.js,clone,Repository clone failed.
+https://github.com/wailsapp/wails,clone,Repository clone failed.
+https://github.com/webpack/webpack,clone,Repository clone failed.
+https://github.com/yarnpkg/yarn,clone,Repository clone failed.
+https://github.com/yudaocode/SpringBoot-Labs,clone,Repository clone failed.
+https://github.com/SpecterOps/Nemesis,clone,Repository clone failed.
+https://github.com/molecularsets/moses,clone,Repository clone failed.
+https://github.com/coreybutler/nvm-windows,clone,name 'repo_result' is not defined
+https://github.com/papercopilot/paperlists,clone,"Clone failed for https://github.com/papercopilot/paperlists: Cmd('git') failed due to: exit code(128)
+  cmdline: git clone -v --depth=1 -- https://github.com/papercopilot/paperlists repositories\papercopilot_paperlists
+  stderr: 'Cloning into 'repositories\papercopilot_paperlists'...
+POST git-upload-pack (193 bytes)
+POST git-upload-pack (262 bytes)
+Updating files:   9% (30/304)
+Updating files:  10% (31/304)
+Updating files:  11% (34/304)
+Updating files:  12% (37/304)
+Updating files:  13% (40/304)
+Updating files:  14% (43/304)
+Updating files:  15% (46/304)
+Updating files:  16% (49/304)
+Updating files:  17% (52/304)
+Updating files:  18% (55/304)
+Updating files:  19% (58/304)
+Updating files:  20% (61/304)
+Updating files:  21% (64/304)
+Updating files:  22% (67/304)
+Updating files:  23% (70/304)
+Updating files:  24% (73/304)
+Updating files:  25% (76/304)
+Updating files:  26% (80/304)
+Updating files:  27% (83/304)
+Updating files:  28% (86/304)
+Updating files:  29% (89/304)
+Updating files:  30% (92/304)
+Updating files:  31% (95/304)
+Updating files:  32% (98/304)
+Updating files:  33% (101/304)
+Updating files:  34% (104/304)
+Updating files:  35% (107/304)
+Updating files:  36% (110/304)
+Updating files:  37% (113/304)
+Updating files:  38% (116/304)
+Updating files:  39% (119/304)
+Updating files:  39% (120/304)
+Updating files:  40% (122/304)
+Updating files:  40% (123/304)
+Updating files:  40% (124/304)
+Updating files:  41% (125/304)
+Updating files:  42% (128/304)
+Updating files:  43% (131/304)
+Updating files:  44% (134/304)
+Updating files:  44% (136/304)
+Updating files:  45% (137/304)
+Updating files:  45% (139/304)
+Updating files:  46% (140/304)
+Updating files:  47% (143/304)
+Updating files:  48% (146/304)
+Updating files:  49% (149/304)
+Updating files:  50% (152/304)
+Updating files:  51% (156/304)
+Updating files:  52% (159/304)
+Updating files:  53% (162/304)
+Updating files:  54% (165/304)
+Updating files:  55% (168/304)
+Updating files:  56% (171/304)
+Updating files:  57% (174/304)
+Updating files:  58% (177/304)
+Updating files:  58% (178/304)
+Updating files:  59% (180/304)
+Updating files:  60% (183/304)
+Updating files:  61% (186/304)
+Updating files:  62% (189/304)
+Updating files:  63% (192/304)
+Updating files:  64% (195/304)
+Updating files:  65% (198/304)
+Updating files:  66% (201/304)
+Updating files:  67% (204/304)
+Updating files:  68% (207/304)
+Updating files:  69% (210/304)
+Updating files:  70% (213/304)
+Updating files:  71% (216/304)
+Updating files:  72% (219/304)
+Updating files:  73% (222/304)
+Updating files:  74% (225/304)
+Updating files:  75% (228/304)
+Updating files:  76% (232/304)
+Updating files:  77% (235/304)
+Updating files:  78% (238/304)
+Updating files:  79% (241/304)
+Updating files:  80% (244/304)
+Updating files:  81% (247/304)
+Updating files:  82% (250/304)
+Updating files:  83% (253/304)
+Updating files:  84% (256/304)
+Updating files:  85% (259/304)
+Updating files:  86% (262/304)
+Updating files:  87% (265/304)
+Updating files:  88% (268/304)
+Updating files:  89% (271/304)
+Updating files:  90% (274/304)
+Updating files:  91% (277/304)
+Updating files:  92% (280/304)
+Updating files:  93% (283/304)
+Updating files:  94% (286/304)
+Updating files:  95% (289/304)
+Updating files:  96% (292/304)
+Updating files:  96% (294/304)
+Updating files:  97% (295/304)
+Updating files:  98% (298/304)
+Updating files:  99% (301/304)
+Updating files: 100% (304/304)
+Updating files: 100% (304/304), done.
+Downloading iclr/iclr2025.json (55 MB)
+Error downloading object: iclr/iclr2025.json (d288d03): Smudge error: Error downloading iclr/iclr2025.json (d288d0348d121671156481f0939312a45abbc5f95511c15c4b9a6e9675d19549): batch response: This repository exceeded its LFS budget. The account responsible for the budget should increase it to restore access.
+
+Errors logged to 'C:\D_I_P\developer_intelligence_platform-main\repositories\papercopilot_paperlists\.git\lfs\logs\20260830T180609.4065704.log'.
+Use `git lfs logs last` to view the log.
+error: external filter 'git-lfs filter-process' failed
+fatal: iclr/iclr2025.json: smudge filter lfs failed
+warning: Clone succeeded, but checkout failed.
+You can inspect what was checked out with 'git status'
+and retry with 'git restore --source=HEAD :/'
+
+'"
+https://github.com/fportantier/habu,clone,Clone failed for https://github.com/fportantier/habu: windows_invalid_path
+https://github.com/JohnSnowLabs/nlu,clone,Clone failed for https://github.com/JohnSnowLabs/nlu: windows_filename_too_long
+https://github.com/Dump-GUY/Malware-analysis-and-Reverse-engineering,clone,Clone failed for https://github.com/Dump-GUY/Malware-analysis-and-Reverse-engineering: windows_filename_too_long
+https://github.com/NVIDIA/NVFlare,clone,Clone failed for https://github.com/NVIDIA/NVFlare: windows_filename_too_long
+https://github.com/noahgsolomon/brainrot.js,clone,Clone failed for https://github.com/noahgsolomon/brainrot.js: windows_invalid_path
+https://github.com/AcademySoftwareFoundation/OpenCue,clone,Clone failed for https://github.com/AcademySoftwareFoundation/OpenCue: windows_filename_too_long
+https://github.com/paxx12-snapmaker-u1/SnapmakerU1-Extended-Firmware,clone,Clone failed for https://github.com/paxx12-snapmaker-u1/SnapmakerU1-Extended-Firmware: windows_filename_too_long
+https://github.com/forcedotcom/sf-skills,clone,Clone failed for https://github.com/forcedotcom/sf-skills: windows_filename_too_long
+https://github.com/yangpeng14/DevOps,clone,Clone failed for https://github.com/yangpeng14/DevOps: windows_invalid_path
+https://github.com/SandAI-org/MagiAttention,clone,Clone failed for https://github.com/SandAI-org/MagiAttention: windows_invalid_path
+https://github.com/aws-solutions/aws-waf-security-automations,clone,Clone failed for https://github.com/aws-solutions/aws-waf-security-automations: windows_filename_too_long
+https://github.com/sidpalas/devops-directive-github-actions-course,clone,Clone failed for https://github.com/sidpalas/devops-directive-github-actions-course: windows_filename_too_long
+https://github.com/open-mmlab/mmsegmentation,clone,Clone failed for https://github.com/open-mmlab/mmsegmentation: windows_filename_too_long
+https://github.com/Imbad0202/academic-research-skills-codex,clone,Clone failed for https://github.com/Imbad0202/academic-research-skills-codex: windows_filename_too_long
+https://github.com/wyh-spring-ecosystem-student/spring-boot-student,clone,Clone failed for https://github.com/wyh-spring-ecosystem-student/spring-boot-student: windows_invalid_path
+https://github.com/bytechefhq/bytechef,clone,Clone failed for https://github.com/bytechefhq/bytechef: windows_filename_too_long
+https://github.com/spring-cloud/spring-cloud-stream-samples,clone,Clone failed for https://github.com/spring-cloud/spring-cloud-stream-samples: windows_filename_too_long
+https://github.com/spring-projects/spring-tools,clone,Clone failed for https://github.com/spring-projects/spring-tools: windows_filename_too_long
+https://github.com/Jeremiahcheng1206/AML-Monitoring-Engine,clone,Clone failed for https://github.com/Jeremiahcheng1206/AML-Monitoring-Engine: windows_filename_too_long
+https://github.com/lishuangqiang/AI-Meeting,clone,Clone failed for https://github.com/lishuangqiang/AI-Meeting: network_failure
+https://github.com/neo4j-labs/neosemantics,clone,Clone failed for https://github.com/neo4j-labs/neosemantics: windows_invalid_path
+https://github.com/mirkosertic/Bytecoder,clone,Clone failed for https://github.com/mirkosertic/Bytecoder: windows_filename_too_long
+https://github.com/spring-projects/spring-data-rest,clone,Clone failed for https://github.com/spring-projects/spring-data-rest: windows_filename_too_long
+https://github.com/spring-io/spring-javaformat,clone,Clone failed for https://github.com/spring-io/spring-javaformat: windows_filename_too_long
+https://github.com/wetw0rk/AWAE-PREP,clone,Clone failed for https://github.com/wetw0rk/AWAE-PREP: windows_invalid_path
+https://github.com/android-cn/android-open-project-demo,clone,Clone failed for https://github.com/android-cn/android-open-project-demo: windows_filename_too_long
+https://github.com/dotCMS/core,clone,Clone failed for https://github.com/dotCMS/core: windows_filename_too_long
+https://github.com/operator-framework/java-operator-sdk,clone,Clone failed for https://github.com/operator-framework/java-operator-sdk: windows_filename_too_long
+https://github.com/apache/skywalking-java,clone,Clone failed for https://github.com/apache/skywalking-java: windows_filename_too_long
+https://github.com/payara/Payara,clone,Clone failed for https://github.com/payara/Payara: windows_filename_too_long
+https://github.com/odpi/egeria,clone,Clone failed for https://github.com/odpi/egeria: windows_filename_too_long
+https://github.com/LoveMyOrange/ActivitiSourceCode,clone,Clone failed for https://github.com/LoveMyOrange/ActivitiSourceCode: windows_filename_too_long
+https://github.com/Auties00/Cobalt,clone,Clone failed for https://github.com/Auties00/Cobalt: windows_filename_too_long
+https://github.com/kaiwaehner/kafka-streams-machine-learning-examples,clone,Clone failed for https://github.com/kaiwaehner/kafka-streams-machine-learning-examples: windows_filename_too_long
+https://github.com/apache/causeway,clone,Clone failed for https://github.com/apache/causeway: windows_filename_too_long
+https://github.com/Creators-of-Aeronautics/Simulated-Project,clone,Clone failed for https://github.com/Creators-of-Aeronautics/Simulated-Project: windows_filename_too_long
+https://github.com/openmemind/memind,clone,Clone failed for https://github.com/openmemind/memind: windows_filename_too_long
+https://github.com/OpenIdentityPlatform/OpenAM,clone,Clone failed for https://github.com/OpenIdentityPlatform/OpenAM: windows_filename_too_long
+https://github.com/adempiere/adempiere,clone,Clone failed for https://github.com/adempiere/adempiere: windows_filename_too_long
+https://github.com/dromara/dax-pay,clone,Clone failed for https://github.com/dromara/dax-pay: windows_filename_too_long
+https://github.com/mercyblitz/geekbang-lessons,clone,Clone failed for https://github.com/mercyblitz/geekbang-lessons: windows_filename_too_long
+https://github.com/wso2/product-is,clone,Clone failed for https://github.com/wso2/product-is: windows_filename_too_long
+https://github.com/apache/seatunnel-web,clone,Clone failed for https://github.com/apache/seatunnel-web: windows_filename_too_long
+https://github.com/TencentBlueKing/bk-job,clone,Clone failed for https://github.com/TencentBlueKing/bk-job: windows_filename_too_long

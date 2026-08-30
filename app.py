@@ -1,84 +1,373 @@
 from flask import Flask, render_template, request, redirect, url_for
 
+import time
+
 from analyzer.clone_repo import clone_repository
 from analyzer.repo_info import repository_information
 from analyzer.language_detector import detect_languages
 from analyzer.tech_stack import detect_tech_stack
-from utils.validators import validate_github_url
 from analyzer.repository_overview import get_repository_overview
 from analyzer.repository_statistics import repository_statistics
 from analyzer.readme_analyzer import analyze_readme
 from analyzer.dependency_analyzer import analyze_dependencies
 from analyzer.complexity_analyzer import analyze_complexity
+from analyzer.health_score import (
+    calculate_health_score,
+    classify_health,
+)
+
+from utils.validators import validate_github_url
+
 from ai.summary_generator import generate_ai_summary
+
+# ML
 from ml.scripts.github_api import get_github_data
-from ml.predict import predict_health_score
-import time
+from ml.health_predictor import predict_health_details
+
+
+# ============================================================================
+# Flask application
+# ============================================================================
 
 app = Flask(__name__)
+
 app.secret_key = "developer_intelligence"
 
-# Holds the most recently completed analysis so the standalone feature pages
-# (summary, health, architecture, security, tech, chat) can render it via a
-# plain GET request without re-cloning/re-analyzing the repo.
-# NOTE: this is process-wide, in-memory state — fine for a single-user local
-# app, but if this ever runs with multiple workers/users at once, swap this
-# for a per-session store (e.g. flask.session, or a keyed cache by repo_url).
+
+# ============================================================================
+# Most recently completed analysis
+#
+# Fine for the current single-user/local prototype.
+# ============================================================================
+
 LAST_CONTEXT = None
 
 
+# ============================================================================
+# Context helper
+# ============================================================================
+
 def get_context_or_redirect():
-    """Returns the last analysis context, or None if nothing's been analyzed yet."""
+    """Return the most recently completed analysis context."""
+
     return LAST_CONTEXT
 
 
+# ============================================================================
+# ML feature vector
+# ============================================================================
+
+def build_ml_features(
+    github_data,
+    statistics,
+    overview,
+    readme,
+    dependencies,
+    complexity,
+    languages,
+    tech,
+):
+    """
+    Build the exact feature dictionary expected by the trained
+    classification model.
+    """
+
+    complexity_value = complexity.get(
+        "complexity",
+        None,
+    )
+
+    functions_value = complexity.get(
+        "functions",
+        None,
+    )
+
+    return {
+
+        # --------------------------------------------------------
+        # Repository statistics
+        # --------------------------------------------------------
+
+        "total_files": statistics.get(
+            "total_files",
+            0,
+        ),
+
+        "total_folders": statistics.get(
+            "total_folders",
+            0,
+        ),
+
+        "lines": statistics.get(
+            "lines",
+            0,
+        ),
+
+        # --------------------------------------------------------
+        # Language-specific counts
+        # --------------------------------------------------------
+
+        "python": statistics.get(
+            "python",
+            0,
+        ),
+
+        "html": statistics.get(
+            "html",
+            0,
+        ),
+
+        "css": statistics.get(
+            "css",
+            0,
+        ),
+
+        "javascript": statistics.get(
+            "javascript",
+            0,
+        ),
+
+        "java": statistics.get(
+            "java",
+            0,
+        ),
+
+        "cpp": statistics.get(
+            "cpp",
+            0,
+        ),
+
+        # --------------------------------------------------------
+        # Dependencies
+        # --------------------------------------------------------
+
+        "dependency_count": len(
+            dependencies
+        ),
+
+        # --------------------------------------------------------
+        # README
+        # --------------------------------------------------------
+
+        "readme_score": readme.get(
+            "score",
+            0,
+        ),
+
+        # --------------------------------------------------------
+        # Complexity
+        # --------------------------------------------------------
+
+        "functions": functions_value,
+
+        "complexity": complexity_value,
+
+        # --------------------------------------------------------
+        # Counts
+        # --------------------------------------------------------
+
+        "language_count": len(
+            languages
+        ),
+
+        "tech_stack_count": len(
+            tech
+        ),
+
+        # --------------------------------------------------------
+        # Repository hygiene
+        # --------------------------------------------------------
+
+        "has_readme": overview.get(
+            "README",
+            False,
+        ),
+
+        "has_license": overview.get(
+            "License",
+            False,
+        ),
+
+        "has_gitignore": overview.get(
+            ".gitignore",
+            False,
+        ),
+
+        # --------------------------------------------------------
+        # GitHub metadata
+        # --------------------------------------------------------
+
+        "language": github_data.get(
+            "language",
+            "",
+        ),
+
+        "size": github_data.get(
+            "size",
+            0,
+        ),
+
+        "created_days": github_data.get(
+            "created_days",
+            0,
+        ),
+
+        "updated_days": github_data.get(
+            "updated_days",
+            0,
+        ),
+
+        # --------------------------------------------------------
+        # Metric-support indicators
+        # --------------------------------------------------------
+
+        "complexity_supported": (
+            complexity_value is not None
+            and complexity_value != "Not Supported"
+            and complexity_value != "-"
+        ),
+
+        "functions_supported": (
+            functions_value is not None
+            and functions_value != "Not Supported"
+            and functions_value != "-"
+        ),
+    }
+
+
+# ============================================================================
+# HOME
+# ============================================================================
+
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template(
+        "index.html"
+    )
 
 
-@app.route("/analyze", methods=["POST"])
+# ============================================================================
+# ANALYZE REPOSITORY
+# ============================================================================
+
+@app.route(
+    "/analyze",
+    methods=["POST"],
+)
 def analyze():
+
     global LAST_CONTEXT
 
     start_time = time.time()
 
-    repo_url = request.form["repo_url"]
+    repo_url = request.form.get(
+        "repo_url",
+        "",
+    ).strip()
 
-    if not validate_github_url(repo_url):
-        return render_template(
-        "index.html",
-        error="Please enter a valid GitHub repository URL."
-    )
+    # ------------------------------------------------------------------------
+    # Validate URL
+    # ------------------------------------------------------------------------
 
-    github_data = get_github_data(repo_url)
+    if not validate_github_url(
+        repo_url
+    ):
 
-    if github_data is None:
-        return render_template(
-        "index.html",
-        error="Unable to retrieve repository information from GitHub."
-    )
-
-    print("✓ GitHub API")
-
-    success, result = clone_repository(repo_url)
-    if not success:
         return render_template(
             "index.html",
-            error=result
+            error=(
+                "Please enter a valid "
+                "GitHub repository URL."
+            ),
         )
+
+    # ------------------------------------------------------------------------
+    # GitHub API
+    # ------------------------------------------------------------------------
+
+    github_data = get_github_data(
+        repo_url
+    )
+
+    if github_data is None:
+
+        return render_template(
+            "index.html",
+            error=(
+                "Could not retrieve "
+                "repository information "
+                "from GitHub."
+            ),
+        )
+
+    print(
+        "✅ GitHub API Done"
+    )
+
+    # ------------------------------------------------------------------------
+    # Clone repository
+    # ------------------------------------------------------------------------
+
+    success, result = clone_repository(
+        repo_url
+    )
+
+    if not success:
+
+        return render_template(
+            "index.html",
+            error=result,
+        )
+
     repo_path = result
-    repo_info = repository_information(repo_path)
-    overview = get_repository_overview(repo_path)
-    print("OVERVIEW:", overview)
 
-    languages = detect_languages(repo_path)
+    print(
+        "✅ Clone Done"
+    )
 
-    tech = detect_tech_stack(repo_path)
-    dependencies = analyze_dependencies(repo_path)
-    statistics = repository_statistics(repo_path)
-    complexity = analyze_complexity(repo_path)
-    readme = analyze_readme(repo_path)
+    # ------------------------------------------------------------------------
+    # Repository analyzers
+    # ------------------------------------------------------------------------
+
+    repo_info = repository_information(
+        repo_path
+    )
+
+    overview = get_repository_overview(
+        repo_path
+    )
+
+    languages = detect_languages(
+        repo_path
+    )
+
+    tech = detect_tech_stack(
+        repo_path
+    )
+
+    dependencies = analyze_dependencies(
+        repo_path
+    )
+
+    statistics = repository_statistics(
+        repo_path
+    )
+
+    complexity = analyze_complexity(
+        repo_path
+    )
+
+    readme = analyze_readme(
+        repo_path
+    )
+
+    print(
+        "✅ Repository analysis complete"
+    )
+
+    # ------------------------------------------------------------------------
+    # AI summary
+    # ------------------------------------------------------------------------
 
     ai_summary = generate_ai_summary(
         overview,
@@ -87,140 +376,414 @@ def analyze():
         statistics,
         readme,
         complexity,
-        dependencies
+        dependencies,
     )
-    print(ai_summary)
 
-    # ML HEALTH SCORE
+    # ------------------------------------------------------------------------
+    # Build ML feature vector
+    # ------------------------------------------------------------------------
 
+    ml_features = build_ml_features(
+        github_data=github_data,
+        statistics=statistics,
+        overview=overview,
+        readme=readme,
+        dependencies=dependencies,
+        complexity=complexity,
+        languages=languages,
+        tech=tech,
+    )
 
-    ml_features = {
-    "total_files": statistics["total_files"],
-    "total_folders": statistics["total_folders"],
-    "lines": statistics["lines"],
+    print(
+        "✅ ML feature vector created"
+    )
 
-    "python": statistics["python"],
-    "html": statistics["html"],
-    "css": statistics["css"],
-    "javascript": statistics["javascript"],
-    "java": statistics["java"],
-    "cpp": statistics["cpp"],
+    # ------------------------------------------------------------------------
+    # ML classification
+    # ------------------------------------------------------------------------
 
-    "dependency_count": len(dependencies),
+    try:
 
-    "readme_score": readme["score"],
+        health_prediction = (
+            predict_health_details(
+                ml_features
+            )
+        )
 
-    "functions": complexity["functions"],
-    "complexity": complexity["complexity"],
+        print(
+            "✅ ML Health Prediction:",
+            health_prediction,
+        )
 
-    "language_count": len(languages),
-    "tech_stack_count": len(tech),
+    except Exception as exc:
 
-    "has_readme": int(overview["README"]),
-    "has_license": int(overview["License"]),
-    "has_gitignore": int(overview[".gitignore"]),
+        print(
+            "❌ ML prediction failed:",
+            exc,
+        )
 
-    "stars": github_data["stars"],
-    "forks": github_data["forks"],
-    "watchers": github_data["watchers"],
-    "open_issues": github_data["open_issues"],
+        return render_template(
+            "index.html",
+            error=(
+                "Repository analysis completed, "
+                "but ML health prediction failed."
+            ),
+        )
 
-    "language": github_data["language"],
+    # ------------------------------------------------------------------------
+    # AUTHORITATIVE BASELINE HEALTH SCORE
+    #
+    # This is calculated from the CURRENT health_score.py implementation.
+    # It is separate from the ML classification result.
+    # ------------------------------------------------------------------------
 
-    "size": github_data["size"],
+    baseline_features = {
 
-    "created_days": github_data["created_days"],
-    "updated_days": github_data["updated_days"]
+        "readme_score": readme.get(
+            "score",
+            0,
+        ),
+
+        "has_readme": overview.get(
+            "README",
+            False,
+        ),
+
+        "has_license": overview.get(
+            "License",
+            False,
+        ),
+
+        "has_gitignore": overview.get(
+            ".gitignore",
+            False,
+        ),
+
+        "complexity": complexity.get(
+            "complexity",
+            None,
+        ),
+
+        "dependency_count": len(
+            dependencies
+        ),
+
+        "updated_days": github_data.get(
+            "updated_days",
+            0,
+        ),
+
+        "total_files": statistics.get(
+            "total_files",
+            0,
+        ),
+
+        "total_folders": statistics.get(
+            "total_folders",
+            0,
+        ),
+
+        "lines": statistics.get(
+            "lines",
+            0,
+        ),
+
+        "functions": complexity.get(
+            "functions",
+            None,
+        ),
     }
 
-    health_score = predict_health_score(
-    ml_features
+    baseline_health_score = (
+        calculate_health_score(
+            baseline_features
+        )
     )
-    print(f"✓ ML Health Score: {health_score:.2f}")
+
+    baseline_health_grade = (
+        classify_health(
+            baseline_health_score
+        )
+    )
+
+    print(
+        "✅ Baseline Health Score:",
+        baseline_health_score,
+    )
+
+    print(
+        "✅ Baseline Health Grade:",
+        baseline_health_grade,
+    )
+
+    # ------------------------------------------------------------------------
+    # Store the authoritative baseline score in the summary.
+    #
+    # This replaces the old simplified score generated by summary_generator.
+    # ------------------------------------------------------------------------
+
+    ai_summary["health_score"] = (
+        baseline_health_score
+    )
+
+    ai_summary["baseline_health_grade"] = (
+        baseline_health_grade
+    )
+
+    # ------------------------------------------------------------------------
+    # Store ML grade separately.
+    # ------------------------------------------------------------------------
+
+    ai_summary["health_grade"] = (
+        health_prediction["grade"]
+    )
+
+    # ------------------------------------------------------------------------
+    # Save context
+    # ------------------------------------------------------------------------
+
     end_time = time.time()
-    print(f"Analysis completed in {end_time - start_time:.2f} seconds")
 
-    LAST_CONTEXT = dict(
-    repo=repo_info,
-    overview=overview,
-    languages=languages,
-    tech=tech,
-    readme=readme,
-    dependencies=dependencies,
-    statistics=statistics,
-    complexity=complexity,
-    ai_summary=ai_summary,
-    health_score=health_score,
-    ml_features=ml_features,
-    repo_path=repo_path,
+    print(
+        f"Analysis completed in "
+        f"{end_time - start_time:.2f} seconds"
     )
 
-    # Redirect (not render) so a page refresh doesn't resubmit the form,
-    # and so /summary, /health, etc. all have somewhere to pull data from.
-    return redirect(url_for("dashboard"))
+    LAST_CONTEXT = {
+
+        "repo": repo_info,
+
+        "github_data": github_data,
+
+        "overview": overview,
+
+        "languages": languages,
+
+        "tech": tech,
+
+        "readme": readme,
+
+        "dependencies": dependencies,
+
+        "statistics": statistics,
+
+        "complexity": complexity,
+
+        "ai_summary": ai_summary,
+
+        "repo_path": repo_path,
+
+        # ----------------------------------------------------
+        # ML data
+        # ----------------------------------------------------
+
+        "ml_features": ml_features,
+
+        "health_prediction": health_prediction,
+
+        # ----------------------------------------------------
+        # Explicit baseline data
+        # ----------------------------------------------------
+
+        "baseline_health_score": (
+            baseline_health_score
+        ),
+
+        "baseline_health_grade": (
+            baseline_health_grade
+        ),
+    }
+
+    # ------------------------------------------------------------------------
+    # Redirect to dashboard
+    # ------------------------------------------------------------------------
+
+    return redirect(
+        url_for("dashboard")
+    )
 
 
-@app.route("/dashboard")
+# ============================================================================
+# DASHBOARD
+# ============================================================================
+
+@app.route(
+    "/dashboard"
+)
 def dashboard():
-    context = get_context_or_redirect()
+
+    context = (
+        get_context_or_redirect()
+    )
+
     if context is None:
-        return redirect(url_for("home"))
-    return render_template("dashboard.html", **context)
+
+        return redirect(
+            url_for("home")
+        )
+
+    return render_template(
+        "dashboard.html",
+        **context,
+    )
 
 
-@app.route("/summary")
+# ============================================================================
+# SUMMARY
+# ============================================================================
+
+@app.route(
+    "/summary"
+)
 def summary():
-    context = get_context_or_redirect()
+
+    context = (
+        get_context_or_redirect()
+    )
+
     if context is None:
-        return redirect(url_for("home"))
 
-    print(context.keys())     
+        return redirect(
+            url_for("home")
+        )
 
-    return render_template("summary.html", **context)
+    return render_template(
+        "summary.html",
+        **context,
+    )
 
-@app.route("/health")
+
+# ============================================================================
+# HEALTH
+# ============================================================================
+
+@app.route(
+    "/health"
+)
 def health():
-    context = get_context_or_redirect()
+
+    context = (
+        get_context_or_redirect()
+    )
+
     if context is None:
-        return redirect(url_for("home"))
-    return render_template("health.html", **context)
+
+        return redirect(
+            url_for("home")
+        )
+
+    return render_template(
+        "health.html",
+        **context,
+    )
 
 
-@app.route("/architecture")
+# ============================================================================
+# ARCHITECTURE
+# ============================================================================
+
+@app.route(
+    "/architecture"
+)
 def architecture():
-    context = get_context_or_redirect()
+
+    context = (
+        get_context_or_redirect()
+    )
+
     if context is None:
-        return redirect(url_for("home"))
-    return render_template("architecture.html", **context)
+
+        return redirect(
+            url_for("home")
+        )
+
+    return render_template(
+        "architecture.html",
+        **context,
+    )
 
 
-@app.route("/security")
+# ============================================================================
+# SECURITY
+# ============================================================================
+
+@app.route(
+    "/security"
+)
 def security():
-    context = get_context_or_redirect()
+
+    context = (
+        get_context_or_redirect()
+    )
+
     if context is None:
-        return redirect(url_for("home"))
-    return render_template("security.html", **context)
+
+        return redirect(
+            url_for("home")
+        )
+
+    return render_template(
+        "security.html",
+        **context,
+    )
 
 
-@app.route("/tech")
+# ============================================================================
+# TECH STACK
+# ============================================================================
+
+@app.route(
+    "/tech"
+)
 def tech():
-    context = get_context_or_redirect()
+
+    context = (
+        get_context_or_redirect()
+    )
+
     if context is None:
-        return redirect(url_for("home"))
-    return render_template("tech.html", **context)
+
+        return redirect(
+            url_for("home")
+        )
+
+    return render_template(
+        "tech.html",
+        **context,
+    )
 
 
-@app.route("/chat")
+# ============================================================================
+# AI CHAT
+# ============================================================================
+
+@app.route(
+    "/chat"
+)
 def chat():
-    context = get_context_or_redirect()
+
+    context = (
+        get_context_or_redirect()
+    )
+
     if context is None:
-        return redirect(url_for("home"))
-    return render_template("chat.html", **context)
 
-@app.route("/about")
-def about():
-    return render_template("about.html")
+        return redirect(
+            url_for("home")
+        )
 
+    return render_template(
+        "chat.html",
+        **context,
+    )
+
+
+# ============================================================================
+# RUN APPLICATION
+# ============================================================================
 
 if __name__ == "__main__":
-    app.run(debug=True)
+
+    app.run(
+        debug=True,use_reloader=False
+    )

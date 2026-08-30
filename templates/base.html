@@ -18,13 +18,20 @@
 <body class="dashboard">
     <header>
         <nav>
-            <a href="/" class="logo">
+            <a href="{{ url_for('home') }}" class="logo">
                 <span class="logo-mark">&lt;/&gt;</span>
-                <span class="logo-text">Developer Intelligence Platform</span>
+                <span class="logo-text">
+                    Developer Intelligence Platform
+                </span>
             </a>
+
             <ul>
                 {% block nav_links %}
-                <li><a href="{{ url_for('dashboard') }}">&larr; dashboard</a></li>
+                <li>
+                    <a href="{{ url_for('home') }}">
+                        &larr; home
+                    </a>
+                </li>
                 {% endblock %}
             </ul>
         </nav>

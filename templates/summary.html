@@ -1,176 +1,901 @@
 {% extends "base.html" %}
+
 {% block title %}AI Summary{% endblock %}
 
 {% block content %}
+
+<!-- ============================================================
+     PAGE HEADER
+============================================================ -->
+
 <div class="page-header" style="--card-accent: var(--accent-violet);">
+
     <div class="card-head">
         <span class="card-dot"></span>
-        <span class="card-file">summary.md</span>
+        <span class="card-file">summary.ml</span>
     </div>
-    <h1 class="title">AI Summary</h1>
+
+    <h1 class="title">
+        Repository Intelligence Summary
+    </h1>
+
+    <p class="empty-note">
+        ML-powered repository analysis from extracted repository features.
+    </p>
+
 </div>
 
-<!-- Score + charts row -->
+
+<!-- ============================================================
+     SERVER DATA FOR JAVASCRIPT
+     
+     Jinja values stay outside JavaScript to avoid editor
+     JavaScript syntax errors.
+============================================================ -->
+
+<div id="summaryData" data-health-score="{{ baseline_health_score | default(0) }}"
+    data-documentation-score="{{ readme.score | default(0) }}" data-languages='{{ languages | default({}) | tojson }}'>
+</div>
+
+
+<!-- ============================================================
+     TOP SUMMARY
+============================================================ -->
+
 <div class="summary-top-grid">
 
-    <section class="dash-panel score-panel" style="--panel-accent: var(--accent-violet);">
-        <p class="eyebrow">// health score</p>
-        <div class="score-ring-wrap">
-            <canvas id="healthGaugeChart" width="180" height="180"></canvas>
-            <div class="score-ring-center">
-                <span class="score-ring-value">{{ ai_summary.health_score }}</span>
-                <span class="score-ring-max">/ 100</span>
+    <!-- ========================================================
+         ML PREDICTION
+    ========================================================= -->
+
+    <section class="dash-panel score-panel" style="--panel-accent: var(--accent-green);">
+
+        <p class="eyebrow">
+            // machine learning prediction
+        </p>
+
+        <div style="
+                text-align: center;
+                padding: 28px 10px;
+            ">
+
+            <div style="
+                    font-size: 0.85rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    opacity: 0.6;
+                    margin-bottom: 10px;
+                ">
+                Predicted Health Grade
             </div>
+
+            <div style="
+                    font-size: 2.8rem;
+                    line-height: 1;
+                    font-weight: 700;
+                ">
+                {{ health_prediction.grade }}
+            </div>
+
+            <div style="
+                    margin-top: 12px;
+                    font-size: 0.8rem;
+                    opacity: 0.55;
+                ">
+                Random Forest Classifier
+            </div>
+
         </div>
+
     </section>
 
+
+    <!-- ========================================================
+         BASELINE SCORE
+    ========================================================= -->
+
+    <section class="dash-panel" style="--panel-accent: var(--accent-violet);">
+
+        <p class="eyebrow">
+            // baseline assessment
+        </p>
+
+        <div style="
+                text-align: center;
+                padding: 28px 10px;
+            ">
+
+            <div style="
+                    font-size: 0.85rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    opacity: 0.6;
+                    margin-bottom: 10px;
+                ">
+                Baseline Health Score
+            </div>
+
+            <div style="
+                    font-size: 2.8rem;
+                    line-height: 1;
+                    font-weight: 700;
+                ">
+                {{ baseline_health_score }}
+                <span style="
+                        font-size: 1rem;
+                        opacity: 0.5;
+                    ">
+                    / 100
+                </span>
+            </div>
+
+            <div style="
+                    margin-top: 12px;
+                    font-size: 0.85rem;
+                    opacity: 0.65;
+                ">
+                {{ baseline_health_grade }}
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================================
+         LANGUAGE DISTRIBUTION
+    ========================================================= -->
+
     <section class="dash-panel" style="--panel-accent: var(--accent-green);">
-        <p class="eyebrow">// language distribution</p>
+
+        <p class="eyebrow">
+            // language distribution
+        </p>
+
         <div class="chart-box">
             <canvas id="languageChart"></canvas>
         </div>
+
     </section>
 
+
+    <!-- ========================================================
+         DOCUMENTATION VS BASELINE
+    ========================================================= -->
+
     <section class="dash-panel" style="--panel-accent: var(--accent-amber);">
-        <p class="eyebrow">// documentation vs. health</p>
+
+        <p class="eyebrow">
+            // documentation vs baseline
+        </p>
+
         <div class="chart-box">
             <canvas id="scoreCompareChart"></canvas>
         </div>
+
     </section>
 
 </div>
 
-<!-- Insight cards -->
+
+<!-- ============================================================
+     INSIGHT CARDS
+============================================================ -->
+
 <div class="insight-grid">
 
     <article class="insight-card" style="--insight-accent: var(--accent-violet);">
-        <span class="insight-icon">📌</span>
-        <h3>Project Overview</h3>
-        <p>{{ ai_summary.project_overview }}</p>
+
+        <span class="insight-icon">
+            📌
+        </span>
+
+        <h3>
+            Project Overview
+        </h3>
+
+        <p>
+            {{ ai_summary.project_overview }}
+        </p>
+
     </article>
+
 
     <article class="insight-card" style="--insight-accent: var(--accent-amber);">
-        <span class="insight-icon">📄</span>
-        <h3>Documentation</h3>
-        <p>{{ ai_summary.documentation }}</p>
+
+        <span class="insight-icon">
+            📄
+        </span>
+
+        <h3>
+            Documentation
+        </h3>
+
+        <p>
+            {{ ai_summary.documentation }}
+        </p>
+
     </article>
 
+
     <article class="insight-card" style="--insight-accent: var(--accent-green);">
-        <span class="insight-icon">💻</span>
-        <h3>Programming Languages</h3>
-        <p>{{ ai_summary.languages }}</p>
+
+        <span class="insight-icon">
+            💻
+        </span>
+
+        <h3>
+            Programming Languages
+        </h3>
+
+        <p>
+            {{ ai_summary.languages }}
+        </p>
+
     </article>
+
 
     <article class="insight-card" style="--insight-accent: var(--accent-violet);">
-        <span class="insight-icon">🛠</span>
-        <h3>Technology Stack</h3>
-        <p>{{ ai_summary.technology }}</p>
+
+        <span class="insight-icon">
+            🛠
+        </span>
+
+        <h3>
+            Technology Stack
+        </h3>
+
+        <p>
+            {{ ai_summary.technology }}
+        </p>
+
     </article>
+
 
     <article class="insight-card" style="--insight-accent: var(--accent-green);">
-        <span class="insight-icon">📦</span>
-        <h3>Dependencies</h3>
-        <p>{{ ai_summary.dependencies }}</p>
+
+        <span class="insight-icon">
+            📦
+        </span>
+
+        <h3>
+            Dependencies
+        </h3>
+
+        <p>
+            {{ ai_summary.dependencies }}
+        </p>
+
     </article>
 
+
     <article class="insight-card" style="--insight-accent: var(--accent-amber);">
-        <span class="insight-icon">📊</span>
-        <h3>Code Quality</h3>
-        <p>{{ ai_summary.quality }}</p>
+
+        <span class="insight-icon">
+            📊
+        </span>
+
+        <h3>
+            Code Quality
+        </h3>
+
+        <p>
+            {{ ai_summary.quality }}
+        </p>
+
     </article>
 
 </div>
 
-<!-- Suggestions -->
-<section class="dash-panel page-panel" style="--panel-accent: var(--accent-violet);">
-    <p class="eyebrow">// suggestions</p>
-    <ul class="suggestion-list">
-        {% for suggestion in ai_summary.suggestions %}
-        <li><span class="suggestion-check">✓</span>{{ suggestion }}</li>
-        {% endfor %}
-    </ul>
+
+<!-- ============================================================
+     MODEL INFORMATION
+============================================================ -->
+
+<section class="dash-panel page-panel" style="--panel-accent: var(--accent-green);">
+
+    <p class="eyebrow">
+        // model output
+    </p>
+
+    <div class="meta-list">
+
+        <div class="meta-row">
+
+            <dt>
+                Predicted Health
+            </dt>
+
+            <dd>
+                {{ health_prediction.grade }}
+            </dd>
+
+        </div>
+
+
+        <div class="meta-row">
+
+            <dt>
+                Baseline Score
+            </dt>
+
+            <dd>
+                {{ baseline_health_score }}/100
+            </dd>
+
+        </div>
+
+
+        <div class="meta-row">
+
+            <dt>
+                Baseline Grade
+            </dt>
+
+            <dd>
+                {{ baseline_health_grade }}
+            </dd>
+
+        </div>
+
+
+        <div class="meta-row">
+
+            <dt>
+                Model
+            </dt>
+
+            <dd>
+                Random Forest Classifier
+            </dd>
+
+        </div>
+
+
+        <div class="meta-row">
+
+            <dt>
+                Task
+            </dt>
+
+            <dd>
+                Multi-class classification
+            </dd>
+
+        </div>
+
+
+        <div class="meta-row">
+
+            <dt>
+                Classes
+            </dt>
+
+            <dd>
+                5
+            </dd>
+
+        </div>
+
+
+        <div class="meta-row">
+
+            <dt>
+                Documentation Score
+            </dt>
+
+            <dd>
+                {{ readme.score }}/100
+            </dd>
+
+        </div>
+
+
+        <div class="meta-row">
+
+            <dt>
+                Average Complexity
+            </dt>
+
+            <dd>
+                {{ complexity.complexity }}
+            </dd>
+
+        </div>
+
+
+        <div class="meta-row">
+
+            <dt>
+                Dependencies
+            </dt>
+
+            <dd>
+                {{ dependencies | length }}
+            </dd>
+
+        </div>
+
+
+        <div class="meta-row">
+
+            <dt>
+                Detected Languages
+            </dt>
+
+            <dd>
+                {{ languages | length }}
+            </dd>
+
+        </div>
+
+    </div>
+
 </section>
+
+
+<!-- ============================================================
+     SUGGESTIONS
+============================================================ -->
+
+<section class="dash-panel page-panel" style="--panel-accent: var(--accent-violet);">
+
+    <p class="eyebrow">
+        // suggestions
+    </p>
+
+    {% if ai_summary.suggestions %}
+
+    <ul class="suggestion-list">
+
+        {% for suggestion in ai_summary.suggestions %}
+
+        <li>
+
+            <span class="suggestion-check">
+                ✓
+            </span>
+
+            {{ suggestion }}
+
+        </li>
+
+        {% endfor %}
+
+    </ul>
+
+    {% else %}
+
+    <p class="empty-note">
+        No improvement suggestions were generated.
+    </p>
+
+    {% endif %}
+
+</section>
+
 {% endblock %}
 
+
 {% block extra_scripts %}
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const healthScore = {{ (ai_summary.health_score or 0) | int | tojson }};
-    const docScore = {{ (readme.score if readme is defined else 0) | int | tojson }};
-    const languages = {{ languages | tojson }};
 
-    const textMuted = "#8890a6";
-    const line = "#262a38";
-    const palette = ["#8b7fff", "#4fd1b5", "#f0a93e", "#f0616d", "#5b9dff", "#c792ea", "#ffb86b", "#6fd6ff"];
+    document.addEventListener("DOMContentLoaded", () => {
 
-    Chart.defaults.color = textMuted;
-    Chart.defaults.font.family = "Inter, sans-serif";
+        // ============================================================
+        // Read server data
+        // ============================================================
 
-    // --- Health score gauge ---
-    const healthColor = healthScore >= 80 ? "#4fd1b5" : healthScore >= 50 ? "#f0a93e" : "#f0616d";
-    new Chart(document.getElementById("healthGaugeChart"), {
-        type: "doughnut",
-        data: {
-            datasets: [{
-                data: [healthScore, 100 - healthScore],
-                backgroundColor: [healthColor, line],
-                borderWidth: 0,
-            }],
-        },
-        options: {
-            cutout: "78%",
-            rotation: -90,
-            circumference: 360,
-            plugins: { legend: { display: false }, tooltip: { enabled: false } },
-        },
+        const summaryData =
+            document.getElementById("summaryData");
+
+        if (!summaryData) {
+            console.error(
+                "summaryData element not found."
+            );
+            return;
+        }
+
+
+        // ============================================================
+        // Baseline health score
+        //
+        // IMPORTANT:
+        // This is the deterministic baseline score.
+        // The ML model predicts a grade, not a numeric score.
+        // ============================================================
+
+        const healthScore = Number(
+            summaryData.dataset.healthScore || 0
+        );
+
+
+        const documentationScore = Number(
+            summaryData.dataset.documentationScore || 0
+        );
+
+
+        // ============================================================
+        // Languages
+        // ============================================================
+
+        let languages = {};
+
+        try {
+
+            languages = JSON.parse(
+                summaryData.dataset.languages || "{}"
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Could not parse language data:",
+                error
+            );
+
+        }
+
+
+        // ============================================================
+        // Chart configuration
+        // ============================================================
+
+        const textMuted =
+            "#8890a6";
+
+        const line =
+            "#262a38";
+
+        const palette = [
+
+            "#8b7fff",
+
+            "#4fd1b5",
+
+            "#f0a93e",
+
+            "#f0616d",
+
+            "#5b9dff",
+
+            "#c792ea",
+
+            "#ffb86b",
+
+            "#6fd6ff"
+
+        ];
+
+
+        Chart.defaults.color =
+            textMuted;
+
+        Chart.defaults.font.family =
+            "Inter, sans-serif";
+
+
+        // ============================================================
+        // Safe score
+        // ============================================================
+
+        const safeHealthScore =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    healthScore
+                )
+            );
+
+
+        const safeDocumentationScore =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    documentationScore
+                )
+            );
+
+
+        // ============================================================
+        // Health color
+        // ============================================================
+
+        let healthColor =
+            "#f0616d";
+
+
+        if (
+            safeHealthScore >= 85
+        ) {
+
+            healthColor =
+                "#4fd1b5";
+
+        } else if (
+            safeHealthScore >= 70
+        ) {
+
+            healthColor =
+                "#8b7fff";
+
+        } else if (
+            safeHealthScore >= 55
+        ) {
+
+            healthColor =
+                "#f0a93e";
+
+        }
+
+
+        // ============================================================
+        // Language distribution
+        // ============================================================
+
+        const languageCanvas =
+            document.getElementById(
+                "languageChart"
+            );
+
+
+        if (
+            languageCanvas &&
+            languages &&
+            typeof languages === "object"
+        ) {
+
+            const langLabels =
+                Object.keys(
+                    languages
+                );
+
+
+            const langData =
+                Object.values(
+                    languages
+                );
+
+
+            if (
+                langLabels.length > 0
+            ) {
+
+                new Chart(
+                    languageCanvas,
+                    {
+
+                        type: "doughnut",
+
+                        data: {
+
+                            labels:
+                                langLabels,
+
+                            datasets: [
+
+                                {
+
+                                    data:
+                                        langData,
+
+                                    backgroundColor:
+                                        langLabels.map(
+                                            (_, index) =>
+                                                palette[
+                                                index %
+                                                palette.length
+                                                ]
+                                        ),
+
+                                    borderColor:
+                                        "#181b26",
+
+                                    borderWidth: 2,
+
+                                }
+
+                            ],
+
+                        },
+
+                        options: {
+
+                            responsive: true,
+
+                            maintainAspectRatio:
+                                false,
+
+                            plugins: {
+
+                                legend: {
+
+                                    position:
+                                        "bottom",
+
+                                    labels: {
+
+                                        boxWidth:
+                                            10,
+
+                                        font: {
+
+                                            family:
+                                                "JetBrains Mono",
+
+                                            size:
+                                                11,
+
+                                        },
+
+                                    },
+
+                                },
+
+                            },
+
+                        },
+
+                    }
+                );
+
+            }
+
+        }
+
+
+        // ============================================================
+        // Documentation vs baseline health
+        // ============================================================
+
+        const compareCanvas =
+            document.getElementById(
+                "scoreCompareChart"
+            );
+
+
+        if (
+            compareCanvas
+        ) {
+
+            new Chart(
+                compareCanvas,
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels: [
+
+                            "Documentation",
+
+                            "Baseline Health"
+
+                        ],
+
+                        datasets: [
+
+                            {
+
+                                data: [
+
+                                    safeDocumentationScore,
+
+                                    safeHealthScore
+
+                                ],
+
+                                backgroundColor: [
+
+                                    "#f0a93e",
+
+                                    healthColor
+
+                                ],
+
+                                borderRadius: 6,
+
+                                maxBarThickness: 46,
+
+                            }
+
+                        ],
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio:
+                            false,
+
+                        indexAxis: "y",
+
+                        scales: {
+
+                            x: {
+
+                                min: 0,
+
+                                max: 100,
+
+                                grid: {
+
+                                    color:
+                                        line,
+
+                                },
+
+                                ticks: {
+
+                                    font: {
+
+                                        family:
+                                            "JetBrains Mono",
+
+                                        size:
+                                            11,
+
+                                    },
+
+                                },
+
+                            },
+
+                            y: {
+
+                                grid: {
+
+                                    display:
+                                        false,
+
+                                },
+
+                                ticks: {
+
+                                    font: {
+
+                                        family:
+                                            "JetBrains Mono",
+
+                                        size:
+                                            11,
+
+                                    },
+
+                                },
+
+                            },
+
+                        },
+
+                        plugins: {
+
+                            legend: {
+
+                                display:
+                                    false,
+
+                            },
+
+                        },
+
+                    },
+
+                }
+            );
+
+        }
+
     });
 
-    // --- Language distribution ---
-    const langLabels = Object.keys(languages);
-    const langData = Object.values(languages);
-    new Chart(document.getElementById("languageChart"), {
-        type: "doughnut",
-        data: {
-            labels: langLabels,
-            datasets: [{
-                data: langData,
-                backgroundColor: langLabels.map((_, i) => palette[i % palette.length]),
-                borderColor: "#181b26",
-                borderWidth: 2,
-            }],
-        },
-        options: {
-            plugins: {
-                legend: {
-                    position: "bottom",
-                    labels: { boxWidth: 10, font: { family: "JetBrains Mono", size: 11 } },
-                },
-            },
-        },
-    });
-
-    // --- Documentation vs Health comparison ---
-    new Chart(document.getElementById("scoreCompareChart"), {
-        type: "bar",
-        data: {
-            labels: ["Documentation", "Overall Health"],
-            datasets: [{
-                data: [docScore, healthScore],
-                backgroundColor: ["#f0a93e", "#8b7fff"],
-                borderRadius: 6,
-                maxBarThickness: 46,
-            }],
-        },
-        options: {
-            indexAxis: "y",
-            scales: {
-                x: { min: 0, max: 100, grid: { color: line }, ticks: { font: { family: "JetBrains Mono", size: 11 } } },
-                y: { grid: { display: false }, ticks: { font: { family: "JetBrains Mono", size: 11 } } },
-            },
-            plugins: { legend: { display: false } },
-        },
-    });
-});
 </script>
+
 {% endblock %}

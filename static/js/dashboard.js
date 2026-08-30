@@ -21,3 +21,13 @@ function showToast(message, duration = 2500) {
   clearTimeout(toast._timer);
   toast._timer = setTimeout(() => toast.classList.remove("is-visible"), duration);
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("[data-score]").forEach((bar) => {
+    const score = Number(bar.dataset.score);
+
+    if (!Number.isNaN(score)) {
+      bar.style.width = `${Math.max(0, Math.min(100, score))}%`;
+    }
+  });
+});

@@ -3,137 +3,136 @@
 
 <head>
 
-<title>Dashboard</title>
+    <title>Dashboard</title>
 
-<link rel="stylesheet"
-href="{{ url_for('static',filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
 
 </head>
 
 <body>
 
-<h1 class="title">
+    <h1 class="title">
 
-Repository Analysis Dashboard
+        Repository Analysis Dashboard
 
-</h1>
+    </h1>
 
 
-<div class="cards">
+    <div class="cards">
 
-<div class="info-card">
+        <div class="info-card">
 
-<h2>{{ repo.files }}</h2>
+            <h2>{{ repo.files }}</h2>
 
-<p>Total Files</p>
+            <p>Total Files</p>
 
-</div>
+        </div>
 
-<div class="info-card">
+        <div class="info-card">
 
-<h2>{{ repo.folders }}</h2>
+            <h2>{{ repo.folders }}</h2>
 
-<p>Total Folders</p>
+            <p>Total Folders</p>
 
-</div>
+        </div>
 
-<div class="info-card">
+        <div class="info-card">
 
-<h2>{{ repo.size }} KB</h2>
+            <h2>{{ repo.size }} KB</h2>
 
-<p>Repository Size</p>
+            <p>Repository Size</p>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
-<h2 class="section-title">
+    <h2 class="section-title">
 
-Programming Languages
+        Programming Languages
 
-</h2>
+    </h2>
 
-<div class="language-box">
+    <div class="language-box">
 
-{% for language,count in languages.items() %}
+        {% for language,count in languages.items() %}
 
-<div class="language-item">
+        <div class="language-item">
 
-<strong>{{ language }}</strong>
+            <strong>{{ language }}</strong>
 
-<span>{{ count }} files</span>
+            <span>{{ count }} files</span>
 
-</div>
+        </div>
 
-{% endfor %}
+        {% endfor %}
 
-</div>
+    </div>
 
-<h2 class="section-title">
+    <h2 class="section-title">
 
-Detected Technologies
+        Detected Technologies
 
-</h2>
+    </h2>
 
-<div class="tech-box">
+    <div class="tech-box">
 
-{% for item in tech %}
+        {% for item in tech %}
 
-<div class="tech-card">
+        <div class="tech-card">
 
-{{ item }}
+            {{ item }}
 
-</div>
+        </div>
 
-{% endfor %}
+        {% endfor %}
 
-</div>
-<h2>Repository Overview</h2>
+    </div>
+    <h2>Repository Overview</h2>
 
-<table border="1" cellpadding="10">
+    <table border="1" cellpadding="10">
 
-<tr>
-<td>Repository Name</td>
-<td>{{ overview["Repository Name"] }}</td>
-</tr>
+        <tr>
+            <td>Repository Name</td>
+            <td>{{ overview["Repository Name"] }}</td>
+        </tr>
 
-<tr>
-<td>README</td>
-<td>{{ overview["README"] }}</td>
-</tr>
+        <tr>
+            <td>README</td>
+            <td>{{ overview["README"] }}</td>
+        </tr>
 
-<tr>
-<td>License</td>
-<td>{{ overview["License"] }}</td>
-</tr>
+        <tr>
+            <td>License</td>
+            <td>{{ overview["License"] }}</td>
+        </tr>
 
-<tr>
-<td>.gitignore</td>
-<td>{{ overview[".gitignore"] }}</td>
-</tr>
+        <tr>
+            <td>.gitignore</td>
+            <td>{{ overview[".gitignore"] }}</td>
+        </tr>
 
-</table>
-<h2>README Analysis</h2>
+    </table>
+    <h2>README Analysis</h2>
 
-<div class="info-card">
-    <p><strong>README Found:</strong> {{ readme.exists }}</p>
-    <p><strong>Words:</strong> {{ readme.word_count }}</p>
-    <p><strong>Installation:</strong> {{ readme.installation }}</p>
-    <p><strong>Usage:</strong> {{ readme.usage }}</p>
-    <p><strong>License:</strong> {{ readme.license }}</p>
-    <p><strong>Contributing:</strong> {{ readme.contributing }}</p>
+    <div class="info-card">
+        <p><strong>README Found:</strong> {{ readme.exists }}</p>
+        <p><strong>Words:</strong> {{ readme.word_count }}</p>
+        <p><strong>Installation:</strong> {{ readme.installation }}</p>
+        <p><strong>Usage:</strong> {{ readme.usage }}</p>
+        <p><strong>License:</strong> {{ readme.license }}</p>
+        <p><strong>Contributing:</strong> {{ readme.contributing }}</p>
 
-    <h3>Documentation Score</h3>
+        <h3>Documentation Score</h3>
 
-    <h2>{{ readme.score }}/100</h2>
-</div>
-<h2 class="section-title">Dependencies</h2>
+        <h2>{{ readme.score }}/100</h2>
+    </div>
+    <h2 class="section-title">Dependencies</h2>
 
-<div class="tech-box">
+    <div class="tech-box">
 
-{% if dependencies %}
+        {% if dependencies %}
 
-    {% for dep in dependencies %}
+        {% for dep in dependencies %}
 
         <div class="tech-card">
 
@@ -141,103 +140,103 @@ Detected Technologies
 
         </div>
 
-    {% endfor %}
+        {% endfor %}
 
-{% else %}
+        {% else %}
 
-<p>No dependencies found.</p>
+        <p>No dependencies found.</p>
 
-{% endif %}
+        {% endif %}
 
-</div>
-<h2 class="section-title">Repository Statistics</h2>
+    </div>
+    <h2 class="section-title">Repository Statistics</h2>
 
-<div class="cards">
+    <div class="cards">
 
-<div class="info-card">
-<h3>Total Files</h3>
-<h2>{{ statistics.total_files }}</h2>
-</div>
+        <div class="info-card">
+            <h3>Total Files</h3>
+            <h2>{{ statistics.total_files }}</h2>
+        </div>
 
-<div class="info-card">
-<h3>Total Folders</h3>
-<h2>{{ statistics.total_folders }}</h2>
-</div>
+        <div class="info-card">
+            <h3>Total Folders</h3>
+            <h2>{{ statistics.total_folders }}</h2>
+        </div>
 
-<div class="info-card">
-<h3>Lines of Code</h3>
-<h2>{{ statistics.lines }}</h2>
-</div>
+        <div class="info-card">
+            <h3>Lines of Code</h3>
+            <h2>{{ statistics.lines }}</h2>
+        </div>
 
-</div>
+    </div>
 
-<div class="cards">
+    <div class="cards">
 
-<div class="info-card">
-<h3>Python</h3>
-<h2>{{ statistics.python }}</h2>
-</div>
+        <div class="info-card">
+            <h3>Python</h3>
+            <h2>{{ statistics.python }}</h2>
+        </div>
 
-<div class="info-card">
-<h3>HTML</h3>
-<h2>{{ statistics.html }}</h2>
-</div>
+        <div class="info-card">
+            <h3>HTML</h3>
+            <h2>{{ statistics.html }}</h2>
+        </div>
 
-<div class="info-card">
-<h3>CSS</h3>
-<h2>{{ statistics.css }}</h2>
-</div>
+        <div class="info-card">
+            <h3>CSS</h3>
+            <h2>{{ statistics.css }}</h2>
+        </div>
 
-<div class="info-card">
-<h3>JavaScript</h3>
-<h2>{{ statistics.javascript }}</h2>
-</div>
+        <div class="info-card">
+            <h3>JavaScript</h3>
+            <h2>{{ statistics.javascript }}</h2>
+        </div>
 
-<div class="info-card">
-<h3>Java</h3>
-<h2>{{ statistics.java }}</h2>
-</div>
+        <div class="info-card">
+            <h3>Java</h3>
+            <h2>{{ statistics.java }}</h2>
+        </div>
 
-</div>
-<h2 class="section-title">Code Complexity</h2>
+    </div>
+    <h2 class="section-title">Code Complexity</h2>
 
-<div class="cards">
+    <div class="cards">
 
-    <div class="info-card">
-        <h3>Total Functions</h3>
+        <div class="info-card">
+            <h3>Total Functions</h3>
 
-        {% if complexity.supported %}
+            {% if complexity.supported %}
             <h2>{{ complexity.functions }}</h2>
-        {% else %}
+            {% else %}
             <h2>—</h2>
             <p>Not Supported</p>
-        {% endif %}
+            {% endif %}
+
+        </div>
+
+        <div class="info-card">
+            <h3>Average Complexity</h3>
+
+            {% if complexity.supported %}
+            <h2>{{ complexity.complexity }}</h2>
+            {% else %}
+            <h2>—</h2>
+            <p>Not Supported</p>
+            {% endif %}
+
+        </div>
 
     </div>
 
     <div class="info-card">
-        <h3>Average Complexity</h3>
 
-        {% if complexity.supported %}
-            <h2>{{ complexity.complexity }}</h2>
-        {% else %}
-            <h2>—</h2>
-            <p>Not Supported</p>
-        {% endif %}
+        <h3>Detected Language</h3>
+
+        <h2>{{ complexity.language }}</h2>
 
     </div>
 
-</div>
-
-<div class="info-card">
-
-    <h3>Detected Language</h3>
-
-    <h2>{{ complexity.language }}</h2>
-
-</div>
-
-</div>
+    </div>
 </body>
 
 </html>

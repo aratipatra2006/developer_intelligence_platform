@@ -1,0 +1,83 @@
+developer_intelligence_platform-main/
+├── ai
+│   ├── chatbot.py
+│   ├── skill_extractor.py
+│   └── summary_generator.py
+├── analyzer
+│   ├── __init__.py
+│   ├── architecture.py
+│   ├── clone_repo.py
+│   ├── complexity_analyzer.py
+│   ├── dependency_analyzer.py
+│   ├── health_score.py
+│   ├── language_detector.py
+│   ├── readme_analyzer.py
+│   ├── repo_info.py
+│   ├── repository_overview.py
+│   ├── repository_statistics.py
+│   ├── security_scanner.py
+│   └── tech_stack.py
+├── dataset
+│   ├── repositories_filtered.csv
+│   ├── repositories_metadata.csv
+│   └── repository_health.csv
+├── ml
+│   ├── data
+│   │   ├── extraction_failures.csv
+│   │   └── repository_dataset.csv
+│   ├── dataset
+│   │   ├── repositories.txt
+│   │   ├── repository.txt
+│   │   └── training_repositories.txt
+│   ├── scripts
+│   │   ├── build_dataset.py
+│   │   ├── clean_ml_features.py
+│   │   ├── collect_metadata.py
+│   │   ├── collect_repository_urls.py
+│   │   ├── filter_repositories.py
+│   │   ├── github_api.py
+│   │   ├── label_dataset.py
+│   │   ├── retry_failed.py
+│   │   ├── search_repositories.py
+│   │   ├── test_api.py
+│   │   └── update_dates.py
+│   ├── collect_github_data.py
+│   ├── health_model_features.json
+│   ├── health_model_metrics.json
+│   ├── health_predictor.py
+│   ├── model_comparison.json
+│   ├── predict_repository.py
+│   ├── test_github_api.py
+│   └── train_health_model.py
+├── routes
+│   └── routes.py
+├── static
+│   ├── css
+│   │   ├── style.css
+│   │   ├── style1.css
+│   │   └── style2.css
+│   └── js
+│       ├── dashboard.js
+│       └── script.js
+├── templates
+│   ├── architecture.html
+│   ├── base.html
+│   ├── chat.html
+│   ├── dashboard.html
+│   ├── dashboard_new.html
+│   ├── health.html
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── security.html
+│   ├── summary.html
+│   └── tech.html
+├── utils
+│   └── validators.py
+├── .gitignore
+├── app.py
+├── config.py
+├── generate_structure.py
+├── make_clean_zip.py
+├── README.md
+└── requirements.txt

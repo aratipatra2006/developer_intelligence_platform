@@ -7,7 +7,9 @@ def analyze_dependencies(repo_path):
 
     dependencies = []
 
+    # -------------------------------
     # Python (requirements.txt)
+    # -------------------------------
 
     req = os.path.join(repo_path, "requirements.txt")
 
@@ -25,9 +27,13 @@ def analyze_dependencies(repo_path):
 
                     dependencies.append(dependency)
 
+    # -------------------------------
     # JavaScript (package.json)
+    # -------------------------------
 
-# JavaScript (package.json
+    # -------------------------------
+# JavaScript (package.json)
+# -------------------------------
 
     for root, dirs, files in os.walk(repo_path):
 
@@ -51,7 +57,9 @@ def analyze_dependencies(repo_path):
         except Exception as e:
             print(f"Error reading {package}: {e}")
 
+    # -------------------------------
     # Java (pom.xml)
+    # -------------------------------
 
     pom = os.path.join(repo_path, "pom.xml")
 
@@ -65,7 +73,9 @@ def analyze_dependencies(repo_path):
 
             dependencies.append(dependency.text)
 
+    # -------------------------------
     # Python Import Detection
+    # -------------------------------
 
     for root, dirs, files in os.walk(repo_path):
 

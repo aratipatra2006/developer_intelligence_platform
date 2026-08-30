@@ -1,110 +1,73 @@
-import os
-import time
 import requests
-from dotenv import load_dotenv
+import time
+import os
 
-# Load GitHub Token
-load_dotenv()
-
-TOKEN = os.getenv("GITHUB_TOKEN")
+# -------------------------
+# Your GitHub Personal Access Token
+# -------------------------
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 headers = {
-    "Authorization": f"Bearer {TOKEN}",
-    "Accept": "application/vnd.github+json"
+    "Authorization": f"Bearer {GITHUB_TOKEN}"
 }
 
-# Languages
 languages = [
     "Python",
     "Java",
     "JavaScript",
-    "TypeScript",
     "C++",
-    "C",
-    "Go",
-    "Rust",
-    "PHP",
-    "Ruby",
-    "Swift",
-    "Kotlin",
-    "Dart",
-    "Scala",
-    "C#"
+    "Go"
 ]
 
-# Star Ranges
-star_ranges = [
-    "10..50",
-    "51..100",
-    "101..500",
-    "501..1000",
-    "1001..5000",
-    ">5000"
-]
+all_repositories = []
 
-repositories = set()
-
-# Search Repositories
 for language in languages:
 
-    print(f"\n========== {language} ==========")
+    print(f"\nCollecting {language} repositories...")
 
-    for stars in star_ranges:
+    for page in range(1, 6):
 
-        print(f"Stars: {stars}")
+        url = "https://api.github.com/search/repositories"
 
-        for page in range(1, 6):
+        params = {
+            "q": f"language:{language} stars:>100 archived:false",
+            "sort": "stars",
+            "order": "desc",
+            "per_page": 20,
+            "page": page
+        }
 
-            url = "https://api.github.com/search/repositories"
+        response = requests.get(
+            url,
+            headers=headers,
+            params=params
+        )
 
-            params = {
-                "q": f"language:{language} stars:{stars} archived:false",
-                "sort": "stars",
-                "order": "desc",
-                "per_page": 100,
-                "page": page
-            }
+        if response.status_code != 200:
 
-            response = requests.get(
-                url,
-                headers=headers,
-                params=params
-            )
+            print(response.text)
+            break
 
-            if response.status_code != 200:
-                print("GitHub API Error:", response.text)
-                break
+        data = response.json()
 
-            items = response.json().get("items", [])
+        items = data.get("items", [])
 
-            if not items:
-                break
+        if len(items) == 0:
+            break
 
-            for repo in items:
-                repositories.add(repo["html_url"])
+        for repo in items:
 
-            print(
-                f"Page {page} -> "
-                f"{len(items)} repositories | "
-                f"Total Unique: {len(repositories)}"
-            )
+            all_repositories.append(repo["html_url"])
 
-            time.sleep(1)
+        print(f"Page {page} : {len(items)} repositories")
 
-# Save Dataset
-output_dir = "ml/dataset"
-os.makedirs(output_dir, exist_ok=True)
+        time.sleep(1)
 
-output_file = os.path.join(
-    output_dir,
-    "repositories.txt"
-)
+print("\nTotal repositories collected:", len(all_repositories))
 
-with open(output_file, "w") as file:
-    for repo in sorted(repositories):
+with open("../dataset/repositories.txt", "w") as file:
+
+    for repo in sorted(set(all_repositories)):
         file.write(repo + "\n")
 
-print("\n======================================")
-print("Unique repositories collected:", len(repositories))
-print("Saved to:", output_file)
-print("======================================")
+print("repositories.txt created successfully.")

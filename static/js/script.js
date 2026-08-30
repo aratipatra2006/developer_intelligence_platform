@@ -13,6 +13,7 @@
         { text: '  warning: hardcoded API key in config/dev.js', cls: 'line-warn' },
         { text: '  health score: 82/100', cls: 'line-add' },
         { text: '  architecture map ready', cls: 'line-add' },
+        { text: '$ ready for questions_', cls: '' },
     ];
 
     // Reduced motion: render the final state instantly, no animation.
