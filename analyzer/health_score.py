@@ -13,9 +13,7 @@ from __future__ import annotations
 from typing import Any, Mapping
 
 
-# ---------------------------------------------------------------------------
 # Helpers
-# ---------------------------------------------------------------------------
 
 def _to_bool(value: Any) -> bool:
     """Convert common representations into a boolean."""
@@ -60,9 +58,7 @@ def _clamp(
     return max(minimum, min(maximum, value))
 
 
-# ---------------------------------------------------------------------------
 # Documentation — 25 points
-# ---------------------------------------------------------------------------
 
 def _documentation_score(
     features: Mapping[str, Any],
@@ -111,9 +107,7 @@ def _documentation_score(
     )
 
 
-# ---------------------------------------------------------------------------
 # Code quality — 35 points
-# ---------------------------------------------------------------------------
 
 def _complexity_score(
     features: Mapping[str, Any],
@@ -149,9 +143,7 @@ def _complexity_score(
         else:
             complexity_score = 2.0
 
-    # -------------------------------------------------------
     # Organization signal — 10 points
-    # -------------------------------------------------------
 
     total_files = max(
         0.0,
@@ -219,9 +211,7 @@ def _complexity_score(
     )
 
 
-# ---------------------------------------------------------------------------
 # Dependency health — 20 points
-# ---------------------------------------------------------------------------
 
 def _dependency_score(
     features: Mapping[str, Any],
@@ -269,9 +259,7 @@ def _dependency_score(
     return 3.0
 
 
-# ---------------------------------------------------------------------------
 # Project hygiene — 15 points
-# ---------------------------------------------------------------------------
 
 def _project_hygiene_score(
     features: Mapping[str, Any],
@@ -301,9 +289,7 @@ def _project_hygiene_score(
     return score
 
 
-# ---------------------------------------------------------------------------
 # Activity — 5 points
-# ---------------------------------------------------------------------------
 
 def _activity_score(
     features: Mapping[str, Any],
@@ -344,9 +330,7 @@ def _activity_score(
     return 0.5
 
 
-# ---------------------------------------------------------------------------
 # Final score
-# ---------------------------------------------------------------------------
 
 def calculate_health_score(
     features: Mapping[str, Any],

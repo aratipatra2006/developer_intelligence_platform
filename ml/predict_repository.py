@@ -15,9 +15,7 @@ from pathlib import Path
 from typing import Any
 
 
-# ============================================================================
 # Project paths
-# ============================================================================
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -25,9 +23,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 
-# ============================================================================
 # Existing analyzers
-# ============================================================================
 
 from analyzer.clone_repo import clone_repository
 from analyzer.repository_statistics import repository_statistics
@@ -43,9 +39,7 @@ from ml.health_predictor import (
 )
 
 
-# ============================================================================
 # Helpers
-# ============================================================================
 
 def print_section(title: str) -> None:
     """Print a formatted section heading."""
@@ -67,25 +61,19 @@ def build_features(
 
     print_section("EXTRACTING REPOSITORY FEATURES")
 
-    # ------------------------------------------------------------------------
     # Statistics
-    # ------------------------------------------------------------------------
 
     stats = repository_statistics(repo_path)
 
     print("✅ Repository statistics")
 
-    # ------------------------------------------------------------------------
     # README
-    # ------------------------------------------------------------------------
 
     readme = analyze_readme(repo_path)
 
     print("✅ README analysis")
 
-    # ------------------------------------------------------------------------
     # Dependencies
-    # ------------------------------------------------------------------------
 
     dependencies = analyze_dependencies(repo_path)
 
@@ -93,17 +81,13 @@ def build_features(
         f"✅ Dependencies: {len(dependencies)}"
     )
 
-    # ------------------------------------------------------------------------
     # Complexity
-    # ------------------------------------------------------------------------
 
     complexity = analyze_complexity(repo_path)
 
     print("✅ Complexity analysis")
 
-    # ------------------------------------------------------------------------
     # Languages
-    # ------------------------------------------------------------------------
 
     languages = detect_languages(repo_path)
 
@@ -111,9 +95,7 @@ def build_features(
         f"✅ Languages: {len(languages)}"
     )
 
-    # ------------------------------------------------------------------------
     # Tech stack
-    # ------------------------------------------------------------------------
 
     tech = detect_tech_stack(repo_path)
 
@@ -121,17 +103,13 @@ def build_features(
         f"✅ Tech stack: {len(tech)}"
     )
 
-    # ------------------------------------------------------------------------
     # Overview
-    # ------------------------------------------------------------------------
 
     overview = get_repository_overview(repo_path)
 
     print("✅ Repository overview")
 
-    # ------------------------------------------------------------------------
     # Build feature dictionary
-    # ------------------------------------------------------------------------
 
     data = github_data or {}
 
@@ -279,9 +257,7 @@ def get_github_data(repo_url: str) -> dict[str, Any] | None:
     )
 
 
-# ============================================================================
 # Main
-# ============================================================================
 
 def main() -> None:
 
@@ -305,9 +281,7 @@ def main() -> None:
         f"Repository: {repo_url}"
     )
 
-    # ------------------------------------------------------------------------
     # GitHub metadata
-    # ------------------------------------------------------------------------
 
     print_section(
         "GITHUB API"
@@ -335,9 +309,7 @@ def main() -> None:
         f"Stars: {github_data.get('stars')}"
     )
 
-    # ------------------------------------------------------------------------
     # Clone
-    # ------------------------------------------------------------------------
 
     print_section(
         "REPOSITORY CLONE"
@@ -361,18 +333,14 @@ def main() -> None:
         f"Path: {repo_path}"
     )
 
-    # ------------------------------------------------------------------------
     # Feature extraction
-    # ------------------------------------------------------------------------
 
     features = build_features(
         repo_path,
         github_data,
     )
 
-    # ------------------------------------------------------------------------
     # Prediction
-    # ------------------------------------------------------------------------
 
     print_section(
         "HEALTH PREDICTION"
@@ -390,9 +358,7 @@ def main() -> None:
         f"Health Grade : {result['grade']}"
     )
 
-    # ------------------------------------------------------------------------
     # Feature summary
-    # ------------------------------------------------------------------------
 
     print_section(
         "EXTRACTED FEATURES"

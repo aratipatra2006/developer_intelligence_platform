@@ -10,9 +10,7 @@ def generate_ai_summary(
 
     summary = {}
 
-    # ===========================
     # Project Overview
-    # ===========================
 
     project_name = overview["Repository Name"].replace("-", " ")
 
@@ -57,9 +55,7 @@ def generate_ai_summary(
 
     summary["project_overview"] = overview_text
 
-    # ===========================
     # Documentation
-    # ===========================
 
     doc = []
 
@@ -80,9 +76,7 @@ def generate_ai_summary(
 
     summary["documentation"] = " ".join(doc)
 
-    # ===========================
     # Programming Languages
-    # ===========================
 
     if languages:
         lang_text = ", ".join(languages.keys())
@@ -92,9 +86,7 @@ def generate_ai_summary(
     else:
         summary["languages"] = "No programming languages detected."
 
-    # ===========================
     # Technology Stack
-    # ===========================
 
     if tech:
         summary["technology"] = (
@@ -105,9 +97,7 @@ def generate_ai_summary(
     else:
         summary["technology"] = "No technologies detected."
 
-    # ===========================
     # Dependencies
-    # ===========================
 
     if dependencies:
         summary["dependencies"] = (
@@ -120,9 +110,7 @@ def generate_ai_summary(
             "No external dependencies were detected."
         )
 
-    # ===========================
     # Code Quality
-    # ===========================
 
     if avg_complexity < 5:
         quality_status = (
@@ -143,9 +131,7 @@ def generate_ai_summary(
         f"{quality_status}"
     )
 
-    # ===========================
     # Repository Health Score
-    # ===========================
 
     score = 100
 
@@ -163,13 +149,10 @@ def generate_ai_summary(
 
     summary["health_score"] = score
 
-    # ===========================
     # Suggestions
-    # ===========================
 
-       # ===========================
+
     # AI Suggestions
-    # ===========================
 
     suggestions = []
 

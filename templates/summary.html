@@ -4,9 +4,8 @@
 
 {% block content %}
 
-<!-- ============================================================
-     PAGE HEADER
-============================================================ -->
+<!--
+     PAGE HEADER -->
 
 <div class="page-header" style="--card-accent: var(--accent-violet);">
 
@@ -26,27 +25,24 @@
 </div>
 
 
-<!-- ============================================================
+<!--
      SERVER DATA FOR JAVASCRIPT
      
      Jinja values stay outside JavaScript to avoid editor
-     JavaScript syntax errors.
-============================================================ -->
+     JavaScript syntax errors. -->
 
 <div id="summaryData" data-health-score="{{ baseline_health_score | default(0) }}"
     data-documentation-score="{{ readme.score | default(0) }}" data-languages='{{ languages | default({}) | tojson }}'>
 </div>
 
 
-<!-- ============================================================
-     TOP SUMMARY
-============================================================ -->
+<!--
+     TOP SUMMARY -->
 
 <div class="summary-top-grid">
 
-    <!-- ========================================================
-         ML PREDICTION
-    ========================================================= -->
+    <!--          ML PREDICTION
+     -->
 
     <section class="dash-panel score-panel" style="--panel-accent: var(--accent-green);">
 
@@ -90,9 +86,8 @@
     </section>
 
 
-    <!-- ========================================================
-         BASELINE SCORE
-    ========================================================= -->
+    <!--          BASELINE SCORE
+     -->
 
     <section class="dash-panel" style="--panel-accent: var(--accent-violet);">
 
@@ -142,9 +137,8 @@
     </section>
 
 
-    <!-- ========================================================
-         LANGUAGE DISTRIBUTION
-    ========================================================= -->
+    <!--          LANGUAGE DISTRIBUTION
+     -->
 
     <section class="dash-panel" style="--panel-accent: var(--accent-green);">
 
@@ -159,9 +153,8 @@
     </section>
 
 
-    <!-- ========================================================
-         DOCUMENTATION VS BASELINE
-    ========================================================= -->
+    <!--          DOCUMENTATION VS BASELINE
+     -->
 
     <section class="dash-panel" style="--panel-accent: var(--accent-amber);">
 
@@ -178,9 +171,8 @@
 </div>
 
 
-<!-- ============================================================
-     INSIGHT CARDS
-============================================================ -->
+<!--
+     INSIGHT CARDS -->
 
 <div class="insight-grid">
 
@@ -288,9 +280,8 @@
 </div>
 
 
-<!-- ============================================================
-     MODEL INFORMATION
-============================================================ -->
+<!--
+     MODEL INFORMATION -->
 
 <section class="dash-panel page-panel" style="--panel-accent: var(--accent-green);">
 
@@ -434,9 +425,8 @@
 </section>
 
 
-<!-- ============================================================
-     SUGGESTIONS
-============================================================ -->
+<!--
+     SUGGESTIONS -->
 
 <section class="dash-panel page-panel" style="--panel-accent: var(--accent-violet);">
 
@@ -485,9 +475,9 @@
 
     document.addEventListener("DOMContentLoaded", () => {
 
-        // ============================================================
+        //
         // Read server data
-        // ============================================================
+        //
 
         const summaryData =
             document.getElementById("summaryData");
@@ -500,13 +490,13 @@
         }
 
 
-        // ============================================================
+        //
         // Baseline health score
         //
         // IMPORTANT:
         // This is the deterministic baseline score.
         // The ML model predicts a grade, not a numeric score.
-        // ============================================================
+        //
 
         const healthScore = Number(
             summaryData.dataset.healthScore || 0
@@ -518,9 +508,9 @@
         );
 
 
-        // ============================================================
+        //
         // Languages
-        // ============================================================
+        //
 
         let languages = {};
 
@@ -540,9 +530,9 @@
         }
 
 
-        // ============================================================
+        //
         // Chart configuration
-        // ============================================================
+        //
 
         const textMuted =
             "#8890a6";
@@ -578,9 +568,9 @@
             "Inter, sans-serif";
 
 
-        // ============================================================
+        //
         // Safe score
-        // ============================================================
+        //
 
         const safeHealthScore =
             Math.max(
@@ -602,9 +592,9 @@
             );
 
 
-        // ============================================================
+        //
         // Health color
-        // ============================================================
+        //
 
         let healthColor =
             "#f0616d";
@@ -634,9 +624,9 @@
         }
 
 
-        // ============================================================
+        //
         // Language distribution
-        // ============================================================
+        //
 
         const languageCanvas =
             document.getElementById(
@@ -749,9 +739,9 @@
         }
 
 
-        // ============================================================
+        //
         // Documentation vs baseline health
-        // ============================================================
+        //
 
         const compareCanvas =
             document.getElementById(

@@ -1,8 +1,8 @@
-/* ==========================================================================
+/*
    Developer Intelligence Platform — Dashboard
    Design concept: the report reads like a repository opened in an editor.
    Every panel is a "file tab" (colored status dot + monospace filename).
-   ========================================================================== */
+   */
 
 :root {
   /* --- palette --- */

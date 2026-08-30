@@ -20,9 +20,7 @@ def main():
     print("CLEANING ML FEATURES")
     print("=" * 70)
 
-    # ------------------------------------------------------------
     # Preserve whether these metrics were actually available
-    # ------------------------------------------------------------
 
     df["complexity_supported"] = (
         pd.to_numeric(
@@ -38,9 +36,7 @@ def main():
         ).notna()
     )
 
-    # ------------------------------------------------------------
     # Convert numeric columns to actual numeric values
-    # ------------------------------------------------------------
 
     numeric_columns = [
         "total_files",
@@ -75,9 +71,7 @@ def main():
                 errors="coerce",
             )
 
-    # ------------------------------------------------------------
     # Show missing values created by conversion
-    # ------------------------------------------------------------
 
     print("\nMissing values after conversion:")
 
@@ -91,9 +85,7 @@ def main():
     else:
         print(missing.to_string())
 
-    # ------------------------------------------------------------
     # Save cleaned dataset
-    # ------------------------------------------------------------
 
     df.to_csv(
         DATA_FILE,

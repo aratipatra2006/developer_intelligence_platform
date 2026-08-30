@@ -17,7 +17,7 @@
 
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /* ---------- Scroll progress bar ---------- */
+    /* Scroll progress bar */
 
     var progressBar = document.getElementById('scrollProgress');
 
@@ -29,7 +29,7 @@
         progressBar.style.width = pct + '%';
     }
 
-    /* ---------- Sticky header state ---------- */
+    /* Sticky header state */
 
     var header = document.getElementById('siteHeader');
 
@@ -50,7 +50,7 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
-    /* ---------- Scroll-triggered section reveals ---------- */
+    /* Scroll-triggered section reveals */
 
     var revealEls = document.querySelectorAll('.reveal');
 
@@ -73,7 +73,7 @@
         });
     }
 
-    /* ---------- Terminal typing effect ---------- */
+    /* Terminal typing effect */
 
     function typeText(el, fullText, speed, onDone) {
         if (reduceMotion) {
@@ -151,7 +151,7 @@
         terminals.forEach(runTerminal);
     }
 
-    /* ---------- Copy buttons ---------- */
+    /* Copy buttons */
 
     var copyButtons = document.querySelectorAll('.copy-btn');
 

@@ -24,9 +24,7 @@ import joblib
 import pandas as pd
 
 
-# ============================================================================
 # Paths
-# ============================================================================
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -43,9 +41,7 @@ FEATURE_FILE = (
 )
 
 
-# ============================================================================
 # Model loading
-# ============================================================================
 
 def load_model():
     """Load the trained health classification pipeline."""
@@ -59,9 +55,7 @@ def load_model():
     return joblib.load(MODEL_FILE)
 
 
-# ============================================================================
 # Feature metadata
-# ============================================================================
 
 def load_feature_metadata() -> dict[str, Any]:
     """
@@ -85,9 +79,7 @@ def load_feature_metadata() -> dict[str, Any]:
         return json.load(file)
 
 
-# ============================================================================
 # Prepare input
-# ============================================================================
 
 def prepare_features(
     features: Mapping[str, Any],
@@ -119,9 +111,7 @@ def prepare_features(
             "No trained feature metadata found."
         )
 
-    # --------------------------------------------------------
     # Create exactly one input row.
-    # --------------------------------------------------------
 
     row = {}
 
@@ -137,9 +127,7 @@ def prepare_features(
         columns=expected_features,
     )
 
-    # --------------------------------------------------------
     # Convert numeric columns.
-    # --------------------------------------------------------
 
     for column in numeric_features:
 
@@ -150,9 +138,7 @@ def prepare_features(
                 errors="coerce",
             )
 
-    # --------------------------------------------------------
     # Keep categorical columns suitable for OneHotEncoder.
-    # --------------------------------------------------------
 
     for column in categorical_features:
 
@@ -165,9 +151,7 @@ def prepare_features(
     return df
 
 
-# ============================================================================
 # Classification prediction
-# ============================================================================
 
 def predict_health(
     features: Mapping[str, Any],
@@ -217,9 +201,7 @@ def predict_health(
     return grade
 
 
-# ============================================================================
 # Complete result
-# ============================================================================
 
 def predict_health_details(
     features: Mapping[str, Any],

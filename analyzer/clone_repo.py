@@ -78,9 +78,7 @@ def clone_repository(repo_url):
             exist_ok=True,
         )
 
-        # --------------------------------------------------------
         # Normalize URL
-        # --------------------------------------------------------
 
         repo_url = str(repo_url).strip().rstrip("/")
 
@@ -102,9 +100,7 @@ def clone_repository(repo_url):
                 f"Invalid repository URL: {repo_url}"
             )
 
-        # --------------------------------------------------------
         # Local clone path
-        # --------------------------------------------------------
 
         folder_name = f"{owner}_{repo}".lower()
 
@@ -113,9 +109,7 @@ def clone_repository(repo_url):
             folder_name,
         )
 
-        # --------------------------------------------------------
         # Remove stale/partial clone
-        # --------------------------------------------------------
 
         if os.path.exists(repo_path):
             print(
@@ -128,9 +122,7 @@ def clone_repository(repo_url):
                     "existing_clone_cleanup_failed",
                 )
 
-        # --------------------------------------------------------
         # Prevent Git LFS from downloading large objects
-        # --------------------------------------------------------
 
         previous_lfs_setting = os.environ.get(
             "GIT_LFS_SKIP_SMUDGE"
@@ -167,9 +159,7 @@ def clone_repository(repo_url):
         error_text = str(exc)
         lowered = error_text.lower()
 
-        # --------------------------------------------------------
         # Classify known Git failures
-        # --------------------------------------------------------
 
         if "invalid path" in lowered:
             reason = "windows_invalid_path"

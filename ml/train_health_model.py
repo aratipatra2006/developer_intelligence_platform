@@ -77,9 +77,7 @@ from sklearn.preprocessing import (
 from sklearn.tree import DecisionTreeClassifier
 
 
-# ============================================================
 # PATHS
-# ============================================================
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -109,9 +107,7 @@ FEATURE_FILE = (
 )
 
 
-# ============================================================
 # CONFIGURATION
-# ============================================================
 
 TARGET = "health_grade"
 
@@ -120,9 +116,7 @@ TEST_SIZE = 0.20
 RANDOM_STATE = 42
 
 
-# ============================================================
 # FEATURES TO EXCLUDE
-# ============================================================
 
 # These columns must not be given to the model.
 EXCLUDED_FEATURES = {
@@ -148,9 +142,7 @@ CATEGORICAL_FEATURES = {
 }
 
 
-# ============================================================
 # LOAD DATASET
-# ============================================================
 
 def load_dataset() -> pd.DataFrame:
     """Load and validate the repository dataset."""
@@ -169,7 +161,6 @@ def load_dataset() -> pd.DataFrame:
             f"Missing target column: {TARGET}"
         )
 
-    # --------------------------------------------------------
     # Convert unsupported numeric values to NaN.
     #
     # Examples:
@@ -177,7 +168,6 @@ def load_dataset() -> pd.DataFrame:
     #     "Not Supported"
     #
     # The numeric imputer will handle these later.
-    # --------------------------------------------------------
 
     numeric_columns = [
         "total_files",
@@ -211,9 +201,7 @@ def load_dataset() -> pd.DataFrame:
                 errors="coerce",
             )
 
-    # --------------------------------------------------------
     # Remove rows without a target.
-    # --------------------------------------------------------
 
     df = df.dropna(
         subset=[TARGET]
@@ -228,9 +216,7 @@ def load_dataset() -> pd.DataFrame:
     return df
 
 
-# ============================================================
 # FEATURE COLUMNS
-# ============================================================
 
 def get_feature_columns(
     df: pd.DataFrame,
@@ -244,9 +230,7 @@ def get_feature_columns(
     ]
 
 
-# ============================================================
 # COLUMN TYPES
-# ============================================================
 
 def get_column_types(
     X: pd.DataFrame,
@@ -271,9 +255,7 @@ def get_column_types(
     )
 
 
-# ============================================================
 # STANDARD PREPROCESSOR
-# ============================================================
 
 def build_preprocessor(
     X: pd.DataFrame,
@@ -337,9 +319,7 @@ def build_preprocessor(
     )
 
 
-# ============================================================
 # SCALED PREPROCESSOR
-# ============================================================
 
 def build_scaled_preprocessor(
     X: pd.DataFrame,
@@ -407,9 +387,7 @@ def build_scaled_preprocessor(
     )
 
 
-# ============================================================
 # MODELS
-# ============================================================
 
 def create_models():
     """Create all classification models."""
@@ -476,9 +454,7 @@ def create_models():
     }
 
 
-# ============================================================
 # PIPELINE
-# ============================================================
 
 def create_pipeline(
     X: pd.DataFrame,
@@ -518,9 +494,7 @@ def create_pipeline(
     )
 
 
-# ============================================================
 # EVALUATION
-# ============================================================
 
 def evaluate_model(
     name: str,
@@ -538,26 +512,20 @@ def evaluate_model(
     print(name)
     print("-" * 70)
 
-    # --------------------------------------------------------
     # Train
-    # --------------------------------------------------------
 
     model.fit(
         X_train,
         y_train,
     )
 
-    # --------------------------------------------------------
     # Test prediction
-    # --------------------------------------------------------
 
     predictions = model.predict(
         X_test
     )
 
-    # --------------------------------------------------------
     # Test metrics
-    # --------------------------------------------------------
 
     accuracy = accuracy_score(
         y_test,
@@ -585,9 +553,7 @@ def evaluate_model(
         zero_division=0,
     )
 
-    # --------------------------------------------------------
     # Cross-validation
-    # --------------------------------------------------------
 
     cv_scores = cross_val_score(
         model,
@@ -598,9 +564,7 @@ def evaluate_model(
         n_jobs=1,
     )
 
-    # --------------------------------------------------------
     # Output
-    # --------------------------------------------------------
 
     print(
         f"Test Accuracy : {accuracy:.4f}"
@@ -675,9 +639,7 @@ def evaluate_model(
     }
 
 
-# ============================================================
 # MAIN
-# ============================================================
 
 def main():
 
@@ -685,9 +647,7 @@ def main():
     print("REPOSITORY HEALTH CLASSIFICATION")
     print("=" * 70)
 
-    # --------------------------------------------------------
     # Dataset
-    # --------------------------------------------------------
 
     df = load_dataset()
 
@@ -699,9 +659,7 @@ def main():
         f"Dataset columns: {len(df.columns)}"
     )
 
-    # --------------------------------------------------------
     # Class distribution
-    # --------------------------------------------------------
 
     print()
     print("Class distribution:")
@@ -712,9 +670,7 @@ def main():
         .to_string()
     )
 
-    # --------------------------------------------------------
     # Features
-    # --------------------------------------------------------
 
     feature_columns = get_feature_columns(
         df
@@ -746,9 +702,7 @@ def main():
         f"{len(categorical_features)}"
     )
 
-    # --------------------------------------------------------
     # Validate class counts
-    # --------------------------------------------------------
 
     class_counts = (
         y.value_counts()
@@ -761,9 +715,7 @@ def main():
             "2 samples."
         )
 
-    # --------------------------------------------------------
     # 80/20 stratified split
-    # --------------------------------------------------------
 
     X_train, X_test, y_train, y_test = (
         train_test_split(
@@ -818,9 +770,7 @@ def main():
         .to_string()
     )
 
-    # --------------------------------------------------------
     # Stratified CV
-    # --------------------------------------------------------
 
     minimum_class_count = (
         y_train.value_counts().min()
@@ -850,9 +800,7 @@ def main():
         f"{cv_folds}-fold stratified"
     )
 
-    # --------------------------------------------------------
     # Models
-    # --------------------------------------------------------
 
     models = create_models()
 
@@ -860,9 +808,7 @@ def main():
 
     fitted_models = {}
 
-    # --------------------------------------------------------
     # Evaluation
-    # --------------------------------------------------------
 
     for name, estimator in models.items():
 
@@ -892,9 +838,7 @@ def main():
 
         fitted_models[name] = pipeline
 
-    # --------------------------------------------------------
     # Comparison
-    # --------------------------------------------------------
 
     results_df = pd.DataFrame(
         results
@@ -924,9 +868,7 @@ def main():
         .to_string(index=False)
     )
 
-    # --------------------------------------------------------
     # Select best model
-    # --------------------------------------------------------
 
     best_name = (
         results_df.iloc[0]["model"]
@@ -962,9 +904,7 @@ def main():
         f"{best_result['cv_accuracy_mean']:.4f}"
     )
 
-    # --------------------------------------------------------
     # Final training on all repositories
-    # --------------------------------------------------------
 
     print()
     print(
@@ -990,9 +930,7 @@ def main():
         "Final model trained."
     )
 
-    # --------------------------------------------------------
     # Save model
-    # --------------------------------------------------------
 
     MODEL_FILE.parent.mkdir(
         parents=True,
@@ -1004,9 +942,7 @@ def main():
         MODEL_FILE,
     )
 
-    # --------------------------------------------------------
     # Save metrics
-    # --------------------------------------------------------
 
     metrics = {
         "task": "classification",
@@ -1054,9 +990,7 @@ def main():
             indent=2,
         )
 
-    # --------------------------------------------------------
     # Save feature metadata
-    # --------------------------------------------------------
 
     feature_metadata = {
         "task": "classification",
@@ -1090,9 +1024,7 @@ def main():
             indent=2,
         )
 
-    # --------------------------------------------------------
     # Final output
-    # --------------------------------------------------------
 
     print()
     print("=" * 70)
