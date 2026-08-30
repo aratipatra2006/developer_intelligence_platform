@@ -720,9 +720,7 @@ def process_repository(
                 and functions_value != "-"
             )
 
-            # ----------------------------------------------------
             # Health score
-            # ----------------------------------------------------
 
             health_features = {
                 "readme_score": readme.get(
@@ -765,9 +763,7 @@ def process_repository(
                 health_score
             )
 
-            # ----------------------------------------------------
             # Dataset row
-            # ----------------------------------------------------
 
             row = {
                 "repository": data.get(
@@ -941,9 +937,7 @@ def process_repository(
 
     finally:
 
-        # ========================================================
         # CLEANUP
-        # ========================================================
 
         if repo_path:
 
