@@ -7,8 +7,9 @@
 
 {% block content %}
 
-<!--
-     PAGE HEADER -->
+<!-- ============================================================
+     PAGE HEADER
+============================================================ -->
 
 <div class="dash-head">
 
@@ -23,11 +24,9 @@
 </div>
 
 
-<!--
+<!-- ============================================================
      PRIMARY REPOSITORY STATS
-     
-     These values come from repository_statistics(), which is also
-     the source used to construct the ML feature vector. -->
+============================================================ -->
 
 <div class="stat-grid" style="--stat-accent: var(--accent-violet);">
 
@@ -78,12 +77,13 @@
 </div>
 
 
-<!--
-     OVERVIEW + PROGRAMMING LANGUAGES -->
+<!-- ============================================================
+     REPOSITORY OVERVIEW + PROGRAMMING LANGUAGES
+============================================================ -->
 
 <div class="dash-grid">
 
-    <!-- Repository overview -->
+    <!-- Repository Overview -->
 
     <section class="dash-panel" style="--panel-accent: var(--accent-violet);">
 
@@ -113,7 +113,11 @@
                 </dt>
 
                 <dd>
-                    {{ overview["README"] }}
+                    {% if overview["README"] %}
+                    ✅ Available
+                    {% else %}
+                    ❌ Missing
+                    {% endif %}
                 </dd>
 
             </div>
@@ -126,7 +130,11 @@
                 </dt>
 
                 <dd>
-                    {{ overview["License"] }}
+                    {% if overview["License"] %}
+                    ✅ Available
+                    {% else %}
+                    ❌ Missing
+                    {% endif %}
                 </dd>
 
             </div>
@@ -139,7 +147,11 @@
                 </dt>
 
                 <dd>
-                    {{ overview[".gitignore"] }}
+                    {% if overview[".gitignore"] %}
+                    ✅ Available
+                    {% else %}
+                    ❌ Missing
+                    {% endif %}
                 </dd>
 
             </div>
@@ -149,7 +161,7 @@
     </section>
 
 
-    <!-- Languages -->
+    <!-- Programming Languages -->
 
     <section class="dash-panel" style="--panel-accent: var(--accent-green);">
 
@@ -182,7 +194,7 @@
         {% else %}
 
         <p class="empty-note">
-            no programming languages detected.
+            No programming languages detected.
         </p>
 
         {% endif %}
@@ -192,15 +204,15 @@
 </div>
 
 
-<!--
-     TECHNOLOGIES -->
+<!-- ============================================================
+     TECHNOLOGIES
+============================================================ -->
 
 <section class="dash-panel page-panel" style="--panel-accent: var(--accent-violet);">
 
     <p class="eyebrow">
         // detected technologies
     </p>
-
 
     {% if tech %}
 
@@ -219,7 +231,7 @@
     {% else %}
 
     <p class="empty-note">
-        no technologies detected.
+        No technologies detected.
     </p>
 
     {% endif %}
@@ -227,15 +239,15 @@
 </section>
 
 
-<!--
-     DEPENDENCIES -->
+<!-- ============================================================
+     DEPENDENCIES
+============================================================ -->
 
 <section class="dash-panel page-panel" style="--panel-accent: var(--accent-green);">
 
     <p class="eyebrow">
         // dependencies
     </p>
-
 
     {% if dependencies %}
 
@@ -254,7 +266,7 @@
     {% else %}
 
     <p class="empty-note">
-        no dependencies found.
+        No dependencies found.
     </p>
 
     {% endif %}
@@ -262,15 +274,15 @@
 </section>
 
 
-<!--
-     README ANALYSIS -->
+<!-- ============================================================
+     README ANALYSIS
+============================================================ -->
 
 <section class="dash-panel page-panel" style="--panel-accent: var(--accent-amber);">
 
     <p class="eyebrow">
         // readme analysis
     </p>
-
 
     <div class="readme-layout">
 
@@ -283,7 +295,11 @@
                 </dt>
 
                 <dd>
-                    {{ readme.exists }}
+                    {% if readme.exists %}
+                    ✅ Available
+                    {% else %}
+                    ❌ Missing
+                    {% endif %}
                 </dd>
 
             </div>
@@ -322,7 +338,11 @@
                 </dt>
 
                 <dd>
-                    {{ readme.installation }}
+                    {% if readme.installation %}
+                    ✅ Yes
+                    {% else %}
+                    ❌ No
+                    {% endif %}
                 </dd>
 
             </div>
@@ -335,7 +355,11 @@
                 </dt>
 
                 <dd>
-                    {{ readme.usage }}
+                    {% if readme.usage %}
+                    ✅ Yes
+                    {% else %}
+                    ❌ No
+                    {% endif %}
                 </dd>
 
             </div>
@@ -348,7 +372,11 @@
                 </dt>
 
                 <dd>
-                    {{ readme.features }}
+                    {% if readme.features %}
+                    ✅ Yes
+                    {% else %}
+                    ❌ No
+                    {% endif %}
                 </dd>
 
             </div>
@@ -361,7 +389,11 @@
                 </dt>
 
                 <dd>
-                    {{ readme.license }}
+                    {% if readme.license %}
+                    ✅ Yes
+                    {% else %}
+                    ❌ No
+                    {% endif %}
                 </dd>
 
             </div>
@@ -374,7 +406,11 @@
                 </dt>
 
                 <dd>
-                    {{ readme.contributing }}
+                    {% if readme.contributing %}
+                    ✅ Yes
+                    {% else %}
+                    ❌ No
+                    {% endif %}
                 </dd>
 
             </div>
@@ -388,18 +424,18 @@
 
             {% set score = (readme.score or 0) | int %}
 
-
             <span class="score-label">
                 documentation score
             </span>
 
-
             <span class="score-value">
+
                 {{ score }}
 
                 <small>
                     /100
                 </small>
+
             </span>
 
 
@@ -425,10 +461,9 @@
 </section>
 
 
-<!--
+<!-- ============================================================
      REPOSITORY STATISTICS
-     
-     No duplicate total-files / total-folders cards here. -->
+============================================================ -->
 
 <div class="dash-head dash-head-inner">
 
@@ -482,8 +517,11 @@
 </div>
 
 
-<!--
-     LANGUAGE COUNTS -->
+<!-- ============================================================
+     LANGUAGE COUNTS
+============================================================ -->
+
+{% if languages %}
 
 <div class="stat-grid stat-grid-5" style="--stat-accent: var(--accent-green);">
 
@@ -505,9 +543,12 @@
 
 </div>
 
+{% endif %}
 
-<!--
-     CODE COMPLEXITY -->
+
+<!-- ============================================================
+     CODE COMPLEXITY
+============================================================ -->
 
 <div class="dash-head dash-head-inner">
 
@@ -539,7 +580,7 @@
         {% if not complexity.supported %}
 
         <p class="empty-note">
-            not supported
+            Complexity analysis not supported for this repository.
         </p>
 
         {% endif %}
@@ -566,7 +607,7 @@
         {% if not complexity.supported %}
 
         <p class="empty-note">
-            not supported
+            Complexity analysis not supported for this repository.
         </p>
 
         {% endif %}
@@ -576,8 +617,9 @@
 </div>
 
 
-<!--
-     ML HEALTH PREDICTION -->
+<!-- ============================================================
+     MACHINE LEARNING
+============================================================ -->
 
 <section class="dash-panel page-panel" style="--panel-accent: var(--accent-green);">
 
@@ -585,26 +627,14 @@
         // machine learning
     </p>
 
-
     <div class="meta-list">
 
-        <div class="meta-row">
-
-            <dt>
-                health score
-            </dt>
-
-            <dd>
-                {{ health_prediction.score }}/100
-            </dd>
-
-        </div>
-
+        <!-- ML prediction -->
 
         <div class="meta-row">
 
             <dt>
-                health grade
+                predicted health grade
             </dt>
 
             <dd>
@@ -614,6 +644,38 @@
         </div>
 
 
+        <!-- Baseline score -->
+
+        <div class="meta-row">
+
+            <dt>
+                baseline health score
+            </dt>
+
+            <dd>
+                {{ baseline_health_score }}/100
+            </dd>
+
+        </div>
+
+
+        <!-- Baseline grade -->
+
+        <div class="meta-row">
+
+            <dt>
+                baseline grade
+            </dt>
+
+            <dd>
+                {{ baseline_health_grade }}
+            </dd>
+
+        </div>
+
+
+        <!-- Model -->
+
         <div class="meta-row">
 
             <dt>
@@ -621,11 +683,58 @@
             </dt>
 
             <dd>
-                Gradient Boosting Regressor
+                Random Forest Classifier
             </dd>
 
         </div>
 
+
+        <!-- Dataset -->
+
+        <div class="meta-row">
+
+            <dt>
+                training dataset
+            </dt>
+
+            <dd>
+                1,956 repositories
+            </dd>
+
+        </div>
+
+
+        <!-- Features -->
+
+        <div class="meta-row">
+
+            <dt>
+                features
+            </dt>
+
+            <dd>
+                24
+            </dd>
+
+        </div>
+
+
+        <!-- Split -->
+
+        <div class="meta-row">
+
+            <dt>
+                train / test split
+            </dt>
+
+            <dd>
+                80% / 20%
+            </dd>
+
+        </div>
+
+
+        <!-- Samples -->
 
         <div class="meta-row">
 
@@ -634,7 +743,7 @@
             </dt>
 
             <dd>
-                94 repositories
+                1,564 repositories
             </dd>
 
         </div>
@@ -643,11 +752,56 @@
         <div class="meta-row">
 
             <dt>
-                validation
+                testing samples
             </dt>
 
             <dd>
-                5-fold cross-validation
+                392 repositories
+            </dd>
+
+        </div>
+
+
+        <!-- Accuracy -->
+
+        <div class="meta-row">
+
+            <dt>
+                test accuracy
+            </dt>
+
+            <dd>
+                81.38%
+            </dd>
+
+        </div>
+
+
+        <!-- Cross validation -->
+
+        <div class="meta-row">
+
+            <dt>
+                cross-validation
+            </dt>
+
+            <dd>
+                4-fold stratified
+            </dd>
+
+        </div>
+
+
+        <!-- CV accuracy -->
+
+        <div class="meta-row">
+
+            <dt>
+                CV accuracy
+            </dt>
+
+            <dd>
+                82.48%
             </dd>
 
         </div>
@@ -657,8 +811,9 @@
 </section>
 
 
-<!--
-     INTELLIGENCE CENTER -->
+<!-- ============================================================
+     INTELLIGENCE CENTER
+============================================================ -->
 
 <section class="features-dashboard">
 
@@ -668,7 +823,6 @@
 
 
     <div class="card-grid">
-
 
         <!-- Summary -->
 
@@ -714,7 +868,7 @@
             </h2>
 
             <p>
-                Review the machine-learning health prediction and supporting metrics.
+                Review the Random Forest health classification and supporting metrics.
             </p>
 
         </a>
@@ -819,10 +973,10 @@
 
         </a>
 
-
     </div>
 
 </section>
+
 
 {% endblock %}
 
@@ -830,15 +984,16 @@
 {% block extra_scripts %}
 
 <script>
+
     document.addEventListener(
         "DOMContentLoaded",
         () => {
 
             /*
-             * Documentation score bar.
+             * Documentation score bars.
              *
-             * The score is supplied through data-score so the
-             * JavaScript parser never has to interpret Jinja.
+             * The score is supplied through data-score so
+             * JavaScript does not need to interpret Jinja.
              */
 
             const scoreBars =
@@ -874,6 +1029,7 @@
 
         }
     );
+
 </script>
 
 {% endblock %}
