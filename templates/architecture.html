@@ -10,8 +10,67 @@
     <h1 class="title">Architecture</h1>
 </div>
 
+<!-- ARCHITECTURE DIAGRAM -->
+
 <section class="dash-panel page-panel" style="--panel-accent: var(--accent-violet);">
-    <h3>🏗 Repository Overview</h3>
+    <h3>Repository Architecture</h3>
+
+    <div class="arch-diagram">
+
+        <div class="arch-root">
+            <div class="arch-node arch-node-root">
+                <span class="arch-node-dot" style="--node-accent: var(--accent-violet);"></span>
+                <span class="arch-node-label">{{ overview["Repository Name"] }}</span>
+                <span class="arch-node-meta">
+                    {{ statistics.total_files }} files &middot; {{ statistics.total_folders }} folders &middot; {{ repo.size }} KB
+                </span>
+            </div>
+        </div>
+
+        <div class="arch-branches">
+
+            <div class="arch-branch">
+                <p class="arch-branch-label">languages</p>
+                <div class="arch-branch-nodes">
+                    {% if languages %}
+                        {% for language, count in languages.items() %}
+                        <div class="arch-node">
+                            <span class="arch-node-dot" style="--node-accent: var(--accent-green);"></span>
+                            <span class="arch-node-label">{{ language }}</span>
+                            <span class="arch-node-meta">{{ count }} files</span>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="empty-note">No languages detected.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="arch-branch">
+                <p class="arch-branch-label">technologies</p>
+                <div class="arch-branch-nodes">
+                    {% if tech %}
+                        {% for item in tech %}
+                        <div class="arch-node">
+                            <span class="arch-node-dot" style="--node-accent: var(--accent-amber);"></span>
+                            <span class="arch-node-label">{{ item }}</span>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="empty-note">No technologies detected.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- REPOSITORY OVERVIEW -->
+
+<section class="dash-panel page-panel" style="--panel-accent: var(--accent-green);">
+    <h3>Repository Overview</h3>
     <div class="meta-list">
         <div class="meta-row">
             <dt>Repository</dt>
@@ -36,7 +95,7 @@
     </div>
     <hr>
 
-    <h3>🛠 Detected Technologies</h3>
+    <h3>Detected Technologies</h3>
     {% if tech %}
     <div class="pill-grid">
         {% for item in tech %}
@@ -48,9 +107,139 @@
     {% endif %}
     <hr>
 
-    <h3>🤖 AI Insights</h3>
+    <h3>AI Insights</h3>
     <div class="ai-placeholder">
         <p>AI will analyze the repository architecture, project structure and module relationships after Gemini integration.</p>
     </div>
 </section>
+
+<style>
+    /* Architecture tree — reuses existing design tokens (panel-raised, line,
+       accent-*, font-mono); no new palette or type introduced. */
+
+    .arch-diagram {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 8px 0 4px;
+    }
+
+    .arch-node {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        background: var(--panel-raised);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        padding: 10px 16px;
+        text-align: center;
+        min-width: 120px;
+    }
+
+    .arch-node-root {
+        min-width: 220px;
+        padding: 14px 22px;
+        border-color: var(--accent-violet);
+    }
+
+    .arch-node-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--node-accent, var(--accent-violet));
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--node-accent, var(--accent-violet)) 20%, transparent);
+    }
+
+    .arch-node-label {
+        font-family: var(--font-mono);
+        font-size: 13.5px;
+        color: var(--text);
+    }
+
+    .arch-node-root .arch-node-label {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .arch-node-meta {
+        font-size: 11.5px;
+        color: var(--text-faint);
+    }
+
+    .arch-branches {
+        position: relative;
+        display: flex;
+        gap: 40px;
+        margin-top: 40px;
+        padding-top: 24px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* horizontal connector across the branches */
+    .arch-branches::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 25%;
+        right: 25%;
+        height: 1px;
+        background: var(--line);
+    }
+
+    /* vertical stem from the root down to each branch */
+    .arch-branch {
+        position: relative;
+        flex: 1;
+        max-width: 320px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .arch-branch::before {
+        content: "";
+        position: absolute;
+        top: -24px;
+        left: 50%;
+        width: 1px;
+        height: 24px;
+        background: var(--line);
+    }
+
+    .arch-branch-label {
+        font-family: var(--font-mono);
+        font-size: 11.5px;
+        color: var(--text-faint);
+        text-transform: lowercase;
+        letter-spacing: 0.04em;
+        margin: 0 0 12px;
+    }
+
+    .arch-branch-nodes {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .arch-branch-nodes .arch-node {
+        flex-direction: row;
+        justify-content: center;
+        gap: 8px;
+        min-width: 0;
+    }
+
+    @media (max-width: 760px) {
+        .arch-branches {
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+        }
+        .arch-branches::before { display: none; }
+        .arch-branch::before { height: 24px; top: -24px; }
+    }
+</style>
+
 {% endblock %}

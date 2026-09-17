@@ -1,39 +1,594 @@
+
 {% extends "base.html" %}
+
 {% block title %}AI Repository Assistant{% endblock %}
 
+
 {% block content %}
+
 <div class="page-header" style="--card-accent: var(--accent-violet);">
     <div class="card-head">
         <span class="card-dot"></span>
         <span class="card-file">chat.session</span>
     </div>
+
     <h1 class="title">AI Repository Assistant</h1>
 </div>
 
-<section class="dash-panel page-panel" style="--panel-accent: var(--accent-violet);">
+<section
+    class="dash-panel page-panel"
+    style="--panel-accent: var(--accent-violet);"
+>
     <div class="chat-container">
-        <div class="chat-box">
-            <div class="bot-message">
-                👋 Hello! I'm your AI Repository Assistant.
-                <br><br>
-                Once Gemini is integrated, you'll be able to ask questions like:
-                <ul>
-                    <li>Explain this repository.</li>
-                    <li>Describe the project architecture.</li>
-                    <li>What technologies are used?</li>
-                    <li>Are there any security issues?</li>
-                    <li>Suggest improvements.</li>
-                    <li>Generate documentation.</li>
-                </ul>
-            </div>
-        </div>
-        <div class="chat-input-area">
-            <input type="text" placeholder="Ask something about the repository..." disabled>
-            <button disabled>Send</button>
-        </div>
-        <hr>
-        <h3>🤖 AI Status</h3>
-        <p>Gemini integration is pending. Chat functionality will become available after AI integration.</p>
+
+    <!-- Greeting -->
+    <div class="chat-greeting" id="chatGreeting">
+        <span class="chat-greeting-icon">&lt;/&gt;</span>
+
+        <h2>Hey there, ask me about this repo</h2>
+
+        <p class="chat-subtitle">
+            Ask questions about the repository, architecture,
+            technologies, security, or code quality.
+        </p>
     </div>
+
+
+    <!-- Chat Messages -->
+    <div
+        class="chat-messages"
+        id="chatMessages"
+    ></div>
+
+
+    <!-- Suggested Questions -->
+    <div
+        class="suggestion-chips"
+        id="suggestionChips"
+    >
+
+        <button type="button" class="chip">
+            Explain this repository
+        </button>
+
+        <button type="button" class="chip">
+            Describe the project architecture
+        </button>
+
+        <button type="button" class="chip">
+            What technologies are used?
+        </button>
+
+        <button type="button" class="chip">
+            Are there any security issues?
+        </button>
+
+        <button type="button" class="chip">
+            Suggest improvements
+        </button>
+
+        <button type="button" class="chip">
+            Generate documentation
+        </button>
+
+    </div>
+
+
+    <!-- Chat Input -->
+    <form
+        class="chat-form"
+        id="chatForm"
+    >
+
+        <div class="chat-input-area">
+
+            <input
+                type="text"
+                id="chatInput"
+                name="message"
+                placeholder="Ask something about the repository..."
+                autocomplete="off"
+            >
+
+            <div class="chat-input-actions">
+
+                <button
+                    type="button"
+                    class="icon-btn"
+                    aria-label="Add attachment"
+                >
+                    +
+                </button>
+
+                <button
+                    type="submit"
+                    class="icon-btn icon-btn-send"
+                    aria-label="Send message"
+                >
+                    ➤
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+<style>
+
+.chat-container {
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+}
+
+
+/* -----------------------------
+   Greeting
+------------------------------ */
+
+.chat-greeting {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    padding: 28px 8px 10px;
+
+    text-align: center;
+}
+
+.chat-greeting-icon {
+    font-size: 26px;
+    color: var(--panel-accent);
+}
+
+.chat-greeting h2 {
+    margin: 0;
+
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+.chat-subtitle {
+    max-width: 520px;
+
+    margin: 0;
+
+    line-height: 1.5;
+
+    opacity: 0.7;
+
+    font-size: 0.9rem;
+}
+
+
+/* -----------------------------
+   Chat Messages
+------------------------------ */
+.chat-messages {
+    width: 100%;
+    max-width: 760px;
+
+    margin: 0 auto;
+
+    padding: 10px 20px 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    box-sizing: border-box;
+}
+
+
+/* -----------------------------
+   Individual Message
+------------------------------ */
+
+.chat-message {
+    padding: 14px 18px;
+
+    border-radius: 14px;
+
+    line-height: 1.6;
+
+    font-size: 0.9rem;
+
+    white-space: pre-wrap;
+
+    max-width: 80%;
+}
+
+
+/* User */
+
+.chat-message-user {
+    align-self: flex-end;
+
+    background: var(--panel-accent);
+
+    color: #fff;
+
+    border-bottom-right-radius: 4px;
+}
+
+
+/* AI */
+
+.chat-message-ai {
+    align-self: flex-start;
+
+    border: 1px solid currentColor;
+
+    background: transparent;
+      border: 1px solid #292d3a;
+    border-bottom-left-radius: 4px;
+}
+
+
+/* Message label */
+
+.chat-message-label {
+    display: block;
+
+    font-size: 0.75rem;
+
+    font-weight: 600;
+
+    margin-bottom: 5px;
+
+    opacity: 0.65;
+}
+
+
+/* -----------------------------
+   Input
+------------------------------ */
+
+.chat-form {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    padding: 12px 20px 20px;
+
+    box-sizing: border-box;
+
+    margin-top: auto;
+}
+
+.chat-input-area {
+    width: 100%;
+    max-width: 760px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    border: 1px solid currentColor;
+
+    border-radius: 16px;
+
+    padding: 12px 12px 12px 18px;
+
+    background: var(--panel-background, transparent);
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.chat-input-area:focus-within {
+    border-color: var(--panel-accent);
+
+    box-shadow:
+        0 0 0 2px color-mix(
+            in srgb,
+            var(--panel-accent) 15%,
+            transparent
+        );
+}
+
+
+/* -----------------------------
+   Suggestions
+------------------------------ */
+.suggestion-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    max-width: 700px;
+    margin: 18px auto 20px;
+}
+
+.chip {
+    padding: 8px 16px;
+
+    border-radius: 999px;
+
+    border: 1px solid currentColor;
+
+    background: transparent;
+    color: inherit;
+
+    font-size: 0.82rem;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+.chip:hover {
+    border-color: var(--panel-accent);
+    color: var(--panel-accent);
+
+    background: color-mix(
+        in srgb,
+        var(--panel-accent) 8%,
+        transparent
+    );
+}
+
+
+/* -----------------------------
+   Active Chat State
+------------------------------ */
+
+.chat-container.chat-active
+.chat-greeting {
+    display: none;
+}
+
+.chat-container.chat-active
+.suggestion-chips {
+    display: none;
+}
+
+.chat-container.chat-active
+.chat-messages {
+    padding-top: 28px;
+}
+
+
+/* -----------------------------
+   Responsive
+------------------------------ */
+
+@media (max-width: 600px) {
+
+    .chat-container {
+        min-height: 75vh;
+
+    }
+
+    .chat-message {
+        max-width: 90%;
+    }
+
+    .chat-form {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .chat-messages {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+}
+
+</style>
+<script>
+
+
+
+const chatForm =document.getElementById("chatForm");
+
+const chatInput =document.getElementById("chatInput");
+
+const chatMessages =document.getElementById("chatMessages");
+
+const chatContainer =document.querySelector(".chat-container");
+
+const suggestionChips =document.querySelectorAll(".chip");
+
+
+function addMessage(message, type) {
+
+    const messageElement =document.createElement("div");
+
+    messageElement.classList.add(
+        "chat-message",
+        type === "user"
+            ? "chat-message-user"
+            : "chat-message-ai"
+    );
+
+
+    const label =document.createElement("span");
+
+    label.classList.add(
+        "chat-message-label"
+    );
+
+    label.textContent =
+        type === "user"
+            ? "You"
+            : "AI Assistant";
+
+
+   const content = document.createElement("div");
+
+if (type === "ai") {
+    content.innerHTML = DOMPurify.sanitize(
+        marked.parse(message)
+    );
+} else {
+    content.textContent = message;
+}
+
+
+    messageElement.appendChild(label);
+
+    messageElement.appendChild(content);
+
+
+    chatMessages.appendChild(
+        messageElement
+    );
+
+
+    chatMessages.scrollTop =chatMessages.scrollHeight;
+}
+
+
+async function sendMessage(message) {
+
+    message = message.trim();
+
+    if (!message) {
+        return;
+    }
+
+
+    // Switch to active chat layout
+    chatContainer.classList.add(
+        "chat-active"
+    );
+
+
+    // Display user message
+    addMessage(
+        message,
+        "user"
+    );
+
+
+    chatInput.value = "";
+
+
+    // Disable input while waiting
+    chatInput.disabled = true;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/chat",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/x-www-form-urlencoded"
+                    },
+
+                    body:
+                        new URLSearchParams({
+                            message: message
+                        })
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Server returned an error."
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        // Display AI response
+        addMessage(
+            data.response,
+            "ai"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Chat error:",
+            error
+        );
+
+
+        addMessage(
+            "Sorry, I couldn't connect to the AI assistant.",
+            "ai"
+        );
+
+    } finally {
+
+        chatInput.disabled = false;
+
+        chatInput.focus();
+
+    }
+
+}
+
+
+/* Form submission */
+
+chatForm.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+        sendMessage(
+            chatInput.value
+        );
+
+    }
+);
+
+
+/* Suggestion buttons */
+
+suggestionChips.forEach(
+    function(chip) {
+
+        chip.addEventListener(
+            "click",
+            function() {
+
+                sendMessage(
+                    chip.textContent.trim()
+                );
+
+            }
+        );
+
+    }
+);
+
+
+
+</script>
 {% endblock %}
+
