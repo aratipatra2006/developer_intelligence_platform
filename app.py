@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 from supabase import create_client
 
+from ai.chatbot import get_chatbot_response
 from analyzer.clone_repo import clone_repository
 from analyzer.repo_info import repository_information
 from analyzer.language_detector import detect_languages
@@ -28,13 +29,18 @@ from ai.summary_generator import generate_ai_summary
 from ml.scripts.github_api import get_github_data
 from ml.health_predictor import predict_health_details
 
-
+from routes.routes import routes
 # Flask application
 
 app = Flask(__name__)
 
 app.secret_key = "developer_intelligence"
 load_dotenv()
+
+
+
+app.register_blueprint(routes)
+
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
@@ -923,8 +929,14 @@ def analyze():
         f"Analysis completed in "
         f"{end_time - start_time:.2f} seconds"
     )
-
+    repository_name=(
+        repo_url.rstrip("/")
+        .split("/")[-1]
+        .replace(".git", "")
+  )
     LAST_CONTEXT = {
+       "repository_name": repository_name,
+        "repository_url": repo_url,
 
         "repo": repo_info,
 
@@ -1113,19 +1125,33 @@ def tech():
 # AI CHAT
 
 @app.route(
-    "/chat"
+    "/chat",
+    methods=["GET", "POST"]
 )
 def chat():
 
-    context = (
-        get_context_or_redirect()
-    )
+    context = get_context_or_redirect()
 
     if context is None:
-
         return redirect(
             url_for("home")
         )
+
+    if request.method == "POST":
+
+        message = request.form.get(
+            "message",
+            ""
+        ).strip()
+
+        response = get_chatbot_response(
+            message,
+            context
+        )
+
+        return {
+            "response": response
+        }
 
     return render_template(
         "chat.html",
