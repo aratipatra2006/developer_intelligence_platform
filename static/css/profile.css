@@ -1,0 +1,535 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: #0b0c12;
+    color: #f5f5f7;
+    font-family: "Inter", Arial, sans-serif;
+}
+
+.profile-page {
+    width: min(1000px, 92%);
+    margin: 0 auto;
+    padding: 30px 0 50px;
+}
+
+
+/* NAVBAR */
+
+.profile-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 55px;
+}
+
+.profile-nav a {
+    text-decoration: none;
+}
+
+.back-btn {
+    color: #a9a9b5;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.back-btn:hover {
+    color: #ffffff;
+}
+
+.logout-btn {
+    padding: 9px 18px;
+    border: 1px solid #30313b;
+    border-radius: 8px;
+    color: #eeeeee;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.logout-btn:hover {
+    border-color: #7777ff;
+    color: #ffffff;
+}
+
+
+/* PROFILE HEADER */
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 35px;
+}
+
+.avatar {
+    width: 92px;
+    height: 92px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        135deg,
+        #28284a,
+        #171721
+    );
+
+    border: 1px solid #45455f;
+
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: 700;
+
+    box-shadow: 0 0 35px rgba(100, 100, 255, 0.12);
+}
+
+.profile-title h1 {
+    font-size: 30px;
+    margin-bottom: 7px;
+}
+
+.profile-title p {
+    color: #9999a8;
+    font-size: 14px;
+}
+
+
+/* STATUS */
+
+.status-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 13px;
+    flex-wrap: wrap;
+}
+
+.status-badge,
+.auth-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 6px 11px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+}
+
+.status-badge {
+    background: rgba(50, 180, 100, 0.08);
+    border: 1px solid rgba(50, 180, 100, 0.2);
+    color: #79d89b;
+}
+
+.auth-badge {
+    background: rgba(130, 110, 255, 0.08);
+    border: 1px solid rgba(130, 110, 255, 0.2);
+    color: #aaa0ff;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #62d88a;
+}
+
+
+/* CARDS */
+
+.profile-card {
+    background: #12131a;
+
+    border: 1px solid #282934;
+
+    border-radius: 14px;
+
+    padding: 28px;
+
+    margin-bottom: 22px;
+
+    transition: 0.25s ease;
+}
+
+.profile-card:hover {
+    border-color: #363748;
+}
+
+.section-heading {
+    margin-bottom: 25px;
+}
+
+.section-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: #7777ff;
+}
+
+.section-heading h2 {
+    margin-top: 5px;
+    font-size: 19px;
+}
+
+
+/* INFORMATION GRID */
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.info-item {
+    padding: 18px;
+
+    background: #0d0e14;
+
+    border: 1px solid #242530;
+
+    border-radius: 9px;
+}
+
+.info-label {
+    display: block;
+
+    color: #777887;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.7px;
+
+    margin-bottom: 8px;
+}
+
+.info-value {
+    color: #eeeeef;
+    font-size: 14px;
+    word-break: break-word;
+}
+
+.info-value.active {
+    color: #71d994;
+}
+
+
+/* ACTIONS */
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.action-card {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 18px;
+
+    text-decoration: none;
+
+    background: #0d0e14;
+
+    border: 1px solid #242530;
+
+    border-radius: 10px;
+
+    color: #ffffff;
+
+    transition: 0.25s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-2px);
+    border-color: #50516b;
+}
+
+.action-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #191a24;
+
+    color: #aaa0ff;
+
+    font-size: 18px;
+}
+
+.action-card h3 {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.action-card p {
+    color: #777887;
+    font-size: 12px;
+}
+
+.action-arrow {
+    margin-left: auto;
+    color: #666777;
+}
+
+.action-card.danger .action-icon {
+    color: #ff7777;
+}
+
+.action-card.danger:hover {
+    border-color: #653737;
+}
+
+
+/* FOOTER */
+
+.profile-footer {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+
+    margin-top: 40px;
+
+    color: #555663;
+
+    font-family: "JetBrains Mono", monospace;
+
+    font-size: 10px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 650px) {
+
+    .profile-header {
+        align-items: flex-start;
+    }
+
+    .avatar {
+        width: 70px;
+        height: 70px;
+        font-size: 22px;
+    }
+
+    .profile-title h1 {
+        font-size: 22px;
+    }
+
+    .info-grid,
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-card {
+        padding: 20px;
+    }
+}
+
+/* ============================= */
+/* LOGOUT CONFIRMATION MODAL     */
+/* ============================= */
+
+.logout-modal {
+    position: fixed;
+    inset: 0;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(5, 6, 10, 0.78);
+
+    backdrop-filter: blur(6px);
+
+    z-index: 9999;
+}
+
+.logout-modal.active {
+    display: flex;
+}
+
+
+/* MODAL BOX */
+
+.logout-modal-box {
+    width: 420px;
+    max-width: 90%;
+
+    padding: 32px;
+
+    background: #111219;
+
+    border: 1px solid #30313d;
+
+    border-radius: 14px;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(100, 100, 255, 0.08);
+
+    animation: logoutModalIn 0.2s ease;
+}
+
+
+/* ICON */
+
+.logout-icon {
+    width: 52px;
+    height: 52px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(130, 110, 255, 0.08);
+
+    border: 1px solid rgba(130, 110, 255, 0.2);
+
+    color: #aaa0ff;
+
+    font-size: 22px;
+}
+
+
+/* TITLE */
+
+.logout-modal-box h2 {
+    margin-bottom: 10px;
+
+    color: #f2f2f4;
+
+    font-size: 20px;
+}
+
+
+/* MESSAGE */
+
+.logout-modal-box p {
+    margin-bottom: 28px;
+
+    color: #858693;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* BUTTON CONTAINER */
+
+.logout-actions {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 12px;
+}
+
+
+/* CANCEL BUTTON */
+
+.cancel-btn {
+    padding: 10px 22px;
+
+    border: 1px solid #30313d;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #a5a6b2;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.cancel-btn:hover {
+    border-color: #4a4b58;
+
+    color: #ffffff;
+
+    background: #181922;
+}
+
+
+/* CONFIRM LOGOUT BUTTON */
+
+.confirm-logout-btn {
+    display: inline-block;
+
+    padding: 10px 22px;
+
+    border: 1px solid #5c4f9c;
+
+    border-radius: 8px;
+
+    background: #25213d;
+
+    color: #c3bbff;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.confirm-logout-btn:hover {
+    background: #302951;
+
+    border-color: #7565c7;
+
+    color: #ffffff;
+}
+
+
+/* MODAL ANIMATION */
+
+@keyframes logoutModalIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(8px)
+            scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
+}

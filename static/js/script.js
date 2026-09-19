@@ -104,3 +104,51 @@ function showToast(message, duration = 2500) {
   clearTimeout(toast._timer);
   toast._timer = setTimeout(() => (toast.style.opacity = "0"), duration);
 }
+
+// ===============================
+// LOGOUT CONFIRMATION MODAL
+// ===============================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const logoutBtn = document.getElementById("logoutBtn");
+    const logoutModal = document.getElementById("logoutModal");
+    const cancelLogout = document.getElementById("cancelLogout");
+
+    if (logoutBtn && logoutModal) {
+
+        logoutBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            logoutModal.classList.add("active");
+        });
+    }
+
+    if (cancelLogout && logoutModal) {
+
+        cancelLogout.addEventListener("click", function () {
+            logoutModal.classList.remove("active");
+        });
+    }
+
+    if (logoutModal) {
+
+        logoutModal.addEventListener("click", function (event) {
+
+            if (event.target === logoutModal) {
+                logoutModal.classList.remove("active");
+            }
+
+        });
+    }
+
+});
+
+// Prevent logout modal from remaining open when browser restores page
+window.addEventListener("pageshow", function () {
+    const logoutModal = document.getElementById("logoutModal");
+
+    if (logoutModal) {
+        logoutModal.classList.remove("active");
+    }
+});

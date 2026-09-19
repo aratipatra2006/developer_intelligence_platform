@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Developer Intelligence Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            <strong>DIP</strong>
+            <span>|</span>
+            Developer Intelligence Platform
+        </div>
+
+        <div class="nav-links">
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#how-it-works">
+                How It Works
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
+        </div>
+
+        <div class="nav-buttons">
+
+            <a href="{{ url_for('login') }}" class="login-btn">
+                Login
+            </a>
+
+            <a href="{{ url_for('register') }}" class="register-btn">
+                Register
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+                AI-Powered GitHub Repository Intelligence
+            </div>
+
+            <h1>
+                Understand Your
+                <span>Codebase</span>
+                Smarter.
+            </h1>
+
+            <p>
+                Developer Intelligence Platform analyzes GitHub
+                repositories and transforms complex codebases into
+                meaningful insights about architecture, technology,
+                security, complexity and overall repository health.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="{{ url_for('login') }}" class="primary-btn">
+                    Analyze Your Repository
+                </a>
+
+                <a href="#features" class="secondary-btn">
+                    Explore Features
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- VISUAL -->
+
+        <div class="hero-card">
+
+            <div class="terminal-header">
+
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+
+            </div>
+
+            <div class="repo-input">
+                github.com/your-project/repository
+            </div>
+
+            <div class="analysis-box">
+
+                <div class="analysis-row">
+                    <span>Languages</span>
+                    <span>Python · JavaScript</span>
+                </div>
+
+                <div class="analysis-row">
+                    <span>Dependencies</span>
+                    <span>42</span>
+                </div>
+
+                <div class="analysis-row">
+                    <span>Complexity</span>
+                    <span>Moderate</span>
+                </div>
+
+                <div class="analysis-row">
+                    <span>Security</span>
+                    <span>Healthy</span>
+                </div>
+
+                <div class="analysis-row">
+                    <span>Repository Health</span>
+                    <span>86 / 100</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= ABOUT ================= -->
+
+    <section class="section" id="about">
+
+        <h2 class="section-title">
+            What is Developer Intelligence Platform?
+        </h2>
+
+        <p class="section-description">
+            DIP is an AI-powered repository analysis platform designed
+            to help developers understand unfamiliar software projects
+            quickly. Instead of manually exploring hundreds of files,
+            developers can provide a GitHub repository and receive
+            structured insights about the entire codebase.
+        </p>
+
+    </section>
+
+
+    <!-- ================= FEATURES ================= -->
+
+    <section class="section" id="features">
+
+        <h2 class="section-title">
+            Powerful Repository Insights
+        </h2>
+
+        <p class="section-description">
+            Everything you need to understand the health and structure
+            of a software project.
+        </p>
+
+
+        <div class="features">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">📊</div>
+
+                <h3>Repository Analysis</h3>
+
+                <p>
+                    Analyze repository structure, files, folders and
+                    important project statistics automatically.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">🏗️</div>
+
+                <h3>Architecture Insights</h3>
+
+                <p>
+                    Understand how different components of the
+                    repository are organized and connected.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">💻</div>
+
+                <h3>Technology Detection</h3>
+
+                <p>
+                    Identify programming languages, frameworks,
+                    technologies and dependencies used in the project.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">🔐</div>
+
+                <h3>Security Analysis</h3>
+
+                <p>
+                    Detect potential security issues and provide
+                    useful insights about repository security.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">📈</div>
+
+                <h3>Code Complexity</h3>
+
+                <p>
+                    Measure code complexity and identify areas that
+                    may require additional attention.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">🤖</div>
+
+                <h3>AI-Powered Summary</h3>
+
+                <p>
+                    Convert technical repository information into an
+                    easy-to-understand AI-generated summary.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= HOW IT WORKS ================= -->
+
+    <section class="section" id="how-it-works">
+
+        <h2 class="section-title">
+            How DIP Works
+        </h2>
+
+        <p class="section-description">
+            Get meaningful insights from a GitHub repository in just
+            a few simple steps.
+        </p>
+
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="step-number">1</div>
+
+                <h3>Login</h3>
+
+                <p>
+                    Sign in to your Developer Intelligence Platform
+                    account.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">2</div>
+
+                <h3>Enter Repository</h3>
+
+                <p>
+                    Provide the URL of the GitHub repository you want
+                    to analyze.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">3</div>
+
+                <h3>Analyze</h3>
+
+                <p>
+                    DIP analyzes the repository using automated
+                    analysis, AI and machine learning.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">4</div>
+
+                <h3>Explore Results</h3>
+
+                <p>
+                    Explore architecture, security, complexity,
+                    technology and repository health.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CTA ================= -->
+
+    <section class="cta">
+
+        <h2>
+            Ready to Understand Your Codebase?
+        </h2>
+
+        <p>
+            Analyze your GitHub repository and discover meaningful
+            insights about your project.
+        </p>
+
+        <a href="{{ url_for('login') }}" class="primary-btn">
+            Get Started
+        </a>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        © 2026 Developer Intelligence Platform.
+        Built for smarter software understanding.
+
+    </footer>
+
+</body>
+
+</html>
